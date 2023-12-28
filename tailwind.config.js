@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        main: "#1AACAC",
+        main: "#5D5FEF",
       },
       boxShadow: {
         outer: "0px 5px 15px rgba(0, 0, 0, 0.35)",
