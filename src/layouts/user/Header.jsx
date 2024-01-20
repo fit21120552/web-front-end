@@ -22,7 +22,29 @@ const Header = () => {
               : "px-4"
           }
         >
-          Về chúng tôi
+          About 
+        </NavLink>
+
+        <NavLink
+          to="/login"
+          className={({ isActive }) =>
+            isActive
+              ? "border-2 bg-slate-300/[.2] rounded-3xl py-2 px-4"
+              : "px-4"
+          }
+        >
+          Login
+        </NavLink>
+
+        <NavLink
+          to="/signup"
+          className={({ isActive }) =>
+            isActive
+              ? "border-2 bg-slate-300/[.2] rounded-3xl py-2 px-4"
+              : "px-4"
+          }
+        >
+          Sign up
         </NavLink>
       </div>
     </div>

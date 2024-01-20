@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import PublicLayout from "./layouts/user/PublicLayout";
 import { Home, About, EditProfile } from "./pages/user/";
 import AdminLayout from "./layouts/admin/AdminLayout";
-
+import { Login, Signup } from "./pages/Authentication/"
 import {
   Dashboard,
   Orders,
@@ -20,6 +20,8 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/edit-profile" element = {<EditProfile/>}/>
+          <Route path="/login" element={<Login/>}/>
+          <Route path="/signup" element={<Signup/>}/>
         </Route>
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="/admin" exact element={<Dashboard />} />
