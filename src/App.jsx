@@ -12,6 +12,7 @@ import {
   Settings,
   Users,
 } from "./pages/admin/";
+import { ProductDetail } from "./pages/Products";
 export default function App() {
   return (
     <div>
@@ -22,6 +23,7 @@ export default function App() {
           <Route path="/edit-profile" element = {<EditProfile/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/signup" element={<Signup/>}/>
+          <Route path="/product/:id" element={<ProductDetail/>}/>
         </Route>
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="/admin" exact element={<Dashboard />} />

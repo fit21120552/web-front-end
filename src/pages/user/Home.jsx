@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react"
+import React, { Children, useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { useDispatch,useSelector } from "react-redux"
 import { listProduct } from "../../Redux/Actions/ProductActions"
 import { api } from "../../constants/api"
 import Rating from "./Rating"
-import Loading from "./Loading"
+import Loading from "../LoadingError/Loading"
+import Message from "../LoadingError/Message"
+
 export default function Home() {
   const dispatch = useDispatch()
 
@@ -20,7 +22,14 @@ export default function Home() {
                 <div className="col-lg-12 col-md-12 article">
                     <div className="shopcontainer row">
                       {
-                        loading ? (<Loading/>) : error ? (<p>Error: {error}</p>)
+                        loading ? (<div className="my-5">
+                                    <Loading/>
+                                    </div>) : 
+                         error ? 
+                          (<Message variant="danger">
+                            {error}
+                          </Message>)
+                           
                         :
                         (
                           <div>
