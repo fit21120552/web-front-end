@@ -1,60 +1,68 @@
+import React, { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
+import { useDispatch,useSelector } from "react-redux"
+import { listProduct } from "../../Redux/Actions/ProductActions"
+import { api } from "../../constants/api"
+import Rating from "./Rating"
+import Loading from "./Loading"
 export default function Home() {
+  const dispatch = useDispatch()
+
+  const productList = useSelector((state) =>  state.productList)
+  const { loading, error, products } = productList
+  useEffect(() => {
+    dispatch(listProduct());
+  }, [dispatch])
   return (
-    <div className="container mx-auto">
-    <h1 className="text-3xl font-bold mb-4">User Page</h1>
-    <div className="card mx-3">
-     
-      <div className="card-body">
-          <div className="flex flex-row">
-            <div className="basis-1/3">
-              <div className="flex flex-col">
-                <div className="bg-[#a3e635] flex flex-row">
-                  <div className="basis-1/2">
-                    <img src="" alt="user avatar" width={100} height={100} className="rounded-full"></img> 
-                  </div>
-                  <div className="basis-1/2 flex flex-col">
-                      <div className="text-bold">
-                          name
-                      </div>
-                      <div className="">
-                        date join
-                      </div>
-                  </div>
+    <div className="container">
+        <div className="section">
+            <div className="row">
+                <div className="col-lg-12 col-md-12 article">
+                    <div className="shopcontainer row">
+                      {
+                        loading ? (<Loading/>) : error ? (<p>Error: {error}</p>)
+                        :
+                        (
+                          <div>
+                            {
+                              products.map((product) => (
+                                <div className="shop col-lg-4 col-md-6 col-sm-6"
+                                    key= {product._id}
+                                  >
+
+                                    <div className="border-product">
+                                        <Link to={api.getAndCreateProduct+product._id}>
+                                            <div className="shopBack">
+                                              <img src={product.thumbnail} alt={product.name}/>
+                                            </div>
+
+                                        </Link>
+
+                                        <div className="shoptext">
+                                            <p>
+                                                <Link to={api.getAndCreateProduct+product._id}>
+                                                  {product.title}
+                                                </Link>
+                                                <Rating 
+                                                  value={product.rating}
+                                                  text={`${product.ratingsQuantity} reviews`}>
+                                                </Rating>
+                                                <h3>${product.price}</h3>
+                                            </p>
+                                        </div>
+                                    </div>
+                                  </div>
+                              ))
+                            }
+                            
+                          </div>
+                        )
+                      }
+                      
+                    </div>
                 </div>
-                <div className="bg-[#7dd3fc] py-6">
-                <a href="/edit-profile">
-                  Profile settings
-                </a>
-                    
-                </div>
-                <div className="bg-[#60a5fa]  py-6">
-                    Orders List
-                </div>
-              </div>
             </div>
-            <div className="basis-1/3">
-              <div className="flex flex-col mx-2">
-                <div className="">
-                   USERNAME
-                </div>
-                <div className="mx-1 px-0">
-                  <input type="text" placeholder="username" className="bg-[#5eead4] basis-1/1 w-full"></input>
-                </div>
-              </div>
-            </div>
-            <div className="basis-1/3">
-               <div className="flex flex-col mx-2">
-                <div className="">
-                  EMAIL ADDRESS
-                </div>
-                <div className="mx-1 px-0">
-                  <input type="text" placeholder="email" className="bg-[#3b82f6]  w-full"></input>
-                </div>
-              </div>
-            </div>
-          </div>
-      </div>
+        </div>
     </div>
-  </div>
   );
 }
