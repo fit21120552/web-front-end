@@ -1,13 +1,34 @@
 import React, { useEffect, useState } from "react"
 import Toast from "../LoadingError/Toast"
 import { toast } from "react-toastify"
+import { useDispatch } from "react-redux"
+import { register } from "../../Redux/Actions/UserActions"
+import  Loading  from "../LoadingError/Loading"
+import  Message  from "../LoadingError/Message"
 
-export default function Login() {
+export default function Login({location, history}) {
 
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [email, setEmail] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
+
+    const dispatch = useDispatch()
+    const redirect = "/";//location.search ? location.search.split("=")[1]:"/"
+    
+    const userRegister = useSelector((state) => state.userRegister)
+
+    const { error, loading, userInfo } = userRegister;
+
+    useEffect(() => {
+        if (userInfo) {
+            history.push(redirect)
+        }
+    }, [userInfo, history, redirect])
+    const submitHandler = () => {
+        e.preventDefault()
+        dispatch(register(username,email, password))
+    }
     return (
         <div>
          <Toast/>
@@ -19,7 +40,10 @@ export default function Login() {
                             <div className="flex flex-row justify-center">
                                 <h2  className=" font-bold">Signup</h2>
                             </div>
-                            <form className="row form-container mx-3" >
+                            {error && <Message variant="danger">{error}</Message>}
+                            {loading && <Loading></Loading>}
+                            
+                            <form className="row form-container mx-3" onClick={submitHandler}>
                                 <div class="form mb-4 text-left">
                                     <label className="text-left font-bold" for="typeEmailX-2">Username</label>
                                     <input type="text"
