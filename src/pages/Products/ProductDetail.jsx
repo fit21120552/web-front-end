@@ -91,7 +91,7 @@ const  ProductDetail = ({ history, match})=>  {
                         :
                         (
                             <>
-                        <Row>
+                        <Row className="">
                             <Col lg={6} md={12} className="">
                                 <div className="single-image flex justify-center ">
                                     <img src={product.thumbnail} alt={product.title} className="bg-[#bbf7d0]"/>
@@ -155,10 +155,37 @@ const  ProductDetail = ({ history, match})=>  {
                             </Col>
                         </Row>
 
-                        <Row>
+                        <div className="mx-3 font-bold text-2xl my-2">Related products</div>
+                        <Row  className="mx-3">
                             <Col lg={3} md={6} sm={12}>
-                                
+                                <div className="shop w-full p-2 rounded-lg border-2 border-solid"
+                                    key= {product._id}
+                                  >
+
+                                    <div className="border-product">
+                                        <Link to={`/product/${product._id}`}>
+                                            <div className="shopBack">
+                                              <img src={product.thumbnail} alt={product.name} height="100px" className="bg-[#bbf7d0]"/>
+                                            </div>
+
+                                        </Link>
+
+                                        <div className="shoptext">
+                                            <p>
+                                                <Link to={`/product/${product._id}`} className="font-serif">
+                                                  {product.title}
+                                                </Link>
+                                                <Rating 
+                                                  value={product.rating}
+                                                  text={`${product.ratingsQuantity} reviews`}>
+                                                </Rating>
+                                                <h3 className="text-2xl font-bold">${product.price}</h3>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
                             </Col>
+
                         </Row>
 
                         <Row className=" my-5">
@@ -169,8 +196,8 @@ const  ProductDetail = ({ history, match})=>  {
                                 <Message variant="info" className="mt-3">No Reviews</Message>
                                 <div className="mb-5 mb-md-3 bg-[#f1f5f9] p-3 shadow-sm rounded-lg">
                                     <strong>User name</strong>
-                                    <Rating/>
-                                    <span>Date </span>
+                                    <Rating value={3.5}/>
+                                    <span>Date review</span>
                                     <Alert key="info" variant="info" className="mt-3">
                                         simply dummy
                                     </Alert>
