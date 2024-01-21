@@ -142,12 +142,12 @@ const Header = () => {
 
               <div className="pc-header h-[80px] mt-2">
                   <Row>
-                      <div className="col-md-3 col-4 flex items-center">
+                      <div className="col-xs-3 col-3 flex items-center">
                           <Link className="navbar-brand" to="/">
                               <img src="../../../public/images/dummy.png" alt="logo"/>
                           </Link>
                       </div>
-                      <div className="col-md-6 col-8 flex items-center">
+                      <div className="col-xs-6 col-6 flex items-center">
                           <form className="input-group">
                             <input
                               type="search"
@@ -159,7 +159,7 @@ const Header = () => {
                             </button>
                           </form>
                       </div>
-                      <div className="col-md-3 flex items-center justify-end">
+                      <div className="col-xs-3 col-3 flex items-center justify-end">
                           <div className="btn-group">
                             <button type="button"
                                   className="name-button dropdown-toggle"

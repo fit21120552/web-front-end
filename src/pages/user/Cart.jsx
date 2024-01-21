@@ -7,23 +7,25 @@ import { Alert, Button } from "react-bootstrap";
 
 const Cart = ({ match, location, history }) => {
     window.scrollTo(0,0);
-    const productId = match.params.id
-    const quantity = location.search ? Number(location.search.split("=")[1]) : 1
+
+    // const productId = match.params.id
+    // const quantity = location.search ? Number(location.search.split("=")[1]) : 1
+
     const dispatch = useDispatch();
 
     const cart =  useSelector((state) => state.cart)
     const { cartItems } = cart
 
     const total = cartItems.reduce((a,i) => a + i.quantity * i.price, 0).toFixed(2)
-    useEffect(() => {
-        if (productId) {
-            dispatch(addTocart(productId, quantity))
-        }
-    }, [dispatch, productId, quantity])
+    // useEffect(() => {
+    //     if (productId) {
+    //         dispatch(addTocart(productId, quantity))
+    //     }
+    // }, [dispatch, productId, quantity])
 
     const checkOutHandler = (e) => {
         e.preventDefault()
-        history.push('/login?redirect=shipping')
+        //history.push('/login?redirect=shipping')
     }
 
     const removeFromCardHandler = (id) => {
@@ -35,10 +37,10 @@ const Cart = ({ match, location, history }) => {
                 {
                     cartItems.length ===0 ? (
                         <>
-                            <Alert className="text-center mt-3"  variant="info">
-                                Your cart is empty
+                            <Alert className="text-center mt-3 mx-3"  variant="info">
+                                Your cart is empty now
                                 <Link
-                                    className="btn-success mx-5 px-5 p-3"
+                                    className="btn-success mx-5 px-5 p-3 rounded-full"
                                     to="/"
                                     style={{
                                         fontSize:"12px"
@@ -46,6 +48,7 @@ const Cart = ({ match, location, history }) => {
                                     SHOPPING NOW
                                 </Link>
                             </Alert>
+                            <div className="h-full">  </div>
 
                         </>
                     )

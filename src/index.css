@@ -15,3 +15,14 @@
 .rating i {
     color: rgb(161, 161, 25)
 }
+
+.footer {
+   
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    margin-top: 15vmax;
+  }
+
+
