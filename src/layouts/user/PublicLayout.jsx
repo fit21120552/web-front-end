@@ -5,11 +5,11 @@ import Footer from "./footer";
 
 const PublicLayout = () => {
   return (
-    <div>
+    <>
       <Header />
       <Outlet />
       <Footer />
-    </div>
+    </>
   );
 };
 
