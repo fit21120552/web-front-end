@@ -91,7 +91,7 @@ const  ProductDetail = ({ history, match})=>  {
                                         <p> {product.description}</p>
 
                                         <div className="product-count col-lg-7">
-                                            <div className="flex justify-between items-center">
+                                            <div className="flex justify-between items-center border-2 border-solid border-black">
                                                 <h6>Price</h6>
                                                 <span>${product.price}</span>
                                             </div>
