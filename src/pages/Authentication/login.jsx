@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react"
 import Toast from "../LoadingError/Toast"
 import { toast } from "react-toastify"
+import { Link } from "react-router-dom"
 
 export default function Login() {
 
+    window.scrollTo(0,0)
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
 
+    const redirect = location.search ? location.search.split("=")[1]:"/"
     return (
         <div>
          <Toast/>
@@ -18,13 +21,14 @@ export default function Login() {
                             <div className="flex flex-row justify-center">
                                 <h5 className=" font-bold">Login</h5>
                             </div>
-                            <form className="row form-container mx-3">
+                            <form className="row form-container mx-3" onSubmit={submitHandler}>
                                 <div class="form mb-4 text-left">
                                     <label className="text-start font-bold" for="typeEmailX-2">Username</label>
                                     <input type="text"
                                             id="username" 
                                             name="username" 
                                             className="form-control"
+                                            value={username}
                                             onChange={(e) => setUsername(e.target.value)}
                                             required />
                                     
@@ -33,7 +37,8 @@ export default function Login() {
                                     <label className="text-start font-bold" for="typeEmailX-2">Password</label>
                                     <input type="password"
                                             id="password" 
-                                            name="password" 
+                                            name="password"
+                                            value={password} 
                                             className="form-control"
                                             onChange={(e) => setPassword(e.target.value)}
                                             required />                                 
@@ -52,9 +57,9 @@ export default function Login() {
                             </form>
 
                             <p className=""> You don't have an account? 
-                                <a href="/signup" className="">
+                                <Link to={"/signup"}>
                                     <u>Sign up here</u>
-                                </a>
+                                </Link>
                             </p>
 
                         </div>
