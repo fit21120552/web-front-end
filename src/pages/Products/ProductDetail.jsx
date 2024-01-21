@@ -9,30 +9,73 @@ import { listProductDetails } from "../../Redux/Actions/ProductActions"
 import { Alert } from "react-bootstrap"
 import Loading from "../LoadingError/Loading"
 import Button from "react-bootstrap/Button"
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 const  ProductDetail = ({ history, match})=>  {
   
     const [quantity, setQuantity] =useState(1)
-    const productId = match.params.id
+   // const productId = match.params.id
     const dispatch = useDispatch()
 
-    const productDetails = useSelector((state) => state.productDetails)
-    const { loading, error, product } = productDetails;
+    // const productDetails = useSelector((state) => state.productDetails)
+    // const { loading, error, product } = productDetails;
 
-    useEffect(() => {
-        // const fetchProduct = async () => {
-        //     const { data } = await axios.get(api.getAndCreateProduct+match.params.id)
-        //     setProduct(data)
-        // };
+    // useEffect(() => {
+    //     // const fetchProduct = async () => {
+    //     //     const { data } = await axios.get(api.getAndCreateProduct+match.params.id)
+    //     //     setProduct(data)
+    //     // };
 
-        // fetchProduct();
+    //     // fetchProduct();
 
-        dispatch(listProductDetails(productId))
-    }, [dispatch, productId])
+    //     dispatch(listProductDetails(productId))
+    // }, [dispatch, productId])
 
+    const loading =false;
+    const error = false;
+    const product = {
+            "discountPercentage": "14.87",
+            "rating": 4.93,
+            "ratingsAverage": 4.5,
+            "ratingsQuantity": 33,
+            "images": [
+                "https://i.dummyjson.com/data/products/75/1.jpg",
+                "https://i.dummyjson.com/data/products/75/2.jpg",
+                "https://i.dummyjson.com/data/products/75/3.jpg",
+                "https://i.dummyjson.com/data/products/75/thumbnail.jpg"
+            ],
+            "_id": "65a9d7b4ad47b243bc49b0073",
+            "title": "Seven Pocket Women Bag",
+            "description": "Seven Pocket Women Bag Handbags Lady Shoulder Crossbody Bag Female Purse Seven Pocket Bag, Seven Pocket Women Bag Handbags Lady Shoulder Crossbody Bag Female Purse Seven Pocket Bag, Seven Pocket Women Bag Handbags Lady Shoulder Crossbody Bag Female Purse Seven Pocket Bag",
+            "price": 68,
+            "stock": 13,
+            "brand": "Steal Frame",
+            "category": "womens-bags",
+            "thumbnail": "https://i.dummyjson.com/data/products/75/thumbnail.jpg",
+            "id": "65a9d7b4ad47b243bc49b0073"
+      
+    }
     const addToCartHandler = (e) => {
         e.preventDefault()
-        history.push(`/cart/${productId}?${quantity}`);
+        history.push(`/cart/${product._id}?${quantity}`);
 
+    }
+
+    const increaseProduct = (e) => {
+        e.preventDefault()
+        if (quantity+1 <= product.stock)
+        {
+            setQuantity(quantity+1)
+        }
+    }
+    const decreaseProduct = (e) => {
+        e.preventDefault()
+        if (quantity-1 >=1 )
+        {
+            setQuantity(quantity-1)
+        }
+        
     }
     return (
         <div>
@@ -48,27 +91,27 @@ const  ProductDetail = ({ history, match})=>  {
                         :
                         (
                             <>
-                        <div className="row">
-                            <div className="col-md-6">
-                                <div className="single-image">
-                                    <img src={product.thumbnail} alt={product.title}/>
+                        <Row>
+                            <Col lg={6} md={12} className="">
+                                <div className="single-image flex justify-center ">
+                                    <img src={product.thumbnail} alt={product.title} className="bg-[#bbf7d0]"/>
                                 </div>
-                            </div>
+                            </Col>
 
-                            <div className="col-md-6">
+                            <Col lg={6} md={12} className="">
                                 <div className="product-dt1">
                                     <div className="product-info">
-                                        <div className="product-name">
+                                        <div className="product-name text-2xl font-bold font-serif mb-2">
                                             {product.title}
                                         </div>
-                                        <p> {product.description}</p>
+                                        <p className="text-left my-4"> {product.description}</p>
 
-                                        <div className="product-count col-lg-7">
-                                            <div className="flex justify-between items-center">
+                                        <div className="product-count col-lg-7 rounded-full">
+                                            <div className="flex justify-between items-center border p-3">
                                                 <h6>Price</h6>
                                                 <span>${product.price}</span>
                                             </div>
-                                            <div className="flex justify-between items-center">
+                                            <div className="flex justify-between items-center border p-3">
                                                 <h6>Status</h6>
                                                 {product.stock >0 ? (
                                                     <span>In Stock</span>
@@ -77,54 +120,65 @@ const  ProductDetail = ({ history, match})=>  {
                                                 )
                                                 }
                                             </div>
-                                            <div className="flex justify-betweenitems-center">
-                                                <h6>Reviews</h6>
+                                            <div className="flex justify-between items-center border p-3">
+                                                <h6 className="">Reviews</h6>
                                                 <Rating value={product.rating}
                                                     text={`${product.ratingsQuantity} reviews`}/> 
                                             </div>
                                             {product.stock>0 ? (
                                                 <>
-                                                    <div className="flex justify-between items-center">
+                                                    <div className="flex justify-between items-center  border p-3">
                                                         <h6>Quantity</h6>
-                                                        <select value={quantity}
-                                                            onChange={(e) => setQuantity(e.target.value)}>
-                                                            {[...Array(product.stock).keys()].map(
-                                                                (x) => (
-                                                                    <option key = {x+1} value = {x+1}>
-                                                                        {x+1}
-                                                                    </option>
-                                                                )
-                                                            )}
-                                                        </select>
+                                                        <div className="flex justify-end">
+                                                            <button className="text-[#16a34a] font-bold text-lg" onClick={increaseProduct}>+</button>
+                                                            <input type="number" 
+                                                                    name="quantity" 
+                                                                    className="w-[40px]"
+                                                                    min="1" max={`${product.stock}`} 
+                                                                    value={quantity} 
+                                                                    onChange={(e) => setQuantity(e.target.value)}>
+                                                            </input>
+                                                            
+                                                            <button className="text-[#b91c1c] font-bold text-lg" onClick={decreaseProduct}>-</button>
+                                                        </div>
                                                     </div>
-                                                    <Button className="rounded-full" variant= "dark" onClick={addToCartHandler}>Add to cart</Button>
-
+                                                    <div className="flex justify-between items-center  border p-3 bg-dark text-white rounded-full">
+                                                        <button className=" w-full " onClick={addToCartHandler}>
+                                                            Add to cart
+                                                        </button>
+                                                    </div>
                                                 </>
                                             ):null}
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            </Col>
+                        </Row>
 
-                        <div className="row my-5">
-                            <div className="col-md-6">
-                                <h6 className="mb-3">
+                        <Row>
+                            <Col lg={3} md={6} sm={12}>
+                                
+                            </Col>
+                        </Row>
+
+                        <Row className=" my-5">
+                            <Col className="">
+                                <h6 className="mb-3 font-bold ">
                                     REVIEWS
                                 </h6>
                                 <Message variant="info" className="mt-3">No Reviews</Message>
-                                <div className="mb-5 mb-md-3 bg-[#f1f5f9] p-3 shadow-sm rounded-full">
-                                    <Strong>User name</Strong>
+                                <div className="mb-5 mb-md-3 bg-[#f1f5f9] p-3 shadow-sm rounded-lg">
+                                    <strong>User name</strong>
                                     <Rating/>
                                     <span>Date </span>
                                     <Alert key="info" variant="info" className="mt-3">
                                         simply dummy
                                     </Alert>
                                 </div>
-                            </div>
+                            </Col>
 
-                            <div className="col-md-6">
-                                <h6>WRITE A CUSTOMER REVIEW</h6>
+                            <Col className="">
+                                <h6 className="font-bold ">WRITE A CUSTOMER REVIEW</h6>
                                 <div className="my-4"></div>
 
                                 <form>
@@ -143,7 +197,7 @@ const  ProductDetail = ({ history, match})=>  {
                                         <strong>Comment</strong>
                                         <textarea
                                             row="3"
-                                            className="col-12 bg-[#fafafa] p-3 mt-2 rounded-full">
+                                            className="col-12 bg-[#fafafa] p-3 mt-2 rounded-lg">
 
                                             </textarea>
                                     </div>
@@ -163,8 +217,8 @@ const  ProductDetail = ({ history, match})=>  {
                                         to write a review{" "}
                                     </Message>
                                 </div>
-                            </div>
-                        </div>
+                            </Col>
+                        </Row>
                             </>
                         )
                      }
@@ -177,3 +231,14 @@ const  ProductDetail = ({ history, match})=>  {
 }
 
 export default ProductDetail;
+
+/*<select value={quantity}
+    onChange={(e) => setQuantity(e.target.value)}>
+    {[...Array(product.stock).keys()].map(
+        (x) => (
+            <option key = {x+1} value = {x+1}>
+                {x+1}
+            </option>
+        )
+    )}
+</select>*/
