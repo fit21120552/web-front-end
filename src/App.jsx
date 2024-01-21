@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import '@fortawesome/fontawesome-free/css/all.css'
 import PublicLayout from "./layouts/user/PublicLayout";
 import { Home, About, EditProfile, Cart, Profile } from "./pages/user/";
 import AdminLayout from "./layouts/admin/AdminLayout";

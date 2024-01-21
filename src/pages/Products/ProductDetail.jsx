@@ -9,7 +9,7 @@ import { listProductDetails } from "../../Redux/Actions/ProductActions"
 import { Alert } from "react-bootstrap"
 import Loading from "../LoadingError/Loading"
 import Button from "react-bootstrap/Button"
-export default ProductDetail = ({ history, match})=>  {
+const  ProductDetail = ({ history, match})=>  {
   
     const [quantity, setQuantity] =useState(1)
     const productId = match.params.id
@@ -175,3 +175,5 @@ export default ProductDetail = ({ history, match})=>  {
         </div>
     )
 }
+
+export default ProductDetail;

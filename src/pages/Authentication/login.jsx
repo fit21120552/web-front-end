@@ -2,14 +2,35 @@ import React, { useEffect, useState } from "react"
 import Toast from "../LoadingError/Toast"
 import { toast } from "react-toastify"
 import { Link } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { login } from "./../../Redux/Actions/UserActions"
+import Message  from "../LoadingError/Message"
+import Loading  from "../LoadingError/Loading"
 
-export default function Login() {
+
+ const  Login = ({location, history})  => {
 
     window.scrollTo(0,0)
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
 
-    const redirect = location.search ? location.search.split("=")[1]:"/"
+    const dispatch = useDispatch()
+    console.log(location)
+    const redirect = "/";//location.search ? location.search.split("=")[1]:"/"
+    
+    const userLogin = useSelector((state) => state.userLogin)
+
+    const { error, loading, userInfo } = userLogin;
+
+    useEffect(() => {
+        if (userInfo) {
+            history.push(redirect)
+        }
+    }, [userInfo, history, redirect])
+    const submitHandler = () => {
+        e.preventDefault()
+        dispatch(login(username, password))
+    }
     return (
         <div>
          <Toast/>
@@ -18,9 +39,12 @@ export default function Login() {
                 <div className="row d-flex justify-center align-center h-100">
                     <div className="col-12 col-md-8 col-lg-6 col-xl-5">
                         <div className="text-center rounded-full">
+                            {error && <Message variant="danger">{error}</Message>}
+                            {loading && <Loading></Loading>}
                             <div className="flex flex-row justify-center">
                                 <h5 className=" font-bold">Login</h5>
                             </div>
+
                             <form className="row form-container mx-3" onSubmit={submitHandler}>
                                 <div class="form mb-4 text-left">
                                     <label className="text-start font-bold" for="typeEmailX-2">Username</label>
@@ -57,7 +81,7 @@ export default function Login() {
                             </form>
 
                             <p className=""> You don't have an account? 
-                                <Link to={"/signup"}>
+                                <Link to={redirect ? `/signup?redirect=${redirect}` : "/signup" }>
                                     <u>Sign up here</u>
                                 </Link>
                             </p>
@@ -69,3 +93,4 @@ export default function Login() {
         </div>
     )
 }
+export default Login;
