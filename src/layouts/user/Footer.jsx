@@ -1,5 +1,5 @@
 const Footer = () => {
-  return (<div className="flex flex-row justify-center mx-3 rounded-full bg-[#1d4ed8]">Copyright: group web dev</div>);
+  return (<footer className="flex flex-row justify-center mx-3 rounded-full bg-[#1d4ed8]">Copyright: group web dev</footer>);
 };
 
 export default Footer;

@@ -1,9 +1,9 @@
 import { faStar as farStar } from "@fortawesome/free-regular-svg-icons";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export default function Rating({ value, text}) {
     return  (
         <div className="flex flex-row">
-            <div className="rating">
+            <div className="rating text-yellow">
                 <i
                     className={value>=1
                                 ? "fas fa-star"
@@ -41,7 +41,7 @@ export default function Rating({ value, text}) {
                         : "far fa-star"
                     }           
                 ></i>
-                                <i 
+                <i 
                     className={
                         value>=5
                         ? "fas fa-star"
@@ -51,7 +51,7 @@ export default function Rating({ value, text}) {
                     }           
                 ></i>
 
-                <span> {text && text}</span>
+                <span> {text && <strong>{text}</strong>}</span>
             </div>
         </div>
     )
