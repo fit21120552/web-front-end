@@ -6,5 +6,5 @@ export const api = {
     loginWithGoogle: IPaddress + '/auth/google/',
     profile: IPaddress + '/user/',
     getAndCreateProduct: IPaddress + '/api/v1/product/',
-
+    getCart: IPaddress + '/api/v1/carts/'
 }

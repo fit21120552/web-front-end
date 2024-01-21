@@ -1,5 +1,11 @@
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 const Header = () => {
+
+  const cart = useSelector((state) => {
+    state.cart
+  })
+  const { cartItems } = cart;
   return (
     <div className="h-[80px] bg-main flex justify-between items-center px-8">
       <div className="flex items-center text-white font-semibold text-xl">

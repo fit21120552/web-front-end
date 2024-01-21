@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import PublicLayout from "./layouts/user/PublicLayout";
-import { Home, About, EditProfile } from "./pages/user/";
+import { Home, About, EditProfile, Cart, Profile } from "./pages/user/";
 import AdminLayout from "./layouts/admin/AdminLayout";
 import { Login, Signup } from "./pages/Authentication/"
 import {
@@ -13,6 +13,7 @@ import {
   Users,
 } from "./pages/admin/";
 import { ProductDetail } from "./pages/Products";
+
 export default function App() {
   return (
     <div>
@@ -24,6 +25,7 @@ export default function App() {
           <Route path="/login" element={<Login/>}/>
           <Route path="/signup" element={<Signup/>}/>
           <Route path="/product/:id" element={<ProductDetail/>}/>
+          <Route path="/cart/:id?" element={<Cart/>}/>
         </Route>
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="/admin" exact element={<Dashboard />} />
