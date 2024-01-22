@@ -3,9 +3,11 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Loading from "../LoadingError/Loading";
 import Message from "../LoadingError/Message";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 export default function Product() {
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const loading = false;
   const error = false;
 
@@ -100,38 +102,108 @@ export default function Product() {
     },
   ];
 
-  const categories = [
-    {
-      id: 1,
-      name: "May anh",
-      image: "./images/dummy.png",
-    },
-    {
-      id: 2,
-      name: "May tinh",
-      image: "./images/dummy.png",
-    },
-  ];
+  const category = searchParams.get("category") || "";
+  const sortBy = searchParams.get("sortBy") || "";
+  const currentPage = searchParams.get("page") || "1";
+  const totalPage = 9;
 
   return (
     <div className="container max-w-screen-xl mt-4">
-      <div className="mx-3 px-4 py-3 bg-white mb-[2px]">DANH MỤC</div>
-      <div className=" mx-3 flex mb-4 gap-[2px]">
-        {categories.map((item) => (
-          <div
-            key={item.id}
-            className="bg-white w-28 flex items-center justify-center flex-col py-4"
-          >
-            <div className="w-12 h-12 flex items-center justify-center rounded-full bg-[#f5f5f5]">
-              <img src={item.image} alt="" />
-            </div>
-            <p>{item.name}</p>
+      <div className="mx-3 px-4 py-3 bg-[#ededed] mb-2 ">
+        <div className="pb-4 flex items-center justify-between">
+          <div className="flex items-center">
+            <p className="mr-9">Danh mục</p>
+
+            <select
+              className="outline-none bg-white px-3 py-2"
+              name=""
+              id=""
+              value={category}
+              onChange={(e) =>
+                setSearchParams((params) => {
+                  if (e.target.value !== "")
+                    params.set("category", e.target.value);
+                  else params.delete("category");
+                  return params;
+                })
+              }
+            >
+              <option value="">Tất cả</option>
+              <option value="camera">Máy ảnh</option>
+              <option value="laptop">Máy tính</option>
+            </select>
           </div>
-        ))}
+        </div>
+        <div className="flex gap-2 items-center">
+          <p className="mr-2">Sắp xếp theo</p>
+          <button
+            className={` px-3 py-2 ${
+              sortBy === "" ? "bg-blue-500 text-white" : "bg-white"
+            }`}
+            onClick={() =>
+              setSearchParams((params) => {
+                params.delete("sortBy");
+                return params;
+              })
+            }
+          >
+            Liên quan
+          </button>
+          <button
+            className={` px-3 py-2 ${
+              sortBy === "ctime" ? "bg-blue-500 text-white" : "bg-white"
+            }`}
+            onClick={() =>
+              setSearchParams((params) => {
+                params.set("sortBy", "ctime");
+                return params;
+              })
+            }
+          >
+            Mới nhất
+          </button>
+          <button
+            className={` px-3 py-2 ${
+              sortBy === "sales" ? "bg-blue-500 text-white" : "bg-white"
+            }`}
+            onClick={() =>
+              setSearchParams((params) => {
+                params.set("sortBy", "sales");
+                return params;
+              })
+            }
+          >
+            Bán chạy
+          </button>
+          <button
+            className={` px-3 py-2 ${
+              sortBy === "priceAsc" ? "bg-blue-500 text-white" : "bg-white"
+            }`}
+            onClick={() =>
+              setSearchParams((params) => {
+                params.set("sortBy", "priceAsc");
+                return params;
+              })
+            }
+          >
+            Giá: Thấp đến Cao
+          </button>
+          <button
+            className={` px-3 py-2 ${
+              sortBy === "priceDesc" ? "bg-blue-500 text-white" : "bg-white"
+            }`}
+            onClick={() =>
+              setSearchParams((params) => {
+                params.set("sortBy", "priceDesc");
+                return params;
+              })
+            }
+          >
+            Giá: Cao đến Thấp
+          </button>
+        </div>
       </div>
-      <div className="mx-3 px-4 py-3 bg-white mb-2 text-center text-blue-500 font-semibold border-b-[4px] border-blue-500">
-        GỢI Ý HÔM NAY
-      </div>
+
       <div className="section">
         <Row>
           <Col className="article">
@@ -186,6 +258,38 @@ export default function Product() {
             </div>
           </Col>
         </Row>
+      </div>
+
+      <div className=" mt-4">
+        <div className="justify-center   flex items-center">
+          <button className="rounded-sm mr-[2px] bg-white flex items-center justify-center w-10 h-10">
+            &lt;
+          </button>
+          <div className="mx-3 flex">
+            {Array.from(Array(totalPage)).map((item, index) => (
+              <button
+                key={index}
+                onClick={() => {
+                  setSearchParams((params) => {
+                    params.set("page", index + 1);
+                    return params;
+                  });
+                }}
+                disabled={currentPage == index + 1}
+                className={
+                  index + 1 == currentPage
+                    ? "bg-blue-500 rounded-sm mx-[2px] text-white flex items-center justify-center w-10 h-10"
+                    : "rounded-sm mx-[2px] bg-white flex items-center justify-center w-10 h-10"
+                }
+              >
+                {index + 1}
+              </button>
+            ))}
+          </div>
+          <button className="rounded-sm bg-white flex items-center justify-center w-10 h-10">
+            &gt;
+          </button>
+        </div>
       </div>
     </div>
   );
