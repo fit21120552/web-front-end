@@ -1,14 +1,24 @@
 import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, NavLink, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  NavLink,
+  useNavigate,
+  useSearchParams,
+  useLocation,
+} from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebookF } from "@fortawesome/free-brands-svg-icons";
 import { logout } from "../../Redux//Actions/UserActions";
+import { useState } from "react";
 const Header = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [title, setTitle] = useState("");
   const dispatch = useDispatch();
   const cart = useSelector((state) => {
     state.cart;
@@ -117,19 +127,41 @@ const Header = () => {
                 </Link>
               </div>
               <div className="col-xs-6 col-6 flex items-center">
-                <form className="input-group">
+                <div className="input-group">
                   <input
                     type="search"
-                    className="form-control rounded-full search"
+                    className="form-control rounded-full search outline-none"
                     placeholder="Search"
+                    value={title}
+                    onChange={(e) => {
+                      setTitle(e.target.value);
+                    }}
                   ></input>
                   <button
                     className="text-white bg-black rounded-full px-3"
-                    type="submit"
+                    onClick={() => {
+                      const currentUrl = location.pathname;
+                      if (currentUrl !== "/product") {
+                        if (title !== "") {
+                          navigate("/product?title=" + title);
+                        } else {
+                          navigate("/product");
+                        }
+                      } else {
+                        setSearchParams((params) => {
+                          if (title !== "") {
+                            params.set("title", title);
+                          } else {
+                            params.delete("title");
+                          }
+                          return params;
+                        });
+                      }
+                    }}
                   >
                     SEARCH
                   </button>
-                </form>
+                </div>
               </div>
               <div className="col-xs-3 col-3 flex items-center justify-end">
                 {userInfo ? (
