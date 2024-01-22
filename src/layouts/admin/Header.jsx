@@ -9,9 +9,16 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { logout } from "../../Redux/Actions/UserActions";
+import { useDispatch } from "react-redux";
 
 const Header = () => {
   const location = useLocation();
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
   const page =
     location.pathname === "/admin"
       ? "Dashboard"
@@ -72,6 +79,7 @@ const Header = () => {
             <Link to="/profile" onClick={() => setOpenProfile(false)}>
               Quản lý tài khoản
             </Link>
+            <button onClick={() => handleLogout()}>Đăng xuất</button>
           </div>
         </div>
       )}

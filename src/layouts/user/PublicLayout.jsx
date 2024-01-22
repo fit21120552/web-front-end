@@ -1,11 +1,16 @@
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 
 import Header from "./Header";
 import Footer from "./Footer";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const PublicLayout = () => {
   const [title, setTitle] = useState("");
+  const navigate = useNavigate();
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+  if (userInfo?.role === "admin") return <Navigate to="/admin" replace />;
 
   return (
     <>

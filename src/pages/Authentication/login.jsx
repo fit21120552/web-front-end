@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Toast from "../LoadingError/Toast";
 import { toast } from "react-toastify";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "./../../Redux/Actions/UserActions";
+import { login, loginGoogle } from "./../../Redux/Actions/UserActions";
 import Message from "../LoadingError/Message";
 import Loading from "../LoadingError/Loading";
 
@@ -11,6 +11,7 @@ const Login = ({ location, history }) => {
   window.scrollTo(0, 0);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -19,6 +20,9 @@ const Login = ({ location, history }) => {
   const userLogin = useSelector((state) => state.userLogin);
 
   const { error, loading, userInfo } = userLogin;
+
+  const email = searchParams.get("email");
+  if (email) dispatch(loginGoogle(email));
 
   useEffect(() => {
     if (userInfo) {
@@ -79,12 +83,7 @@ const Login = ({ location, history }) => {
             <div className="mb-1">
               <button className="flex items-center justify-center border-2 rounded-md border-[#10b981] px-2 py-1 mx-auto ">
                 <i className="fab text-[#ef4444] fa-google me-2"></i>
-                <a
-                  target="_blank"
-                  rel="noreferrer"
-                  href="http://localhost:3000/auth/google"
-                  className=""
-                >
+                <a href="http://localhost:3000/auth/google" className="">
                   Login with google
                 </a>
               </button>
