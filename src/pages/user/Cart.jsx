@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { addTocart, removeFromCart } from "../../Redux/Actions/CartActions";
 import { useDispatch, useSelector } from "react-redux";
 import { Alert, Button, Col, Row } from "react-bootstrap";
@@ -30,7 +30,7 @@ const Cart = ({ match, location, history }) => {
         
     }
     const dispatch = useDispatch();
-
+    const navigate = useNavigate()
     const cart =  useSelector((state) => state.cart)
     //let { cartItems } = cart
 
@@ -180,6 +180,7 @@ const Cart = ({ match, location, history }) => {
 
     const checkOutHandler = (e) => {
         e.preventDefault()
+        navigate('/ship');
         //history.push('/login?redirect=shipping')
     }
 
