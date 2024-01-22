@@ -9,8 +9,8 @@ const PublicLayout = () => {
       <div className="bg-[#f5f5f5]">
         <Header />
         <Outlet />
+        <Footer />
       </div>
-      <Footer />
     </>
   );
 };

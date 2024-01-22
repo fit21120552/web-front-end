@@ -158,7 +158,7 @@ export default function Home() {
                 <>
                   {products.map((product) => (
                     <div
-                      className="shop w-full p-2 rounded-lg border-2 border-solid"
+                      className="shop w-full p-2 rounded-lg border-2 border-solid bg-white"
                       key={product._id}
                     >
                       <div className="border-product">
