@@ -13,12 +13,16 @@ import Col from "react-bootstrap/Col";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebookF } from "@fortawesome/free-brands-svg-icons";
 import { logout } from "../../Redux//Actions/UserActions";
-import { useState } from "react";
-const Header = () => {
+import { useEffect, useRef, useState } from "react";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+const Header = ({ title, setTitle }) => {
+  const ref = useRef();
   const location = useLocation();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [title, setTitle] = useState("");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSubMenuOpen, setIsSubMenuOpen] = useState(-1);
+
   const dispatch = useDispatch();
   const cart = useSelector((state) => {
     state.cart;
@@ -26,11 +30,50 @@ const Header = () => {
   const userLogin = useSelector((state) => state.userLogin);
   //const { userInfo } = userLogin
   //const { cartItems } = cart;
+
+  useEffect(() => {
+    const handler = (event) => {
+      if (isMenuOpen && ref.current && !ref.current.contains(event.target)) {
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    document.addEventListener("touchstart", handler);
+    return () => {
+      // Cleanup the event listener
+      document.removeEventListener("mousedown", handler);
+      document.removeEventListener("touchstart", handler);
+    };
+  }, [isMenuOpen]);
+
   const userInfo = undefined;
   const logoutHandler = () => {
     //e.preventDefault()
     dispatch(logout());
   };
+
+  const menuItemsData = [
+    {
+      title: "Camera",
+      url: "/product?category=camera",
+      submenu: [],
+    },
+    {
+      title: "Laptop",
+      url: "/product?category=laptop",
+      submenu: [
+        {
+          title: "Dell",
+          url: "/product?category=laptop&title=dell",
+        },
+        {
+          title: "Macbook",
+          url: "/product?category=laptop&title=macbook",
+        },
+      ],
+    },
+  ];
+
   return (
     <div>
       <div className="h-[40px] bg-blue-500">
@@ -125,6 +168,52 @@ const Header = () => {
                     <p className="text-blue-500">STORE</p>
                   </div>
                 </Link>
+                <div
+                  ref={ref}
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  className="cursor-pointer relative flex items-center gap-2 bg-blue-400 text-white px-2 py-2 rounded-sm"
+                >
+                  <FontAwesomeIcon icon={faBars} size="lg" />
+                  <p className="text-sm font-semibold">Danh mục</p>
+                  {isMenuOpen && (
+                    <div className="absolute top-10 text-black bg-white shadow-xl  min-w-[107px] -left-[1px] rounded-sm flex flex-col gap-1">
+                      {menuItemsData.map((item, index) => (
+                        <div
+                          onClick={() => navigate(item.url)}
+                          className="cursor-pointer hover:bg-blue-400 hover:text-white py-1 text-left pl-2 pr-5"
+                          key={index}
+                          onMouseEnter={() => {
+                            if (item.submenu.length > 0) {
+                              setIsSubMenuOpen(index);
+                            }
+                          }}
+                        >
+                          {item.title}
+                          {item.submenu.length > 0 && (
+                            <span className="absolute right-1">&gt;</span>
+                          )}
+                          {isSubMenuOpen === index && (
+                            <div className="absolute top-9 text-black bg-white shadow-xl  min-w-[107px] -right-[100%] rounded-sm flex flex-col gap-1">
+                              {item.submenu.map((subitem, subindex) => (
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigate(subitem.url);
+                                    setIsMenuOpen(false);
+                                  }}
+                                  className="hover:bg-blue-400 hover:text-white py-1 text-left pl-2 pr-5"
+                                  key={subindex}
+                                >
+                                  {subitem.title}
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
               <div className="col-xs-6 col-6 flex items-center">
                 <div className="input-group">

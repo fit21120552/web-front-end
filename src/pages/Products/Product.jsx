@@ -3,10 +3,12 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Loading from "../LoadingError/Loading";
 import Message from "../LoadingError/Message";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useOutletContext, useSearchParams } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function Product() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [title, setTitle] = useOutletContext();
 
   const loading = false;
   const error = false;
@@ -105,6 +107,11 @@ export default function Product() {
   const category = searchParams.get("category") || "";
   const sortBy = searchParams.get("sortBy") || "";
   const currentPage = searchParams.get("page") || "1";
+
+  const titleParam = searchParams.get("title") || "";
+  useEffect(() => {
+    setTitle(titleParam);
+  }, [titleParam, searchParams, setTitle]);
   const totalPage = 9;
 
   return (
