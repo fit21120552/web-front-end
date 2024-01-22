@@ -67,22 +67,22 @@ import Loading  from "../LoadingError/Loading"
                                             onChange={(e) => setPassword(e.target.value)}
                                             required />                                 
                                 </div>
-                                <button type="submit" className="flex flex-row justify-center mx-3 my-2">
+                                <button type="submit" className="flex flex-row justify-center text-lg p-2 my-2">
                                     <p className="bg-[#10b981] px-2 rounded-full">Login</p>
                                 </button>
                             </form>
 
-                            <form className="row form-container mx-3">
+                            <form className="row form-container mx-3 mt-4">
                                 <div className="mb-1">
-                                    <button className="bg-[#ef4444]">
+                                    <button className="bg-[#ef4444] p-2 rounded-lg">
                                         <i className="fab fa-google me-2"></i>Sign in with google
                                     </button>
                                 </div>
                             </form>
 
-                            <p className=""> You don't have an account? 
+                            <p className="mt-3"> You don't have an account? 
                                 <Link to={redirect ? `/signup?redirect=${redirect}` : "/signup" }>
-                                    <u>Sign up here</u>
+                                    <u> Sign up here</u>
                                 </Link>
                             </p>
 

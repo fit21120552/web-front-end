@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import Toast from "../LoadingError/Toast"
 import { toast } from "react-toastify"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { register } from "../../Redux/Actions/UserActions"
 import  Loading  from "../LoadingError/Loading"
 import  Message  from "../LoadingError/Message"
@@ -98,17 +98,10 @@ export default function Login({location, history}) {
                                 </button>
                             </form>
 
-                            <form className="row form-container mx-3">
-                                <div className="mb-1">
-                                    <button className="">
-                                        <i class="fab fa-google me-2"></i>Sign in with google
-                                    </button>
-                                </div>
-                            </form>
 
-                            <p className=""> You don't have an account? 
-                                <a href="/signup" className="">
-                                    <u>Sign up here</u>
+                            <p className=""> Already have an account? 
+                                <a href="/login" className="">
+                                    <u>Log in here</u>
                                 </a>
                             </p>
 

@@ -3,6 +3,7 @@ import { faEdit, faSearch, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import ReactPaginate from "react-paginate";
+import { Link } from "react-router-dom";
 
 const Products = () => {
   const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
@@ -23,10 +24,16 @@ const Products = () => {
                 <p className="font-semibold">25$</p>
                 <div className="flex gap-1">
                   <button className="rounded-xl px-3 bg-[#FFBE18]">
-                    <FontAwesomeIcon icon={faEdit} size="xs" />
+                    <Link to="/admin/product/edit">
+                      <FontAwesomeIcon icon={faEdit} size="xs" />
+                    </Link>
+                    
                   </button>
-                  <button className="rounded-xl px-3 bg-[#FFBE18]">
-                    <FontAwesomeIcon icon={faTrash} size="xs" />
+                  <button className="rounded-xl px-3 bg-[#ef4444]">
+                    <Link to="/admin/product/delete">
+                      <FontAwesomeIcon icon={faTrash} size="xs" />
+                    </Link>
+                    
                   </button>
                 </div>
               </div>
@@ -82,7 +89,9 @@ const Products = () => {
       <div className="flex justify-between mt-10">
         <div className=""></div>
         <button className="bg-[#0CA91B] rounded-lg px-4 py-2 text-white">
-          Create new
+          <Link to="/admin/product/add">
+            Create new <span className="text-lg">+</span>
+          </Link>
         </button>
       </div>
       <div className="mt-4 flex justify-between ">
