@@ -1,18 +1,27 @@
 import { Button } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebookF } from "@fortawesome/free-brands-svg-icons";
-
+import { logout } from '../../Redux//Actions/UserActions'
 const Header = () => {
 
+  const dispatch = useDispatch();
   const cart = useSelector((state) => {
     state.cart
   })
+  const userLogin = useSelector((state) => state.userLogin)
+  //const { userInfo } = userLogin
   //const { cartItems } = cart;
+  const userInfo=undefined;
+  const logoutHandler = () => {
+    //e.preventDefault()
+    dispatch(logout())
+
+  }
   return (
     <div>
       <div className="h-[80px] bg-main flex justify-between items-center px-8">
@@ -142,12 +151,12 @@ const Header = () => {
 
               <div className="pc-header h-[80px] mt-2">
                   <Row>
-                      <div className="col-md-3 col-4 flex items-center">
+                      <div className="col-xs-3 col-3 flex items-center">
                           <Link className="navbar-brand" to="/">
                               <img src="../../../public/images/dummy.png" alt="logo"/>
                           </Link>
                       </div>
-                      <div className="col-md-6 col-8 flex items-center">
+                      <div className="col-xs-6 col-6 flex items-center">
                           <form className="input-group">
                             <input
                               type="search"
@@ -159,31 +168,46 @@ const Header = () => {
                             </button>
                           </form>
                       </div>
-                      <div className="col-md-3 flex items-center justify-end">
-                          <div className="btn-group">
-                            <button type="button"
-                                  className="name-button dropdown-toggle"
-                                  data-toggle="dropdown"
-                                  aria-haspopup="true"
-                                  aria-expanded="false"
-                            >
-                              <Link to="/profile">
-                                <i className="fas fa-user"></i>
-                              </Link>
-                                
-                            </button>
+                      <div className="col-xs-3 col-3 flex items-center justify-end">
+                          {
+                            userInfo ? (
+                              <div className="btn-group">
+                                <button type="button"
+                                      className="name-button dropdown-toggle"
+                                      data-toggle="dropdown"
+                                      aria-haspopup="true"
+                                      aria-expanded="false"
+                                >
+                                  <Link to="/profile">
+                                    <i className="fas fa-user"></i>
+                                    Hi, {userInfo.username}
+                                  </Link>
+                                    
+                                </button>
 
-                            <div className="dropdown-menu">
-                              <Link className="dropdown-item" to="/profile">
-                                  Profile
-                              </Link>
-                              <Link className="dropdown-item" to="#">
-                                  Logout
-                              </Link>
-                            </div>
+                                <div className="dropdown-menu">
+                                  <Link className="dropdown-item" to="/profile">
+                                      Profile
+                                  </Link>
+                                  <Link className="dropdown-item" to="#" onClick={logoutHandler}>
+                                      Logout
+                                  </Link>
+                                </div>
 
 
-                          </div>
+                              </div>
+                            ) : (
+                              <>
+                                  <Link className="dropdown-item" to="/signup">
+                                      Sign up
+                                  </Link>
+                                  <Link className="dropdown-item" to="/login">
+                                      Login
+                                  </Link>
+                              </>
+                            )
+                          }
+                          
 
                           <Link to='/cart' className="mx-3">
                               <i className="fas fa-shopping-bag"></i>

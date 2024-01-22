@@ -17,7 +17,7 @@ import { ProductDetail } from "./pages/Products";
 
 export default function App() {
   return (
-    <div>
+    <>
       <Routes>
         <Route path="/" element={<PublicLayout />}>
           <Route path="/" element={<Home />} />
@@ -38,6 +38,6 @@ export default function App() {
           <Route path="/admin/settings" element={<Settings />} />
         </Route>
       </Routes>
-    </div>
+    </>
   );
 }
