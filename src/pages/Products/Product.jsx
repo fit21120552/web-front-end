@@ -1,26 +1,11 @@
-import React, { Children, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { listProduct } from "../../Redux/Actions/ProductActions";
-import { api } from "../../constants/api";
-import Rating from "./Rating";
-import Loading from "../LoadingError/Loading";
-import Message from "../LoadingError/Message";
-import Container from "react-bootstrap/Container";
+import Rating from "../user/Rating";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Loading from "../LoadingError/Loading";
+import Message from "../LoadingError/Message";
+import { Link } from "react-router-dom";
 
-export default function Home() {
-  const dispatch = useDispatch();
-
-  //USE TO GET PRODUCT FROM API, DO NOT DELETE
-
-  //const productList = useSelector((state) =>  state.productList)
-  //const { loading, error, products } = productList
-  // useEffect(() => {
-  //   dispatch(listProduct());
-  // }, [dispatch])
-
+export default function Product() {
   const loading = false;
   const error = false;
 
@@ -205,4 +190,3 @@ export default function Home() {
     </div>
   );
 }
-//col-lg-4 col-md-6 col-sm-6
