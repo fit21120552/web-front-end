@@ -46,3 +46,8 @@ filter: alpha(opacity=50);
 .modal { 
 --bs-modal-bg: #00000000 !important; 
 }
+
+.cart-buttons {
+    margin-top: 8vmax;
+    margin-bottom: 8vmax;
+}

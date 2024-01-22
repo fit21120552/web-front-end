@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import Rating from "../user/Rating"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import Message from "../LoadingError/Message"
 import axios from "axios"
 import { api } from "../../constants/api"
@@ -17,6 +17,8 @@ const  ProductDetail = ({ history, match})=>  {
     const [quantity, setQuantity] =useState(1)
    // const productId = match.params.id
     const dispatch = useDispatch()
+
+    const navigate = useNavigate()
 
     // const productDetails = useSelector((state) => state.productDetails)
     // const { loading, error, product } = productDetails;
@@ -58,8 +60,8 @@ const  ProductDetail = ({ history, match})=>  {
     }
     const addToCartHandler = (e) => {
         e.preventDefault()
-        history.push(`/cart/${product._id}?${quantity}`);
-
+        //history.push(`/cart/${product._id}?${quantity}`);
+        navigate(`/cart/${product._id}?${quantity}`)
     }
 
     const increaseProduct = (e) => {
@@ -130,16 +132,16 @@ const  ProductDetail = ({ history, match})=>  {
                                                     <div className="flex justify-between items-center  border p-3">
                                                         <h6>Quantity</h6>
                                                         <div className="flex justify-end">
-                                                            <button className="text-[#16a34a] font-bold text-lg" onClick={increaseProduct}>+</button>
+                                                            <button className="text-[#16a34a] font-bold text-xl" onClick={increaseProduct}>+</button>
                                                             <input type="number" 
                                                                     name="quantity" 
-                                                                    className="w-[40px]"
+                                                                    className="text-center w-[40px]"
                                                                     min="1" max={`${product.stock}`} 
-                                                                    value={quantity} 
+                                                                    value={product.quantity} 
                                                                     onChange={(e) => setQuantity(e.target.value)}>
                                                             </input>
                                                             
-                                                            <button className="text-[#b91c1c] font-bold text-lg" onClick={decreaseProduct}>-</button>
+                                                            <button className="text-[#b91c1c] font-bold text-xl" onClick={decreaseProduct}>-</button>
                                                         </div>
                                                     </div>
                                                     <div className="flex justify-between items-center  border p-3 bg-dark text-white rounded-full">
