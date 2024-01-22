@@ -18,6 +18,7 @@ import AddProduct from "./pages/admin/AddProduct";
 import EditProduct from "./pages/admin/EditProduct";
 import ShipInformation from "./pages/user/ShipInformation";
 import ChoosePayment from "./pages/user/ChoosePayment";
+import PlaceOrder from "./pages/user/PlaceOrder";
 
 export default function App() {
   return (
@@ -35,6 +36,7 @@ export default function App() {
           <Route path="/cart/:id?" element={<Cart />} />
           <Route path="/ship/" element={<ShipInformation/>}/>
           <Route path="/choose-payment" element= {<ChoosePayment/>}/>
+          <Route path="/place-order" element={<PlaceOrder/>}/>
         </Route>
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="/admin" exact element={<Dashboard />} />

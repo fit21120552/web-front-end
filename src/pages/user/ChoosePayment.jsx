@@ -7,7 +7,7 @@ const ChoosePayment = ()=> {
     const navigate = useNavigate()
     const submitHandler = (e) => {
         e.preventDefault()
-        navigate("/placeorder")
+        navigate("/place-order")
     }
     return (
         <div className="flex flex-column items-center" >
