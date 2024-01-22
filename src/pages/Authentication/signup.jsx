@@ -12,6 +12,7 @@ export default function Signup({ location, history }) {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [noti, setNoti] = useState("");
 
   const dispatch = useDispatch();
   const redirect = "/"; //location.search ? location.search.split("=")[1]:"/"
@@ -25,9 +26,14 @@ export default function Signup({ location, history }) {
       history.push(redirect);
     }
   }, [userInfo, history, redirect]);
-  const submitHandler = () => {
+  const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(register(username, email, password));
+    if (password === confirmPassword) {
+      setNoti("");
+      dispatch(register(username, email, password));
+    } else {
+      setNoti("Mật khẩu không khớp");
+    }
   };
   return (
     <div className="shadow-2xl max-w-[450px] mx-auto bg-white rounded-sm">
@@ -41,9 +47,9 @@ export default function Signup({ location, history }) {
             <h5 className=" font-bold">Signup</h5>
           </div>
 
-          <form className="row form-container mx-3" onClick={submitHandler}>
+          <form className="row form-container mx-3" onSubmit={submitHandler}>
             <div className="form mb-4 text-left">
-              <label className="text-left font-bold" htmlFor="typeEmailX-2">
+              <label className="text-left font-bold" htmlFor="username">
                 Username
               </label>
               <input
@@ -52,11 +58,12 @@ export default function Signup({ location, history }) {
                 name="username"
                 className="form-control"
                 onChange={(e) => setUsername(e.target.value)}
+                value={username}
                 required
               />
             </div>
             <div className="form mb-4 text-left">
-              <label className="text-left font-bold" htmlFor="typeEmailX-2">
+              <label className="text-left font-bold" htmlFor="email">
                 Email
               </label>
               <input
@@ -66,11 +73,12 @@ export default function Signup({ location, history }) {
                 className="form-control"
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                value={email}
               />
             </div>
 
             <div className="form mb-4 text-left">
-              <label className="text-start font-bold" htmlFor="typeEmailX-2">
+              <label className="text-start font-bold" htmlFor="password">
                 Password
               </label>
               <input
@@ -80,39 +88,28 @@ export default function Signup({ location, history }) {
                 className="form-control"
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                value={password}
               />
             </div>
             <div className="form mb-4 text-left">
-              <label className="text-start font-bold" htmlFor="typeEmailX-2">
-                Password
+              <label className="text-start font-bold" htmlFor="confirmPassword">
+                Confirm Password
               </label>
               <input
                 type="password"
-                id="password"
-                name="password"
-                className="form-control"
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-
-            <div className="form mb-4 text-left">
-              <label className="text-start font-bold" htmlFor="typeEmailX-2">
-                Password
-              </label>
-              <input
-                type="password"
-                id="confirmpassword"
-                name="confirmpassword"
+                id="confirmPassword"
+                name="confirmPassword"
                 className="form-control"
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
+                value={confirmPassword}
               />
+              {noti !== "" && <p className="text-red-500">{noti}</p>}
             </div>
 
-            <div className=" bg-[#10b981] p-2 rounded-md text-white flex flex-row justify-center font-semibold max-w-[300px] mx-auto">
+            <button className=" bg-[#10b981] p-2 rounded-md text-white flex flex-row justify-center font-semibold max-w-[300px] mx-auto">
               SIGN UP
-            </div>
+            </button>
           </form>
 
           <div className="mt-3 mx-auto">
