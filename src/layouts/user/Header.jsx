@@ -1,6 +1,6 @@
 import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useSearchParams } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebookF } from "@fortawesome/free-brands-svg-icons";
 import { logout } from "../../Redux//Actions/UserActions";
 const Header = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useDispatch();
   const cart = useSelector((state) => {
     state.cart;
