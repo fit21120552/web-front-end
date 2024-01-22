@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Toast from "../LoadingError/Toast";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "./../../Redux/Actions/UserActions";
 import Message from "../LoadingError/Message";
@@ -13,8 +13,8 @@ const Login = ({ location, history }) => {
   const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
-
-  const redirect = "/"; //location.search ? location.search.split("=")[1]:"/"
+  const navigate = useNavigate();
+  const redirect = "/";
 
   const userLogin = useSelector((state) => state.userLogin);
 
@@ -22,10 +22,10 @@ const Login = ({ location, history }) => {
 
   useEffect(() => {
     if (userInfo) {
-      history.push(redirect);
+      navigate(redirect);
     }
-  }, [userInfo, history, redirect]);
-  const submitHandler = () => {
+  }, [userInfo, navigate]);
+  const submitHandler = (e) => {
     e.preventDefault();
     dispatch(login(username, password));
   };
@@ -43,7 +43,7 @@ const Login = ({ location, history }) => {
 
           <form className="row form-container mx-3" onSubmit={submitHandler}>
             <div className="form mb-4 text-left">
-              <label className="text-start font-bold" htmlFor="typeEmailX-2">
+              <label className="text-start font-bold" htmlFor="username">
                 Username
               </label>
               <input
@@ -57,7 +57,7 @@ const Login = ({ location, history }) => {
               />
             </div>
             <div className="form mb-4 text-left">
-              <label className="text-start font-bold" htmlFor="typeEmailX-2">
+              <label className="text-start font-bold" htmlFor="password">
                 Password
               </label>
               <input
@@ -70,9 +70,9 @@ const Login = ({ location, history }) => {
                 required
               />
             </div>
-            <div className=" bg-[#10b981] p-2 rounded-md text-white flex flex-row justify-center font-semibold max-w-[300px] mx-auto">
+            <button className=" bg-[#10b981] p-2 rounded-md text-white flex flex-row justify-center font-semibold max-w-[300px] mx-auto">
               LOGIN
-            </div>
+            </button>
           </form>
 
           <form className="row form-container mx-auto mt-4">

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { register } from "../../Redux/Actions/UserActions";
 import Loading from "../LoadingError/Loading";
 import Message from "../LoadingError/Message";
-import { Link } from "react-router-dom";
+import { Link, redirect, useLocation, useNavigate } from "react-router-dom";
 
 export default function Signup({ location, history }) {
   const [username, setUsername] = useState("");
@@ -13,26 +13,30 @@ export default function Signup({ location, history }) {
   const [email, setEmail] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [noti, setNoti] = useState("");
+  const [serverError, setServerError] = useState("");
 
   const dispatch = useDispatch();
-  const redirect = "/"; //location.search ? location.search.split("=")[1]:"/"
+  const navigate = useNavigate();
+  const redirect = "/login";
 
   const userRegister = useSelector((state) => state.userRegister);
 
-  const { error, loading, userInfo } = userRegister;
+  const { error, loading, registerState } = userRegister;
 
   useEffect(() => {
-    if (userInfo) {
-      history.push(redirect);
+    if (registerState) {
+      navigate(redirect);
     }
-  }, [userInfo, history, redirect]);
+  }, [registerState, navigate]);
   const submitHandler = (e) => {
     e.preventDefault();
-    if (password === confirmPassword) {
+    if (password !== confirmPassword) {
+      setNoti("Mật khẩu không khớp");
+    } else if (password.length < 8) {
+      setNoti("Mật khẩu tối thiểu 8 ký tự");
+    } else {
       setNoti("");
       dispatch(register(username, email, password));
-    } else {
-      setNoti("Mật khẩu không khớp");
     }
   };
   return (
@@ -42,6 +46,9 @@ export default function Signup({ location, history }) {
       <div className="py-4 text-center h-100">
         <div className="text-center rounded-full">
           {error && <Message variant="danger">{error}</Message>}
+          {!error && serverError && (
+            <Message variant="danger">{serverError}</Message>
+          )}
           {loading && <Loading></Loading>}
           <div className="flex flex-row justify-center">
             <h5 className=" font-bold">Signup</h5>
@@ -123,7 +130,8 @@ export default function Signup({ location, history }) {
           <p className="">
             {" "}
             You already have an account?{" "}
-            <Link to={redirect ? `/login?redirect=${redirect}` : "/login"}>
+            {/* redirect ? `/login?redirect=${redirect}` : "/login" */}
+            <Link to={"/login"}>
               <u>Login here</u>
             </Link>
           </p>

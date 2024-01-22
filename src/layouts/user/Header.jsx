@@ -28,8 +28,7 @@ const Header = ({ title, setTitle }) => {
     state.cart;
   });
   const userLogin = useSelector((state) => state.userLogin);
-  //const { userInfo } = userLogin
-  //const { cartItems } = cart;
+  const { userInfo } = userLogin;
 
   useEffect(() => {
     const handler = (event) => {
@@ -46,7 +45,6 @@ const Header = ({ title, setTitle }) => {
     };
   }, [isMenuOpen]);
 
-  const userInfo = undefined;
   const logoutHandler = () => {
     //e.preventDefault()
     dispatch(logout());
