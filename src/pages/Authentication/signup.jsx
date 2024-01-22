@@ -24,8 +24,10 @@ export default function Signup({ location, history }) {
   const { error, loading, registerState } = userRegister;
 
   useEffect(() => {
-    if (registerState) {
+    if (registerState === "success") {
       navigate(redirect);
+    } else {
+      setServerError(registerState);
     }
   }, [registerState, navigate]);
   const submitHandler = (e) => {
