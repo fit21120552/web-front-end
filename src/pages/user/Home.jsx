@@ -177,7 +177,7 @@ export default function Home() {
                         </Link>
 
                         <div className="shoptext">
-                          <p>
+                          <div>
                             <Link
                               to={`/product/${product._id}`}
                               className="font-serif"
@@ -191,7 +191,7 @@ export default function Home() {
                             <h3 className="text-2xl font-bold">
                               ${product.price}
                             </h3>
-                          </p>
+                          </div>
                         </div>
                       </div>
                     </div>
