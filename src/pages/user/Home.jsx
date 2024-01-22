@@ -144,6 +144,9 @@ export default function Home() {
           </div>
         ))}
       </div>
+      <div className="mx-3 px-4 py-3 bg-white mb-2 text-center text-blue-500 font-semibold border-b-[4px] border-blue-500">
+        GỢI Ý HÔM NAY
+      </div>
       <div className="section">
         <Row>
           <Col className="article">
