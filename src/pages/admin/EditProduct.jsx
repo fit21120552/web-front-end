@@ -4,7 +4,7 @@ import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import FileInput from "./FileInput";
 import ImageUpload from "./FileInput";
-const AddProduct = () => {
+const EditProduct = () => {
 
     const [title, setTitle] = useState("")
     const [price, setPrice] = useState(1)
@@ -13,7 +13,7 @@ const AddProduct = () => {
     const [thumbnail, setThumbnail ] = useState(null)
     const [previewImage, setPreviewImage] = useState(null)
     const [stock, setStock] = useState(0)
-
+    
     const submitHandler = (e) => {
         e.preventDefault()
     }
@@ -107,7 +107,7 @@ const AddProduct = () => {
                     </div>
 
                     <div className="form mb-4 text-left ">
-                        <label for="prodImg" className="form-label">Product image</label>
+                        <label for="prodImg" className="form-label">Product image (don't upload if there is no need to change the image)</label>
                         <input 
                                 className="file form-control" 
                                 type="file" 
@@ -145,4 +145,4 @@ const AddProduct = () => {
     )
 }
 
-export default AddProduct;
+export default EditProduct;

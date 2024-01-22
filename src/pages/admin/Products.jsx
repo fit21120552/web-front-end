@@ -1,11 +1,19 @@
 /* eslint-disable react/prop-types */
 import { faEdit, faSearch, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import React, { useState } from "react";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
+import VerticallyCenteredModal from "../LoadingError/Modal";
+import { Alert, Button } from "react-bootstrap";
 
 const Products = () => {
+  const [modalShow, setModalShow] = React.useState(false);
+
+  const deleteHandler = (index) => {
+      alert(`deleted ${index}`)
+      setModalShow(false)
+  }
   const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
   function Items({ currentItems }) {
     return (
@@ -23,18 +31,24 @@ const Products = () => {
               <div className="flex justify-between">
                 <p className="font-semibold">25$</p>
                 <div className="flex gap-1">
-                  <button className="rounded-xl px-3 bg-[#FFBE18]">
-                    <Link to="/admin/product/edit">
-                      <FontAwesomeIcon icon={faEdit} size="xs" />
+                  
+                    <Link to={`/admin/product/edit/${index}`}>
+                      <button className="rounded-xl px-3 bg-[#FFBE18]">
+                      <FontAwesomeIcon icon={faEdit} size="xs" /> 
+                      </button>
                     </Link>
                     
+                 
+                  <button className="rounded-xl px-3 bg-[#ef4444]" onClick={() => setModalShow(true)}>                  
+                      <FontAwesomeIcon icon={faTrash} size="xs" />               
                   </button>
-                  <button className="rounded-xl px-3 bg-[#ef4444]">
-                    <Link to="/admin/product/delete">
-                      <FontAwesomeIcon icon={faTrash} size="xs" />
-                    </Link>
-                    
-                  </button>
+                  <VerticallyCenteredModal 
+                      show={modalShow}
+                      onCancel={() => setModalShow(false)}
+                      onDelete={() => deleteHandler(index)}
+                      header={`Are you sure to delete product ${index}?`}
+                      body = {`${index}`}
+                      />
                 </div>
               </div>
             </div>

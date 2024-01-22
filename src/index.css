@@ -25,4 +25,24 @@
     margin-top: 15vmax;
   }
 
-
+  .modal-backdrop .show {
+    opacity: 1;
+  }
+  .modal-backdrop.in {
+opacity: 0.5;
+filter: alpha(opacity=50);
+}
+.modal-backdrop.fade {
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+ .modal-backdrop.fade.in {
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+}
+.modal-backdrop {
+    background-color: transparent  !important;
+}
+.modal { 
+--bs-modal-bg: #00000000 !important; 
+}

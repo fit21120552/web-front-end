@@ -63,12 +63,12 @@ const Login = ({ location, history }) => {
                                             onChange={(e) => setPassword(e.target.value)}
                                             required />                                 
                                 </div>
-                                <button type="submit" className="flex flex-row justify-center text-lg p-2 my-2">
+                                <button type="submit" className="flex flex-row justify-center text-lg p-2 my-2 mx-auto  max-w-[300px] font-semibold ">
                                     <p className="bg-[#10b981] px-2 rounded-full">Login</p>
                                 </button>
                             </form>
 
-                            <form className="row form-container mx-3 mt-4">
+                            <form className="row form-container mx-auto mt-4">
                                 <div className="mb-1">
                                     <button className="flex items-center justify-center border-2 rounded-md border-[#10b981] px-2 py-1 mx-auto bg-[#ef4444] rounded-lg">
                                         <i className="fab fa-google me-2"></i>Sign in with google
