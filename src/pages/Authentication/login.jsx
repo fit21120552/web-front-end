@@ -41,58 +41,54 @@ const Login = ({ location, history }) => {
             <h5 className=" font-bold">Login</h5>
           </div>
 
-          <form className="row form-container mx-3" onSubmit={submitHandler}>
-            <div className="form mb-4 text-left">
-              <label className="text-start font-bold" htmlFor="typeEmailX-2">
-                Username
-              </label>
-              <input
-                type="text"
-                id="username"
-                name="username"
-                className="form-control"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-              />
-            </div>
-            <div className="form mb-4 text-left">
-              <label className="text-start font-bold" htmlFor="typeEmailX-2">
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={password}
-                className="form-control"
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            <div className=" bg-[#10b981] p-2 rounded-md text-white font-semibold max-w-[300px] mx-auto">
-              LOGIN
-            </div>
-          </form>
+                            <form className="row form-container mx-3" onSubmit={submitHandler}>
+                                <div class="form mb-4 text-left">
+                                    <label className="text-start font-bold" for="typeEmailX-2">Username</label>
+                                    <input type="text"
+                                            id="username" 
+                                            name="username" 
+                                            className="form-control"
+                                            value={username}
+                                            onChange={(e) => setUsername(e.target.value)}
+                                            required />
+                                    
+                                </div>
+                                <div class="form mb-4 text-left">
+                                    <label className="text-start font-bold" for="typeEmailX-2">Password</label>
+                                    <input type="password"
+                                            id="password" 
+                                            name="password"
+                                            value={password} 
+                                            className="form-control"
+                                            onChange={(e) => setPassword(e.target.value)}
+                                            required />                                 
+                                </div>
+                                <button type="submit" className="flex flex-row justify-center text-lg p-2 my-2 mx-auto  max-w-[300px] font-semibold ">
+                                    <p className="bg-[#10b981] px-2 rounded-full">Login</p>
+                                </button>
+                            </form>
 
-          <div className="mt-3 mx-auto">
-            <button className="flex items-center justify-center border-2 rounded-md border-[#10b981] px-2 py-1 mx-auto">
-              <i className="fab text-[#ef4444] fa-google me-2"></i>
+                            <form className="row form-container mx-auto mt-4">
+                                <div className="mb-1">
+                                    <button className="flex items-center justify-center border-2 rounded-md border-[#10b981] px-2 py-1 mx-auto bg-[#ef4444] rounded-lg">
+                                        <i className="fab fa-google me-2"></i>Sign in with google
+                                    </button>
+                                </div>
+                            </form>
 
-              <p className="">Login with google</p>
-            </button>
-          </div>
+                            <p className="mt-3"> {" "}You don't have an account? {" "}
+                                <Link to={redirect ? `/signup?redirect=${redirect}` : "/signup" }>
+                                    <u> Sign up here</u>
+                                </Link>
+                            </p>
 
-          <p className="">
-            {" "}
-            You don't have an account?{" "}
-            <Link to={redirect ? `/signup?redirect=${redirect}` : "/signup"}>
-              <u>Sign up here</u>
-            </Link>
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-};
+                        </div>
+                    </div>
+                </div>
+        
+    )
+}
+          
+
+          
 export default Login;

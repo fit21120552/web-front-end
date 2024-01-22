@@ -14,6 +14,8 @@ import {
   Users,
 } from "./pages/admin/";
 import { ProductDetail, Product } from "./pages/Products";
+import AddProduct from "./pages/admin/AddProduct";
+import EditProduct from "./pages/admin/EditProduct";
 
 export default function App() {
   return (
@@ -27,12 +29,15 @@ export default function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/product" element={<Product />} />
           <Route path="/product/:id" element={<ProductDetail />} />
+          
           <Route path="/cart/:id?" element={<Cart />} />
         </Route>
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="/admin" exact element={<Dashboard />} />
           <Route path="/admin/orders" element={<Orders />} />
           <Route path="/admin/products" element={<Products />} />
+          <Route path="/admin/product/add" element = {<AddProduct/>}/>
+          <Route path="/admin/product/edit/:id" element={<EditProduct/>}/>
           <Route path="/admin/categories" element={<Categories />} />
           <Route path="/admin/users" element={<Users />} />
           <Route path="/admin/promotion" element={<Promotion />} />

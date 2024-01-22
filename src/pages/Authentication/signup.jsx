@@ -110,8 +110,9 @@ export default function Signup({ location, history }) {
               />
             </div>
 
-            <div className=" bg-[#10b981] p-2 rounded-md text-white font-semibold max-w-[300px] mx-auto">
-              SIGN UP
+            <div className=" bg-[#10b981] p-2 rounded-md text-white flex flex-row justify-center font-semibold max-w-[300px] mx-auto">
+            <button type="submit">SIGN UP</button>
+              
             </div>
           </form>
 
@@ -134,4 +135,7 @@ export default function Signup({ location, history }) {
       </div>
     </div>
   );
+                             
+
+                
 }
