@@ -262,7 +262,20 @@ export default function Product() {
 
       <div className=" mt-4">
         <div className="justify-center   flex items-center">
-          <button className="rounded-sm mr-[2px] bg-white flex items-center justify-center w-10 h-10">
+          <button
+            disabled={currentPage == 1}
+            className={
+              currentPage == 1
+                ? "rounded-sm bg-gray-200 flex items-center justify-center w-10 h-10"
+                : "rounded-sm bg-white flex items-center justify-center w-10 h-10"
+            }
+            onClick={() => {
+              setSearchParams((params) => {
+                params.set("page", currentPage - 1);
+                return params;
+              });
+            }}
+          >
             &lt;
           </button>
           <div className="mx-3 flex">
@@ -286,7 +299,20 @@ export default function Product() {
               </button>
             ))}
           </div>
-          <button className="rounded-sm bg-white flex items-center justify-center w-10 h-10">
+          <button
+            disabled={currentPage == totalPage}
+            className={
+              currentPage == totalPage
+                ? "rounded-sm bg-gray-200 flex items-center justify-center w-10 h-10"
+                : "rounded-sm bg-white flex items-center justify-center w-10 h-10"
+            }
+            onClick={() => {
+              setSearchParams((params) => {
+                params.set("page", +currentPage + 1);
+                return params;
+              });
+            }}
+          >
             &gt;
           </button>
         </div>
