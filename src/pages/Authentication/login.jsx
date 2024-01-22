@@ -78,8 +78,15 @@ const Login = ({ location, history }) => {
           <form className="row form-container mx-auto mt-4">
             <div className="mb-1">
               <button className="flex items-center justify-center border-2 rounded-md border-[#10b981] px-2 py-1 mx-auto ">
-                <i className="fab text-[#ef4444] fa-google me-2"></i>Sign in
-                with google
+                <i className="fab text-[#ef4444] fa-google me-2"></i>
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href="http://localhost:3000/auth/google"
+                  className=""
+                >
+                  Login with google
+                </a>
               </button>
             </div>
           </form>
