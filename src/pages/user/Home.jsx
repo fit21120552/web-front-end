@@ -115,10 +115,35 @@ export default function Home() {
     },
   ];
 
+  const categories = [
+    {
+      id: 1,
+      name: "May anh",
+      image: "./images/dummy.png",
+    },
+    {
+      id: 2,
+      name: "May tinh",
+      image: "./images/dummy.png",
+    },
+  ];
+
   return (
     <div className="container max-w-screen-xl mt-4">
-      <div className="mx-3 px-4 py-3 bg-white mb-4">DANH MỤC</div>
-      <div className=""></div>
+      <div className="mx-3 px-4 py-3 bg-white mb-[2px]">DANH MỤC</div>
+      <div className=" mx-3 flex mb-4 gap-[2px]">
+        {categories.map((item) => (
+          <div
+            key={item.id}
+            className="bg-white w-28 flex items-center justify-center flex-col py-4"
+          >
+            <div className="w-12 h-12 flex items-center justify-center rounded-full bg-[#f5f5f5]">
+              <img src={item.image} alt="" />
+            </div>
+            <p>{item.name}</p>
+          </div>
+        ))}
+      </div>
       <div className="section">
         <Row>
           <Col className="article">
