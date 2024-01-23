@@ -29,7 +29,8 @@ export const listProductDetails = (id) => async(dispatch) => {
     try {
         dispatch({ type: PRODUCT_DETAILS_REQUEST}) 
         const { data } = await axios.get(api.getAndCreateProduct+id)
-        dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data});
+        //console.log("data:" , data.data.data)
+        dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data.data.data});
         
     } catch (error) {
         dispatch({

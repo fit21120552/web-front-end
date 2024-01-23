@@ -1,12 +1,99 @@
 import { faEye, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import React, { useEffect, useState } from "react";
+
+import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
 import VerticallyCenteredModal from "../LoadingError/Modal";
+import { useDispatch, useSelector } from "react-redux";
+import { listCategories } from "../../Redux/Actions/CategoryActions";
+import Loading from "../LoadingError/Loading";
+import Message from "../LoadingError/Message";
 
 const Categories = () => {
-
+ 
   const [modalShow, setModalShow] = React.useState(false);
+  const dispatch = useDispatch()
+  const categoryList = useSelector((state) => state.categoryList)
+  const { loading, error, categories } = categoryList
+
+  useEffect(() => {
+    dispatch(listCategories())
+  }, [dispatch])
+
+  function Items({ currentItems }) {
+    return (
+      <>
+        {currentItems &&
+          currentItems.map((element, index) => (
+            <tr className=" mb-4 border-t" key={element._id}>
+            <td className="py-2 font-semibold">1</td>
+            <td className="py-2 ">categories name</td>
+            <td className="py-2">1000</td>
+
+            <td className="py-2 flex gap-2 items-center h-full">
+              <Link to={`/admin/category/${index}`}>
+                <FontAwesomeIcon icon={faEye} color="#00E096" />
+              </Link>
+              <Link to={`/admin/category/edit/${index}`}>
+                <FontAwesomeIcon icon={faPencil} color="#00E096" />
+              </Link>
+              <button className="rounded-xl px-3 bg-[#ef4444]" onClick={() => setModalShow(true)}>
+                <FontAwesomeIcon icon={faTrash} color="#B22234" />
+              </button>
+              <VerticallyCenteredModal
+                      show={modalShow}
+                      onCancel={() => setModalShow(false)}
+                      onDelete={() => deleteHandler(element._id)}
+                      header={`Are you sure to delete category ${element.name} ?`}
+                      body = {`Product count: ${element.productCount}`}
+                      />
+            </td>
+          </tr>
+          ))}
+      </>
+    );
+  }
+  function PaginatedItems({ itemsPerPage, itemList }) {
+    // console.log("item: ", itemList.length)
+     const [itemOffset, setItemOffset] = useState(0);
+ 
+     const endOffset = itemOffset + itemsPerPage;
+     const currentItems = itemList.slice(itemOffset, endOffset);
+     const pageCount = Math.ceil(itemList.length / itemsPerPage);
+ 
+     const handlePageClick = (event) => {
+       const newOffset = (event.selected * itemsPerPage) % itemList.length;
+       setItemOffset(newOffset);
+     }; 
+     return (
+      <>
+        <div className="grid grid-cols-3 gap-y-6">
+          <Items currentItems={currentItems} />
+        </div>
+        <ReactPaginate
+          nextLabel=">"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={3}
+          marginPagesDisplayed={2}
+          pageCount={pageCount}
+          previousLabel="<"
+          pageClassName="page-item"
+          pageLinkClassName="page-link"
+          previousClassName="page-item"
+          previousLinkClassName="page-link"
+          nextClassName="page-item"
+          nextLinkClassName="page-link"
+          breakLabel="..."
+          breakClassName="page-item"
+          breakLinkClassName="page-link"
+          containerClassName="pagination mt-4"
+          activeClassName="active"
+          renderOnZeroPageCount={null}
+        />
+      </>
+    );
+    }
   return (
     <div className="px-10 flex flex-column items-center">
       <div className="flex flex-row justify-end mt-10 w-full">
@@ -27,32 +114,13 @@ const Categories = () => {
           </th>
           <th className="font-normal text-[#96A5B8]">Action</th>
         </tr>
-        {[0, 1, 2, 3].map((element, index) => (
-          <tr className=" mb-4 border-t" key={element}>
-            <td className="py-2 font-semibold">1</td>
-            <td className="py-2 ">categories name</td>
-            <td className="py-2">1000</td>
-
-            <td className="py-2 flex gap-2 items-center h-full">
-              <Link to={`/admin/category/${index}`}>
-                <FontAwesomeIcon icon={faEye} color="#00E096" />
-              </Link>
-              <Link to={`/admin/category/edit/${index}`}>
-                <FontAwesomeIcon icon={faPencil} color="#00E096" />
-              </Link>
-              <button className="rounded-xl px-3 bg-[#ef4444]" onClick={() => setModalShow(true)}>
-                <FontAwesomeIcon icon={faTrash} color="#B22234" />
-              </button>
-              <VerticallyCenteredModal
-                      show={modalShow}
-                      onCancel={() => setModalShow(false)}
-                      onDelete={() => deleteHandler(index)}
-                      header={`Are you sure to delete category ${index} ?`}
-                      body = {`${index}`}
-                      />
-            </td>
-          </tr>
-        ))}
+        {
+           loading ? (<Loading/>) : error ? (
+            <Message variant="danger">{error}</Message>
+           ) : (
+            <PaginatedItems itemsPerPage={10} itemList={categories} />
+           )
+        }
       </table>
     </div>
   );

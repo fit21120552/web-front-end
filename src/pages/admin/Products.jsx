@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { faEdit, faSearch, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faEye, faSearch, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
@@ -48,6 +48,11 @@ const Products = () => {
                 <p className="font-semibold">${item.price}</p>
                 <div className="flex gap-1">
                   
+                    <Link to={`/admin/product/${item._id}`}>
+                      <button className="rounded-xl px-3 bg-[#4ade80]">
+                        <FontAwesomeIcon icon={faEye} size="xs" /> 
+                      </button>
+                    </Link>
                     <Link to={`/admin/product/edit/${item._id}`}>
                       <button className="rounded-xl px-3 bg-[#FFBE18]">
                       <FontAwesomeIcon icon={faEdit} size="xs" /> 

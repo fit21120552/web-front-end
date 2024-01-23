@@ -22,6 +22,7 @@ import PlaceOrder from "./pages/user/PlaceOrder";
 import EditCategory from "./pages/admin/EditCategory";
 import AddCategory from "./pages/admin/AddCategory";
 import DetailCategory from "./pages/admin/DetailCategory";
+import DetailProduct from "./pages/admin/DetailProduct";
 
 export default function App() {
   return (
@@ -46,6 +47,7 @@ export default function App() {
           <Route path="/admin" exact element={<Dashboard />} />
           <Route path="/admin/orders" element={<Orders />} />
           <Route path="/admin/products" element={<Products />} />
+          <Route path="/admin/product/:id" element={<DetailProduct/>}/>
           <Route path="/admin/product/add" element={<AddProduct />} />
           <Route path="/admin/product/edit/:id" element={<EditProduct />} />
           <Route path="/admin/categories" element={<Categories />} />
