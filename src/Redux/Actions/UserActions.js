@@ -7,6 +7,7 @@ import {
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
   USER_REGISTER_FAIL,
+  USER_LOGIN_CLEAR_ERROR,
 } from "../Constants/UserConstants";
 import { api } from "../../constants/api";
 
@@ -37,6 +38,14 @@ export const login = (username, password) => async (dispatch) => {
           ? error.response.data.message
           : error.message,
     });
+  }
+};
+
+export const clearError = () => async (dispatch) => {
+  try {
+    dispatch({ type: USER_LOGIN_CLEAR_ERROR });
+  } catch (error) {
+    return;
   }
 };
 

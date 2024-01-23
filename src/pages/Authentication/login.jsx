@@ -3,7 +3,11 @@ import Toast from "../LoadingError/Toast";
 import { toast } from "react-toastify";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { login, loginGoogle } from "./../../Redux/Actions/UserActions";
+import {
+  login,
+  loginGoogle,
+  clearError,
+} from "./../../Redux/Actions/UserActions";
 import Message from "../LoadingError/Message";
 import Loading from "../LoadingError/Loading";
 
@@ -25,6 +29,10 @@ const Login = ({ location, history }) => {
   useEffect(() => {
     if (email) dispatch(loginGoogle(email));
   }, [email, dispatch]);
+
+  useEffect(() => {
+    return () => dispatch(clearError());
+  }, []);
 
   useEffect(() => {
     if (userInfo) {
