@@ -22,7 +22,13 @@ export const login = (username, password) => async (dispatch) => {
 
     dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
 
-    localStorage.setItem("userInfo", JSON.stringify(data));
+    localStorage.setItem(
+      "userInfo",
+      JSON.stringify({
+        ...data.payload.user,
+        sessionId: data.payload.sessionId,
+      })
+    );
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAIL,

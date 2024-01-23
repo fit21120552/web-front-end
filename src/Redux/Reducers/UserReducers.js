@@ -17,7 +17,13 @@ export const userLoginReducer = (state = {}, action) => {
       if (typeof action.payload !== "object") {
         return { loading: false, error: action.payload };
       } else {
-        return { loading: false, userInfo: action.payload };
+        return {
+          loading: false,
+          userInfo: {
+            ...action.payload.user,
+            sessionId: action.payload.sessionId,
+          },
+        };
       }
     case USER_LOGIN_FAIL:
       return { loading: false, error: action.payload };
