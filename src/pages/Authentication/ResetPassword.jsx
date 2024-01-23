@@ -19,6 +19,7 @@ const ResetPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [noti, setNoti] = useState("");
   const [verifyCode, setVerifyCode] = useState("");
+  const [sessionId, setSessionId] = useState("");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -42,7 +43,8 @@ const ResetPassword = () => {
       api.config
     );
     setLoading(false);
-    setError(data);
+    setError(data.msg);
+    setSessionId(data.sessionId);
   };
   const handleReset = async (e) => {
     e.preventDefault();
@@ -56,7 +58,7 @@ const ResetPassword = () => {
       setLoading(true);
       const { data } = await axios.post(
         api.verifyCode,
-        { username, password, verifyCode },
+        { username, password, verifyCode, sessionId },
         api.config
       );
       setLoading(false);
