@@ -26,7 +26,7 @@ const Orders = () => {
         </div>
       </div>
       <table className="mt-8 w-full">
-        <tr className="mb-4">
+        <tr className="mb-4 text-center">
           <th className="font-normal text-left text-[#96A5B8]">Name</th>
           <th className="font-normal text-[#96A5B8]">Email</th>
           <th className="font-normal text-left text-[#96A5B8]">Total</th>

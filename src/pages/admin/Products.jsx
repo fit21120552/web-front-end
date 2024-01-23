@@ -1,15 +1,26 @@
 /* eslint-disable react/prop-types */
 import { faEdit, faSearch, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
 import VerticallyCenteredModal from "../LoadingError/Modal";
 import { Alert, Button } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { listProductsAdmin } from "../../Redux/Actions/ProductActions";
 
 const Products = () => {
   const [modalShow, setModalShow] = React.useState(false);
 
+  const dispatch = useDispatch()
+
+  const productList = useSelector((state) => state.productList)
+
+  const { loading, error, products } = productList;
+
+  useEffect(() => {
+    dispatch(listProductsAdmin())
+  },[dispatch])
   const deleteHandler = (index) => {
       alert(`deleted ${index}`)
       setModalShow(false)
@@ -57,15 +68,15 @@ const Products = () => {
     );
   }
 
-  function PaginatedItems({ itemsPerPage }) {
+  function PaginatedItems({ itemsPerPage, itemList }) {
     const [itemOffset, setItemOffset] = useState(0);
 
     const endOffset = itemOffset + itemsPerPage;
-    const currentItems = items.slice(itemOffset, endOffset);
-    const pageCount = Math.ceil(items.length / itemsPerPage);
+    const currentItems = itemList.slice(itemOffset, endOffset);
+    const pageCount = Math.ceil(itemList.length / itemsPerPage);
 
     const handlePageClick = (event) => {
-      const newOffset = (event.selected * itemsPerPage) % items.length;
+      const newOffset = (event.selected * itemsPerPage) % itemList.length;
       setItemOffset(newOffset);
     };
 
@@ -132,7 +143,7 @@ const Products = () => {
         </div>
       </div>
       <div className="mt-4">
-        <PaginatedItems itemsPerPage={6} />
+        <PaginatedItems itemsPerPage={6} itemList={items} />
       </div>
     </div>
   );
