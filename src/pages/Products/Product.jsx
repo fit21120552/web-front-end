@@ -4,115 +4,63 @@ import Col from "react-bootstrap/Col";
 import Loading from "../LoadingError/Loading";
 import Message from "../LoadingError/Message";
 import { Link, useOutletContext, useSearchParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { api } from "../../constants/api";
 
 export default function Product() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [title, setTitle] = useOutletContext();
+  const [products, setProducts] = useState([]);
+  const [totalPage, setTotalPage] = useState(1);
+  const [categories, setCategories] = useState([]);
+
+  const searchQuery = window.location.search;
+  const currentPage = searchParams.get("page") || "1";
+
+  useEffect(() => {
+    async function fetchData() {
+      const res = await axios.get(api.getAllCategory, api.config);
+      if (res.data.status === "success") {
+        const data = res.data.data.data;
+        setCategories(
+          data.map((item) => ({
+            id: item._id,
+            value: item.name,
+            title: item.name.toUpperCase(),
+          }))
+        );
+      }
+    }
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    async function fetchData() {
+      const res = await axios.get(
+        searchParams.get("page")
+          ? api.getAllProduct + searchQuery + "&limit=8"
+          : api.getAllProduct + searchQuery + "?page=1&limit=8",
+        api.config
+      );
+      if (res.data.status === "success") {
+        setTotalPage(res.data.totalPages);
+        setProducts(res.data.data.data);
+      }
+    }
+    fetchData();
+  }, [searchQuery, searchParams]);
 
   const loading = false;
   const error = false;
 
-  const products = [
-    {
-      discountPercentage: "14.87",
-      rating: 4.93,
-      ratingsAverage: 4.5,
-      ratingsQuantity: 0,
-      images: [
-        "https://i.dummyjson.com/data/products/75/1.jpg",
-        "https://i.dummyjson.com/data/products/75/2.jpg",
-        "https://i.dummyjson.com/data/products/75/3.jpg",
-        "https://i.dummyjson.com/data/products/75/thumbnail.jpg",
-      ],
-      _id: "65a9d7b4ad47b243bc49b007",
-      title: "Seven Pocket Women Bag",
-      description:
-        "Seven Pocket Women Bag Handbags Lady Shoulder Crossbody Bag Female Purse Seven Pocket Bag",
-      price: 68,
-      stock: 13,
-      brand: "Steal Frame",
-      category: "womens-bags",
-      thumbnail: "https://i.dummyjson.com/data/products/75/thumbnail.jpg",
-      id: "65a9d7b4ad47b243bc49b007",
-    },
-    {
-      discountPercentage: "14.87",
-      rating: 4.93,
-      ratingsAverage: 4.5,
-      ratingsQuantity: 0,
-      images: [
-        "https://i.dummyjson.com/data/products/75/1.jpg",
-        "https://i.dummyjson.com/data/products/75/2.jpg",
-        "https://i.dummyjson.com/data/products/75/3.jpg",
-        "https://i.dummyjson.com/data/products/75/thumbnail.jpg",
-      ],
-      _id: "65a9d7b4ad47b243bc49b0071",
-      title: "Seven Pocket Women Bag",
-      description:
-        "Seven Pocket Women Bag Handbags Lady Shoulder Crossbody Bag Female Purse Seven Pocket Bag",
-      price: 68,
-      stock: 13,
-      brand: "Steal Frame",
-      category: "womens-bags",
-      thumbnail: "https://i.dummyjson.com/data/products/75/thumbnail.jpg",
-      id: "65a9d7b4ad47b243bc49b0071",
-    },
-    {
-      discountPercentage: "14.87",
-      rating: 4.93,
-      ratingsAverage: 4.5,
-      ratingsQuantity: 0,
-      images: [
-        "https://i.dummyjson.com/data/products/75/1.jpg",
-        "https://i.dummyjson.com/data/products/75/2.jpg",
-        "https://i.dummyjson.com/data/products/75/3.jpg",
-        "https://i.dummyjson.com/data/products/75/thumbnail.jpg",
-      ],
-      _id: "65a9d7b4ad47b243bc49b0072",
-      title: "Seven Pocket Women Bag",
-      description:
-        "Seven Pocket Women Bag Handbags Lady Shoulder Crossbody Bag Female Purse Seven Pocket Bag",
-      price: 68,
-      stock: 13,
-      brand: "Steal Frame",
-      category: "womens-bags",
-      thumbnail: "https://i.dummyjson.com/data/products/75/thumbnail.jpg",
-      id: "65a9d7b4ad47b243bc49b0072",
-    },
-    {
-      discountPercentage: "14.87",
-      rating: 4.93,
-      ratingsAverage: 4.5,
-      ratingsQuantity: 0,
-      images: [
-        "https://i.dummyjson.com/data/products/75/1.jpg",
-        "https://i.dummyjson.com/data/products/75/2.jpg",
-        "https://i.dummyjson.com/data/products/75/3.jpg",
-        "https://i.dummyjson.com/data/products/75/thumbnail.jpg",
-      ],
-      _id: "65a9d7b4ad47b243bc49b0073",
-      title: "Seven Pocket Women Bag",
-      description:
-        "Seven Pocket Women Bag Handbags Lady Shoulder Crossbody Bag Female Purse Seven Pocket Bag",
-      price: 68,
-      stock: 13,
-      brand: "Steal Frame",
-      category: "womens-bags",
-      thumbnail: "https://i.dummyjson.com/data/products/75/thumbnail.jpg",
-      id: "65a9d7b4ad47b243bc49b0073",
-    },
-  ];
-
   const category = searchParams.get("category") || "";
   const sortBy = searchParams.get("sortBy") || "";
-  const currentPage = searchParams.get("page") || "1";
 
   const titleParam = searchParams.get("title") || "";
   useEffect(() => {
     setTitle(titleParam);
   }, [titleParam, searchParams, setTitle]);
-  const totalPage = 9;
 
   return (
     <div className="container max-w-screen-xl mt-4">
@@ -131,13 +79,17 @@ export default function Product() {
                   if (e.target.value !== "")
                     params.set("category", e.target.value);
                   else params.delete("category");
+                  params.set("page", 1);
                   return params;
                 })
               }
             >
               <option value="">Tất cả</option>
-              <option value="camera">Máy ảnh</option>
-              <option value="laptop">Máy tính</option>
+              {categories.map((item) => (
+                <option key={item.id} value={item.value}>
+                  {item.title}
+                </option>
+              ))}
             </select>
           </div>
         </div>
@@ -150,6 +102,7 @@ export default function Product() {
             onClick={() =>
               setSearchParams((params) => {
                 params.delete("sortBy");
+                params.set("page", 1);
                 return params;
               })
             }
@@ -163,6 +116,7 @@ export default function Product() {
             onClick={() =>
               setSearchParams((params) => {
                 params.set("sortBy", "ctime");
+                params.set("page", 1);
                 return params;
               })
             }
@@ -176,6 +130,7 @@ export default function Product() {
             onClick={() =>
               setSearchParams((params) => {
                 params.set("sortBy", "sales");
+                params.set("page", 1);
                 return params;
               })
             }
@@ -189,6 +144,7 @@ export default function Product() {
             onClick={() =>
               setSearchParams((params) => {
                 params.set("sortBy", "priceAsc");
+                params.set("page", 1);
                 return params;
               })
             }
@@ -202,6 +158,7 @@ export default function Product() {
             onClick={() =>
               setSearchParams((params) => {
                 params.set("sortBy", "priceDesc");
+                params.set("page", 1);
                 return params;
               })
             }
@@ -224,30 +181,28 @@ export default function Product() {
               ) : (
                 <>
                   {products.map((product) => (
-                    <div
-                      className="shop w-full p-2 rounded-lg border-2 border-solid bg-white"
+                    <Link
+                      to={`/product/${product._id}`}
+                      className="hover:text-black shop w-full p-2 rounded-lg border-2 border-solid bg-white"
                       key={product._id}
                     >
                       <div className="border-product">
-                        <Link to={`/product/${product._id}`}>
-                          <div className="shopBack">
-                            <img
-                              src={product.thumbnail}
-                              alt={product.name}
-                              height="100px"
-                              className="bg-[#bbf7d0]"
-                            />
-                          </div>
-                        </Link>
+                        <div className="shopBack">
+                          <img
+                            src={product.thumbnail}
+                            alt={product.name}
+                            className="bg-[#bbf7d0] h-[250px] object-cover"
+                          />
+                        </div>
 
                         <div className="shoptext">
                           <div>
-                            <Link
+                            <div
                               to={`/product/${product._id}`}
                               className="font-serif"
                             >
                               {product.title}
-                            </Link>
+                            </div>
                             <Rating
                               value={product.rating}
                               text={`${product.ratingsQuantity} reviews`}
@@ -258,7 +213,7 @@ export default function Product() {
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </Link>
                   ))}
                 </>
               )}
@@ -286,25 +241,52 @@ export default function Product() {
             &lt;
           </button>
           <div className="mx-3 flex">
-            {Array.from(Array(totalPage)).map((item, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  setSearchParams((params) => {
-                    params.set("page", index + 1);
-                    return params;
-                  });
-                }}
-                disabled={currentPage == index + 1}
-                className={
-                  index + 1 == currentPage
-                    ? "bg-blue-500 rounded-sm mx-[2px] text-white flex items-center justify-center w-10 h-10"
-                    : "rounded-sm mx-[2px] bg-white flex items-center justify-center w-10 h-10"
-                }
-              >
-                {index + 1}
-              </button>
-            ))}
+            {Array.from(Array(totalPage)).map((item, index) => {
+              if (
+                index < 2 ||
+                (index >= currentPage - 3 && index <= +currentPage + 1) ||
+                index >= totalPage - 2 ||
+                (index == 2 && index == currentPage - 4) ||
+                (index == +currentPage + 2 && index == totalPage - 3)
+              ) {
+                return (
+                  <button
+                    key={index}
+                    onClick={() => {
+                      setSearchParams((params) => {
+                        params.set("page", index + 1);
+                        return params;
+                      });
+                    }}
+                    disabled={currentPage == index + 1}
+                    className={
+                      index + 1 == currentPage
+                        ? "bg-blue-500 rounded-sm mx-[2px] text-white flex items-center justify-center w-10 h-10"
+                        : "rounded-sm mx-[2px] bg-white flex items-center justify-center w-10 h-10"
+                    }
+                  >
+                    {index + 1}
+                  </button>
+                );
+              } else if (
+                (index > 2 && index == currentPage - 4) ||
+                (index == +currentPage + 2 && index < totalPage - 3)
+              ) {
+                return (
+                  <button
+                    key={index}
+                    disabled
+                    className={
+                      "bg-gray-200 rounded-sm mx-[2px] text-white flex items-center justify-center w-10 h-10"
+                    }
+                  >
+                    ...
+                  </button>
+                );
+              } else {
+                return;
+              }
+            })}
           </div>
           <button
             disabled={currentPage == totalPage}

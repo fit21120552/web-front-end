@@ -115,18 +115,25 @@ export default function Home() {
     },
   ];
 
-  const categories = [
-    {
-      id: 1,
-      name: "May anh",
-      image: "./images/dummy.png",
-    },
-    {
-      id: 2,
-      name: "May tinh",
-      image: "./images/dummy.png",
-    },
-  ];
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    const categories = [
+      {
+        id: 1,
+        name: "May anh",
+        image: "./images/dummy.png",
+        subCategories: [
+          { id: 1, name: "Macbook" },
+          { id: 1, name: "Dell" },
+        ],
+      },
+      {
+        id: 2,
+        name: "May tinh",
+        image: "./images/dummy.png",
+      },
+    ];
+  }, []);
 
   return (
     <div className="container max-w-screen-xl mt-4">

@@ -160,7 +160,7 @@ const Header = ({ title, setTitle }) => {
             <Row>
               <div className="col-xs-3 col-3 flex items-center">
                 <Link className="navbar-brand flex items-center" to="/">
-                  <img src="./images/dummy.png" alt="logo" width={50} />
+                  <img src="/images/dummy.png" alt="logo" width={50} />
                   <div className="text-sm font-semibold leading-3">
                     <p>SUPER</p>
                     <p className="text-blue-500">STORE</p>
@@ -280,7 +280,7 @@ const Header = ({ title, setTitle }) => {
                     </div>
                     <Link to="/cart" className="mx-3">
                       <i className="fas fa-shopping-bag"></i>
-                      <span className="badge">{4}</span>
+                      {/* <span className="badge">{4}</span> */}
                     </Link>
                   </div>
                 ) : (

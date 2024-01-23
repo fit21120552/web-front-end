@@ -17,5 +17,7 @@ export const api = {
   verifyCode: IPaddress + "/verifycode",
   changePassword: IPaddress + "/user/passwordm/",
 
-  //
+  // product api
+  getAllProduct: IPaddress + "/api/v1/product",
+  getAllCategory: IPaddress + "/api/v1/category",
 };
