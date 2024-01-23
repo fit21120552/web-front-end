@@ -25,8 +25,8 @@ export const login = (username, password) => async (dispatch) => {
     localStorage.setItem(
       "userInfo",
       JSON.stringify({
-        ...data.payload.user,
-        sessionId: data.payload.sessionId,
+        ...data.user,
+        sessionId: data.sessionId,
       })
     );
   } catch (error) {
