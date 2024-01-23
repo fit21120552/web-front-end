@@ -11,6 +11,7 @@ import axios from "axios";
 import { api } from "../../constants/api";
 const DetailProduct = () => {
 
+    window.scrollTo(0,0)
     const [title, setTitle] = useState("")
     const [price, setPrice] = useState(1)
     const [description, setDescription] = useState("")
