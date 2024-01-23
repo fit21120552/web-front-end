@@ -20,13 +20,13 @@ export default function EditProfile() {
     } else if (password.length < 8) {
       toast.error("Mật khẩu tối thiểu 8 ký tự!");
     } else {
-      const data = await axios.post(
+      const { data } = await axios.post(
         api.changePassword + userLogin?.userInfo?._id,
         { password, sessionId: userInfo.sessionId },
         api.config
       );
       if (data === "success") {
-        toast.done("Cập nhật thành công!");
+        toast.info("Cập nhật thành công!");
       } else {
         toast.error("Cập nhật thất bại!");
       }
