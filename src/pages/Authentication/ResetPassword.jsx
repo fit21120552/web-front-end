@@ -62,6 +62,7 @@ const ResetPassword = () => {
       setLoading(false);
       if (data === "success") {
         navigate("/login");
+        return;
       }
       setError(data);
     }
