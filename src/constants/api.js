@@ -15,6 +15,7 @@ export const api = {
   getCart: IPaddress + "/api/v1/carts/",
   resetPassword: IPaddress + "/resetpassword",
   verifyCode: IPaddress + "/verifycode",
+  changePassword: IPaddress + "/user/passwordm/",
 
   //
 };

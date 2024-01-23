@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Toast from "../LoadingError/Toast";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { api } from "../../constants/api";
@@ -11,38 +11,31 @@ export default function EditProfile() {
   const [email, setEmail] = useState(userLogin?.userInfo?.email || "");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const toastId = React.useRef(null);
 
   const { userInfo } = userLogin;
-
   const submitHandler = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      toastId.current = toast.error("Mật khẩu không khớp!", ToastObject);
+      toast.error("Mật khẩu không khớp!");
     } else if (password.length < 8) {
-      toastId.current = toast.error("Mật khẩu tối thiểu 8 ký tự!", ToastObject);
+      toast.error("Mật khẩu tối thiểu 8 ký tự!");
     } else {
       const { data } = await axios.post(
-        api.changePassword,
+        api.changePassword + userLogin?.userInfo?._id,
         { password },
         api.config
       );
       if (data === "success") {
-        toastId.current = toast.done("Cập nhật thành công!", ToastObject);
+        toast.done("Cập nhật thành công!");
       } else {
-        toastId.current = toast.error("Cập nhật thất bại!", ToastObject);
+        toast.error("Cập nhật thất bại!");
       }
     }
   };
-  const ToastObject = {
-    pauseOnFocusLoss: false,
-    draggable: false,
-    pauseOnHover: false,
-    autoClose: 2000,
-  };
+
   return (
     <div className="max-w-screen-xl mx-auto mt-4">
-      <Toast />
+      <ToastContainer />
 
       <form className="row form-container mx-3" onSubmit={submitHandler}>
         <div className="col-md-6">
