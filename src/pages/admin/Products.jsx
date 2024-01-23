@@ -102,11 +102,13 @@ const Products = () => {
     <div className="px-10">
       <div className="flex justify-between mt-10">
         <div className=""></div>
-        <button className="bg-[#0CA91B] rounded-lg px-4 py-2 text-white">
+        
           <Link to="/admin/product/add">
-            Create new <span className="text-lg">+</span>
+            <button className="bg-[#0CA91B] rounded-lg px-4 py-2 text-white">
+              Create new <span className="text-lg">+</span>
+            </button>
           </Link>
-        </button>
+        
       </div>
       <div className="mt-4 flex justify-between ">
         <div className="bg-[#e1e0e0] flex gap-3 items-center rounded-lg px-4 py-2">

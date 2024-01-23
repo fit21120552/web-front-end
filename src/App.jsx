@@ -19,6 +19,8 @@ import EditProduct from "./pages/admin/EditProduct";
 import ShipInformation from "./pages/user/ShipInformation";
 import ChoosePayment from "./pages/user/ChoosePayment";
 import PlaceOrder from "./pages/user/PlaceOrder";
+import EditCategory from "./pages/admin/EditCategory";
+import AddCategory from "./pages/admin/AddCategory";
 
 export default function App() {
   return (
@@ -46,6 +48,8 @@ export default function App() {
           <Route path="/admin/product/add" element={<AddProduct />} />
           <Route path="/admin/product/edit/:id" element={<EditProduct />} />
           <Route path="/admin/categories" element={<Categories />} />
+          <Route path="/admin/category/edit/:id" element={<EditCategory/>}/>
+          <Route path="/admin/category/add/" element={<AddCategory/>}/>
           <Route path="/admin/users" element={<Users />} />
           <Route path="/admin/promotion" element={<Promotion />} />
           <Route path="/admin/settings" element={<Settings />} />

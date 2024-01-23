@@ -31,14 +31,16 @@ const EditProduct = () => {
     return (
         <div className="flex flex-column">
             <div >
-                <button className=" bg-[#ef4444] rounded-xl p-2 text-white m-3">
-                    <Link to="/admin/products">
+                
+                <Link to="/admin/products bg-[#ef4444] rounded-xl p-2 text-white m-3">
+                    <button className=" ">
                         Return product list
-                    </Link>
-                </button>
+                        </button>
+                </Link>
+                
             </div>
             <div className="flex flex-row justify-center font-bold text-2xl">
-                ADD PRODUCT
+                EDIT PRODUCT
             </div>
             <div className="rounded-lg border-2 border-solid bg-white p-3 m-4">
                 <form onSubmit={submitHandler}>
