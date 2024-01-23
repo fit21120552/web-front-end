@@ -182,7 +182,7 @@ const Header = ({ title, setTitle }) => {
                       {menuItemsData.map((item, index) => (
                         <div
                           onClick={() => navigate(item.url)}
-                          className="cursor-pointer hover:bg-blue-400 hover:text-white py-1 text-left pl-2 pr-5"
+                          className="cursor-pointer relative hover:bg-blue-400 hover:text-white py-1 text-left pl-2 pr-5"
                           key={index}
                           onMouseEnter={() => {
                             if (item.submenu.length > 0) {
@@ -195,7 +195,7 @@ const Header = ({ title, setTitle }) => {
                             <span className="absolute right-1">&gt;</span>
                           )}
                           {isSubMenuOpen === index && (
-                            <div className="absolute top-9 text-black bg-white shadow-xl  min-w-[107px] -right-[100%] rounded-sm flex flex-col gap-1">
+                            <div className="absolute  text-black bg-white shadow-xl top-[-1px] -right-[93px] rounded-sm flex flex-col gap-1">
                               {item.submenu.map((subitem, subindex) => (
                                 <button
                                   onClick={(e) => {

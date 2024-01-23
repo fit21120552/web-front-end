@@ -204,106 +204,109 @@ const Cart = ({ match, location, history }) => {
             </Message>
           </div>
 
-          <>
-            {cartItems.map((item) => (
-              <div key={item._id}>
-                <div className="cart-item row  p-2 rounded-lg border-2 border-solid bg-white mx-2">
-                  <div
-                    onClick={() => removeFromCardHandler(item.product)}
-                    className="remove-button flex flex-row justify-start items-center "
-                  >
-                    <i className="fas fa-times bg-[#ef4444] px-2 py-2 rounded-full"></i>
-                  </div>
-                  <div className="cart-image col-md-3 h-max-[50px]">
-                    <img
-                      src={item.thumbnail}
-                      alt={item.title}
-                      className="h-max-[50px]"
-                    />
-                  </div>
-                  <div className="cart-text col-md-5 flex flex-row items-center  font-mono font-bold">
-                    <Link to={`/product/${item.product}`}>
-                      <h4>{item.title}</h4>
+          <div className="flex justify-between gap-4">
+            <div className="flex-1">
+              {cartItems.map((item) => (
+                <div key={item._id}>
+                  <div className="cart-item flex justify-between gap-2 p-2 rounded-lg border-2 border-solid bg-white mx-2">
+                    <Link
+                      to={`/product/${item._id}`}
+                      className="cart-image flex gap-2"
+                    >
+                      <img
+                        src={item.thumbnail}
+                        alt={item.title}
+                        className="w-[100px] h-[100px]"
+                      />
+                      <Link
+                        to={`/product/${item._id}`}
+                        className="font-mono font-bold mt-2 flex items-center"
+                      >
+                        <h4>{item.title}</h4>
+                      </Link>
                     </Link>
-                  </div>
-                  <div className="cart-quantity col-md-2 col-sm-5 mt-3 mt-md-0 flex flex-column justify-center">
-                    <h6 className=" text-slate-500 font-semibold">QUANTITY</h6>
-                    <div className="flex justify-start">
-                      <button
-                        className="bg-[#16a34a] text-white rounded-lg px-1 py-0 font-bold text-xl me-3"
-                        onClick={() => increaseProductQuantity(item)}
-                      >
-                        +
-                      </button>
-                      <input
-                        type="number"
-                        name="quantity"
-                        className="w-[40px]"
-                        min="1"
-                        max={`${item.stock}`}
-                        value={item.quantity}
-                        onChange={(e) =>
-                          setQuantity({
-                            product: item,
-                            quantity: e.target.value,
-                          })
-                        }
-                      ></input>
 
-                      <button
-                        className="bg-[#b91c1c] text-white rounded-lg px-1 py-0 font-bold text-xl"
-                        onClick={() => decreaseProductQuantity(item)}
-                      >
-                        -
-                      </button>
+                    <div className="cart-quantity col-md-2 col-sm-5 mt-3 mt-md-0 flex flex-column justify-center">
+                      <h6 className=" text-slate-500 font-semibold mb-2">
+                        Quantity
+                      </h6>
+                      <div className="flex justify-start items-center">
+                        <button
+                          className="bg-[#16a34a] text-white rounded-full w-6 h-6 font-bold text-xl"
+                          onClick={() => increaseProductQuantity(item)}
+                        >
+                          <span className="relative bottom-[4px]">+</span>
+                        </button>
+                        <input
+                          type="text"
+                          readOnly
+                          name="quantity"
+                          className="w-[40px] outline-none text-center bg-gray-200 rounded-xl mx-2"
+                          min="1"
+                          max={`${item.stock}`}
+                          value={item.quantity}
+                          onChange={(e) =>
+                            setQuantity({
+                              product: item,
+                              quantity: e.target.value,
+                            })
+                          }
+                        ></input>
+
+                        <button
+                          className="bg-[#b91c1c] text-white rounded-full w-6 h-6  font-bold text-xl"
+                          onClick={() => decreaseProductQuantity(item)}
+                        >
+                          <span className="relative bottom-[4px]">-</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="cart-price mt-3 mt-md-0 col-md-2 items-end flex flex-column justify-center ">
+                      <h6 className="font-semibold  text-slate-500">
+                        Sub Total
+                      </h6>
+                      <h4 className="font-bold text-lg">
+                        {item.price * item.quantity} VNĐ
+                      </h4>
+                    </div>
+                    <div
+                      onClick={() => removeFromCardHandler(item._id)}
+                      className="remove-button flex flex-row justify-start items-center "
+                    >
+                      <i className="fas fa-times bg-[#ef4444] text-white w-8 h-8 flex items-center justify-center rounded-full"></i>
                     </div>
                   </div>
-
-                  <div className="cart-price mt-3 mt-md-0 col-md-2 items-end flex flex-column justify-center ">
-                    <h6 className="font-semibold  text-slate-500">SUBTOTAL</h6>
-                    <h4 className="font-bold text-xl">
-                      ${item.price * item.quantity}
-                    </h4>
-                  </div>
                 </div>
+              ))}
+            </div>
+            <div className="">
+              <div className="flex justify-end my-4">
+                <span className="sub font-semibold text-gray text-slate-500 text-xl mr-2">
+                  TOTAL:
+                </span>
+                <span className="total-price text-xl font-bold ">
+                  {total} VNĐ
+                </span>
               </div>
-            ))}
-          </>
+              <div className="cart-buttons flex align-center text-white my-4">
+                <Link to="/product" className="mx-auto min-w-[200px]">
+                  <button className="bg-primary p-3 rounded-lg mx-auto  px-6">
+                    Continue To Shopping
+                  </button>
+                </Link>
 
-          <div className="flex flex-row justify-end">
-            <span className="sub font-semibold text-gray text-slate-500 text-2xl ">
-              TOTAL:{" "}
-            </span>
-            <span className="total-price text-2xl font-bold font-mono">
-              ${total}
-            </span>
+                {total > 0 && (
+                  <button
+                    className="bg-success p-3 rounded-lg mx-auto  min-w-[200px]"
+                    onClick={checkOutHandler}
+                  >
+                    Checkout
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
-
-          <hr className="my-6" />
-
-          <Row className="cart-buttons flex align-center text-white">
-            <Col md={6} className="flex flex-row justify-center mx-auto ">
-              <Link to="/product" className="mx-auto max-w-[400px] w-[400px]">
-                <button className="bg-primary p-3 rounded-lg mx-auto max-w-[400px] w-[400px]">
-                  Continue To Shopping
-                </button>
-              </Link>
-            </Col>
-
-            {total > 0 && (
-              <Col
-                md={6}
-                className="flex flex-row justify-center mt-3 mx-auto mt-md-0 "
-              >
-                <button
-                  className="bg-success p-3 rounded-lg mx-auto max-w-[400px] w-[400px]"
-                  onClick={checkOutHandler}
-                >
-                  Checkout
-                </button>
-              </Col>
-            )}
-          </Row>
         </>
       )}
     </div>
