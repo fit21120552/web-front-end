@@ -22,7 +22,7 @@ export default function EditProfile() {
     } else {
       const { data } = await axios.post(
         api.changePassword + userLogin?.userInfo?._id,
-        { password },
+        { password, sessionId: userInfo.sessionId },
         api.config
       );
       if (data === "success") {
