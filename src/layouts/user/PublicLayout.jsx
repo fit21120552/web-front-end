@@ -16,7 +16,7 @@ const PublicLayout = () => {
     <>
       <div className="bg-[#f5f5f5]">
         <Header title={title} setTitle={setTitle} />
-        <div className="min-h-[calc(100vh-376px)]">
+        <div className="min-h-[calc(100vh-300px)]">
           <Outlet context={[title, setTitle]} />
         </div>
         <Footer />
