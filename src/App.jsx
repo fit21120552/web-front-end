@@ -31,7 +31,7 @@ export default function App() {
           <Route path="/edit-profile" element={<EditProfile />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/resetPassword" element={<ResetPassword />} />
+          <Route path="/resetpassword" element={<ResetPassword />} />
           <Route path="/product" element={<Product />} />
           <Route path="/product/:id" element={<ProductDetail />} />
 

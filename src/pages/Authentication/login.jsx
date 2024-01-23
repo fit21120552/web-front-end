@@ -78,7 +78,7 @@ const Login = ({ location, history }) => {
             </div>
             <p className="mb-4 text-left">
               Forgot password?{" "}
-              <Link to={"/resetPassword"}>
+              <Link to={"/resetpassword"}>
                 <u> Reset here</u>
               </Link>
             </p>
