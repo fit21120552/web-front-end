@@ -62,7 +62,7 @@ const Login = ({ location, history }) => {
                 required
               />
             </div>
-            <div className="form mb-4 text-left">
+            <div className="form text-left">
               <label className="text-start font-bold" htmlFor="password">
                 Password
               </label>
@@ -76,6 +76,12 @@ const Login = ({ location, history }) => {
                 required
               />
             </div>
+            <p className="mb-4 text-left">
+              Forgot password?{" "}
+              <Link to={"/resetPassword"}>
+                <u> Reset here</u>
+              </Link>
+            </p>
             <button className=" bg-[#10b981] p-2 rounded-md text-white flex flex-row justify-center font-semibold max-w-[300px] mx-auto">
               LOGIN
             </button>

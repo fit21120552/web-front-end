@@ -3,7 +3,7 @@ import "@fortawesome/fontawesome-free/css/all.css";
 import PublicLayout from "./layouts/user/PublicLayout";
 import { Home, About, EditProfile, Cart, Profile } from "./pages/user/";
 import AdminLayout from "./layouts/admin/AdminLayout";
-import { Login, Signup } from "./pages/Authentication/";
+import { Login, Signup, ResetPassword } from "./pages/Authentication/";
 import {
   Dashboard,
   Orders,
@@ -31,13 +31,14 @@ export default function App() {
           <Route path="/edit-profile" element={<EditProfile />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/resetPassword" element={<ResetPassword />} />
           <Route path="/product" element={<Product />} />
           <Route path="/product/:id" element={<ProductDetail />} />
 
           <Route path="/cart/:id?" element={<Cart />} />
-          <Route path="/ship/" element={<ShipInformation/>}/>
-          <Route path="/choose-payment" element= {<ChoosePayment/>}/>
-          <Route path="/place-order" element={<PlaceOrder/>}/>
+          <Route path="/ship/" element={<ShipInformation />} />
+          <Route path="/choose-payment" element={<ChoosePayment />} />
+          <Route path="/place-order" element={<PlaceOrder />} />
         </Route>
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="/admin" exact element={<Dashboard />} />
