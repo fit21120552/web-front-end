@@ -56,7 +56,7 @@ const ResetPassword = () => {
       setLoading(true);
       const { data } = await axios.post(
         api.verifyCode,
-        { username, password, verifycode: verifyCode },
+        { username, password, verifyCode },
         api.config
       );
       setLoading(false);

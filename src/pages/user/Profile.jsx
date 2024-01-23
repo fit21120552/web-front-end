@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
 import { logout } from "./../../Redux/Actions/UserActions";
+import { Link } from "react-router-dom";
 
 export default function Profile() {
   const dispatch = useDispatch();
@@ -11,7 +12,7 @@ export default function Profile() {
   return (
     <div className="container mx-auto">
       <button onClick={handleLogout}>Logout</button>
-      <button onClick={() => alert("hi")}>Reset Password</button>
+      <Link to={"/resetPassword"}>Reset Password</Link>
       <div className="card mx-3">
         <div className="card-body">
           <div className="flex flex-row">
