@@ -1,4 +1,4 @@
-import { faEye, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -34,8 +34,11 @@ const Categories = () => {
             <td className="py-2">1000</td>
 
             <td className="py-2 flex gap-2 items-center h-full">
-              <Link to={`/admin/category/edit/${index}`}>
+              <Link to={`/admin/category/${index}`}>
                 <FontAwesomeIcon icon={faEye} color="#00E096" />
+              </Link>
+              <Link to={`/admin/category/edit/${index}`}>
+                <FontAwesomeIcon icon={faPencil} color="#00E096" />
               </Link>
               <button className="rounded-xl px-3 bg-[#ef4444]" onClick={() => setModalShow(true)}>
                 <FontAwesomeIcon icon={faTrash} color="#B22234" />

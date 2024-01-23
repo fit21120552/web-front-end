@@ -11,5 +11,5 @@ export const api = {
   deleteProduct: IPaddress + "/admin/product/delete/",
   createProduct: IPaddress + "/admin/product/create",
   editProduct: IPaddress + "/admin/product/update",
-  
+  getCategory: IPaddress + "/admin/category",
 };
