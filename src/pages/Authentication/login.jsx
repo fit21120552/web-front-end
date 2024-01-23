@@ -22,7 +22,9 @@ const Login = ({ location, history }) => {
   const { error, loading, userInfo } = userLogin;
 
   const email = searchParams.get("email");
-  if (email) dispatch(loginGoogle(email));
+  useEffect(() => {
+    if (email) dispatch(loginGoogle(email));
+  }, [email, dispatch]);
 
   useEffect(() => {
     if (userInfo) {
