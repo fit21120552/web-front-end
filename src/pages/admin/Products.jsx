@@ -8,7 +8,8 @@ import VerticallyCenteredModal from "../LoadingError/Modal";
 import { Alert, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { listProductsAdmin } from "../../Redux/Actions/ProductActions";
-
+import Loading from "../LoadingError/Loading"
+import Message from "../LoadingError/Message"
 const Products = () => {
   const [modalShow, setModalShow] = React.useState(false);
 
@@ -21,6 +22,7 @@ const Products = () => {
   useEffect(() => {
     dispatch(listProductsAdmin())
   },[dispatch])
+
   const deleteHandler = (index) => {
       alert(`deleted ${index}`)
       setModalShow(false)
@@ -32,18 +34,18 @@ const Products = () => {
         {currentItems &&
           currentItems.map((item, index) => (
             <div
-              key={index}
-              className="border rounded-md flex flex-col max-w-[250px] p-2"
+              key={item._id}
+              className="border rounded-md flex flex-col max-w-[250px] px-2 pt-2 pb-0 max-h-[250px]"
             >
-              <div className="bg-white rounded-lg w-32 h-32 mx-auto">
-                <img src="" alt="" />
+              <div className="bg-white rounded-lg mx-auto w-2/3 h-1/2 ">
+                <img src={item.thumbnail} alt={item.title} className="w-4/5 h-4/5"/>
               </div>
-              <p>Shoes Air port</p>
+              <p>{item.title}</p>
               <div className="flex justify-between">
-                <p className="font-semibold">25$</p>
+                <p className="font-semibold">${item.price}</p>
                 <div className="flex gap-1">
                   
-                    <Link to={`/admin/product/edit/${index}`}>
+                    <Link to={`/admin/product/edit/${item._id}`}>
                       <button className="rounded-xl px-3 bg-[#FFBE18]">
                       <FontAwesomeIcon icon={faEdit} size="xs" /> 
                       </button>
@@ -56,9 +58,9 @@ const Products = () => {
                   <VerticallyCenteredModal 
                       show={modalShow}
                       onCancel={() => setModalShow(false)}
-                      onDelete={() => deleteHandler(index)}
-                      header={`Are you sure to delete product ${index}?`}
-                      body = {`${index}`}
+                      onDelete={() => deleteHandler(item._id)}
+                      header={`Are you sure to delete product ${item.title}?`}
+                      body = {`Product stock: ${item.stock}`}
                       />
                 </div>
               </div>
@@ -69,6 +71,7 @@ const Products = () => {
   }
 
   function PaginatedItems({ itemsPerPage, itemList }) {
+    console.log("item: ", itemList.length)
     const [itemOffset, setItemOffset] = useState(0);
 
     const endOffset = itemOffset + itemsPerPage;
@@ -111,7 +114,7 @@ const Products = () => {
 
   return (
     <div className="px-10">
-      <div className="flex justify-between mt-10">
+      <div className="flex justify-between mt-3">
         <div className=""></div>
         
           <Link to="/admin/product/add">
@@ -133,8 +136,9 @@ const Products = () => {
         <div className="flex gap-4">
           <select name="" id="" className="rounded-lg bg-[#e1e0e0] px-4">
             <option value="">All category</option>
-            <option value="">Delivered</option>
-            <option value="">Not delivered</option>
+            <option value="">Latest added</option>
+            <option value="">Cheap first</option>
+            <option value="">Most viewed</option>
           </select>
           <select name="" id="" className="rounded-lg bg-[#e1e0e0] px-4">
             <option value="">Show 20</option>
@@ -143,7 +147,14 @@ const Products = () => {
         </div>
       </div>
       <div className="mt-4">
-        <PaginatedItems itemsPerPage={6} itemList={items} />
+        {
+           loading ? (<Loading/>) : error ? (
+            <Message variant={"alert-danger"}>{error}</Message>
+           ) : (
+            <PaginatedItems itemsPerPage={6} itemList={products} />
+           )
+        }
+        
       </div>
     </div>
   );
