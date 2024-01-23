@@ -1,9 +1,12 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import FileInput from "./FileInput";
 import ImageUpload from "./FileInput";
+import { useDispatch, useSelector } from "react-redux";
+import { editProduct } from "../../Redux/Actions/ProductActions";
+import { PRODUCT_EDIT_RESET } from "../../Redux/Constants/ProductConstants";
 const EditProduct = () => {
 
     const [title, setTitle] = useState("")
@@ -13,9 +16,28 @@ const EditProduct = () => {
     const [thumbnail, setThumbnail ] = useState(null)
     const [previewImage, setPreviewImage] = useState(null)
     const [stock, setStock] = useState(0)
-    
+    const dispatch = useDispatch()
+    const [searchParams, setSearchParams] = useSearchParams()
+    const [params, setParams] = useParams()
+    const productEdit = useSelector((state) => state.productEdit)
+    const { loading, error, success, product } = productEdit
+    const { id } = params 
+    useEffect(() => {
+        if (success) {
+            dispatch({type: PRODUCT_EDIT_RESET})
+        }else {
+            setTitle(product.name)
+            setDescription(product.description)
+            setStock(product.stock)
+            setThumbnail(product.thumbnail)
+            setPrice(product.price)
+            setPreviewImage(product.thumbnail)
+       }
+    },[product, dispatch, id])
+
     const submitHandler = (e) => {
         e.preventDefault()
+
     }
     const selectFile = (event) => {
         setThumbnail(event.target.value);

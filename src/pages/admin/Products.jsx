@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import VerticallyCenteredModal from "../LoadingError/Modal";
 import { Alert, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { listProductsAdmin } from "../../Redux/Actions/ProductActions";
+import { deleteProduct, listProductsAdmin } from "../../Redux/Actions/ProductActions";
 import Loading from "../LoadingError/Loading"
 import Message from "../LoadingError/Message"
 const Products = () => {
@@ -19,12 +19,15 @@ const Products = () => {
 
   const { loading, error, products } = productList;
 
+  const productDelete = useSelector((state) => state.productDelete)
+  const { error: errorDelete, success: successDelete } = productDelete
   useEffect(() => {
     dispatch(listProductsAdmin())
-  },[dispatch])
+  },[dispatch, successDelete])
 
-  const deleteHandler = (index) => {
-      alert(`deleted ${index}`)
+  const deleteHandler = (id) => {
+     // alert(`deleted ${id}`)
+     dispatch(deleteProduct(id))
       setModalShow(false)
   }
   const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
@@ -71,7 +74,7 @@ const Products = () => {
   }
 
   function PaginatedItems({ itemsPerPage, itemList }) {
-    console.log("item: ", itemList.length)
+   // console.log("item: ", itemList.length)
     const [itemOffset, setItemOffset] = useState(0);
 
     const endOffset = itemOffset + itemsPerPage;
@@ -148,8 +151,13 @@ const Products = () => {
       </div>
       <div className="mt-4">
         {
+          errorDelete && (
+            <Message variant="danger">{errorDelete}</Message>
+           )
+        }
+        {
            loading ? (<Loading/>) : error ? (
-            <Message variant={"alert-danger"}>{error}</Message>
+            <Message variant="danger">{error}</Message>
            ) : (
             <PaginatedItems itemsPerPage={6} itemList={products} />
            )

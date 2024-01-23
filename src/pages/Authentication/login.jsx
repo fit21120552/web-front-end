@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Toast from "../LoadingError/Toast";
 import { toast } from "react-toastify";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login, loginGoogle } from "./../../Redux/Actions/UserActions";
 import Message from "../LoadingError/Message";
@@ -12,7 +12,7 @@ const Login = ({ location, history }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
-
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const redirect = "/";
@@ -49,7 +49,7 @@ const Login = ({ location, history }) => {
 
           <form className="row form-container mx-3" onSubmit={submitHandler}>
             <div className="form mb-4 text-left">
-              <label className="text-start font-bold" htmlFor="username">
+              <label className="text-start font-bold" name="username">
                 Username
               </label>
               <input
@@ -63,7 +63,7 @@ const Login = ({ location, history }) => {
               />
             </div>
             <div className="form mb-4 text-left">
-              <label className="text-start font-bold" htmlFor="password">
+              <label className="text-start font-bold" type="password">
                 Password
               </label>
               <input

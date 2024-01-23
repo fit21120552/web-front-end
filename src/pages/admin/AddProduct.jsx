@@ -1,21 +1,56 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import FileInput from "./FileInput";
 import ImageUpload from "./FileInput";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { PRODUCT_CREATE_RESET } from "../../Redux/Constants/ProductConstants"
+import { createProduct } from "../../Redux/Actions/ProductActions";
+import Message from "../LoadingError/Message"
+import Toast from "../LoadingError/Toast"
+import Loading from "../LoadingError/Loading"
+const ToastObjects = {
+    pauseOnFoccusLoss: false,
+    draggable: false,
+    pauseOnHover: false,
+    autoClose: 2000,
+};
 const AddProduct = () => {
 
     const [title, setTitle] = useState("")
-    const [price, setPrice] = useState(1)
+    const [price, setPrice] = useState(0)
     const [description, setDescription] = useState("")
     const [category, setCategory] = useState("")
     const [thumbnail, setThumbnail ] = useState(null)
     const [previewImage, setPreviewImage] = useState(null)
     const [stock, setStock] = useState(0)
 
+    const dispatch = useDispatch()
+
+    const productCreate = useSelector((state) => state.productCreate)
+    const { loading, error, product} = productCreate
+
+    useEffect(() => {
+        if (product) {
+           // toast.success("Product Added!", ToastObjects)
+            
+           dispatch({type: PRODUCT_CREATE_RESET})
+            setTitle("")
+            setPrice(0)
+            setDescription("")
+            setCategory("")
+            setThumbnail("")
+            setStock(0)
+            setPreviewImage(null)
+            alert("Product Added!")
+        }
+    },[product, dispatch])
+
     const submitHandler = (e) => {
         e.preventDefault()
+        dispatch(createProduct(title, price, stock, description, category, thumbnail))
     }
     const selectFile = (event) => {
         setThumbnail(event.target.value);
@@ -28,7 +63,9 @@ const AddProduct = () => {
       } 
 
     const categories=["bag","fan","car"]
-    return (
+    return (<>
+        <Toast/>
+    
         <div className="flex flex-column">
             <div >
                 <button className=" bg-[#ef4444] rounded-xl p-2 text-white m-3">
@@ -42,7 +79,9 @@ const AddProduct = () => {
             </div>
             <div className="rounded-lg border-2 border-solid bg-white p-3 m-4">
                 <form onSubmit={submitHandler}>
-                    <div class="form mb-4 text-left input-group">
+                    {error && <Message variant={"alert-danger"}>{error}</Message>}
+                    { loading && <Loading/>}
+                    <div className="form mb-4 text-left input-group">
                         <span className="text-start font-bold input-group-text w-30" for="typeEmailX-2">Title</span>
                         <input type="text"
                                 id="title" 
@@ -142,6 +181,7 @@ const AddProduct = () => {
                 </form>
             </div>
         </div>
+        </>
     )
 }
 
