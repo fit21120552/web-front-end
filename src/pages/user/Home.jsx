@@ -143,6 +143,14 @@ export default function Home() {
             <p>{item.name}</p>
           </div>
         ))}
+        <Link
+          to={"/product"}
+          className="bg-gray-300  w-28 flex items-center justify-center flex-col py-4"
+        >
+          <p className="text-center">
+            Tất cả <br></br> sản phẩm
+          </p>
+        </Link>
       </div>
       <div className="mx-3 px-4 py-3 bg-white mb-2 text-center text-blue-500 font-semibold border-b-[4px] border-blue-500">
         GỢI Ý HÔM NAY
