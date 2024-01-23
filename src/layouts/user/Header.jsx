@@ -15,6 +15,8 @@ import { faFacebookF } from "@fortawesome/free-brands-svg-icons";
 import { logout } from "../../Redux//Actions/UserActions";
 import { useEffect, useRef, useState } from "react";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
+import { api } from "../../constants/api";
 const Header = ({ title, setTitle }) => {
   const ref = useRef();
   const location = useLocation();
@@ -50,27 +52,29 @@ const Header = ({ title, setTitle }) => {
     dispatch(logout());
   };
 
-  const menuItemsData = [
-    {
-      title: "Camera",
-      url: "/product?category=camera",
-      submenu: [],
-    },
-    {
-      title: "Laptop",
-      url: "/product?category=laptop",
-      submenu: [
-        {
-          title: "Dell",
-          url: "/product?category=laptop&title=dell",
-        },
-        {
-          title: "Macbook",
-          url: "/product?category=laptop&title=macbook",
-        },
-      ],
-    },
-  ];
+  const [menuItemsData, setMenuItemsData] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const res = await axios.get(api.getAllCategory, api.config);
+      if (res.data.status === "success") {
+        const data = res.data.data.data;
+        setMenuItemsData(
+          data.map((item) => ({
+            id: item._id,
+            title: item.name.charAt(0).toUpperCase() + item.name.slice(1),
+            url: "/product?category=" + item.name,
+            submenu: item.subCategory.map((subitem) => ({
+              title:
+                subitem.name.charAt(0).toUpperCase() + subitem.name.slice(1),
+              url: "/product?category=" + item.name + "&title=" + subitem.name,
+            })),
+          }))
+        );
+      }
+    }
+    fetchData();
+  }, []);
 
   return (
     <div>

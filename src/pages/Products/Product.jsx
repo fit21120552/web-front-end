@@ -27,7 +27,7 @@ export default function Product() {
           data.map((item) => ({
             id: item._id,
             value: item.name,
-            title: item.name.toUpperCase(),
+            title: item.name.charAt(0).toUpperCase() + item.name.slice(1),
           }))
         );
       }

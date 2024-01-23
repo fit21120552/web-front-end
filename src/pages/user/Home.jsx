@@ -9,6 +9,7 @@ import Message from "../LoadingError/Message";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import axios from "axios";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -116,43 +117,50 @@ export default function Home() {
   ];
 
   const [categories, setCategories] = useState([]);
+
   useEffect(() => {
-    const categories = [
-      {
-        id: 1,
-        name: "May anh",
-        image: "./images/dummy.png",
-        subCategories: [
-          { id: 1, name: "Macbook" },
-          { id: 1, name: "Dell" },
-        ],
-      },
-      {
-        id: 2,
-        name: "May tinh",
-        image: "./images/dummy.png",
-      },
-    ];
+    async function fetchData() {
+      const res = await axios.get(api.getAllCategory, api.config);
+      if (res.data.status === "success") {
+        const data = res.data.data.data;
+        setCategories(
+          data.map((item) => ({
+            id: item._id,
+            value: item.name,
+            name: item.name.charAt(0).toUpperCase() + item.name.slice(1),
+            image: "./images/dummy.png",
+            subCategories: item.subCategory.map((subitem) => ({
+              id: subitem._id,
+              name: subitem.name,
+            })),
+          }))
+        );
+      }
+    }
+    fetchData();
   }, []);
 
   return (
     <div className="container max-w-screen-xl mt-4">
-      <div className="mx-3 px-4 py-3 bg-white mb-[2px]">DANH MỤC</div>
-      <div className=" mx-3 flex mb-4 gap-[2px]">
+      <div className="mx-3 px-4 py-3 bg-white ">DANH MỤC</div>
+      <div className=" mx-3 flex flex-wrap mb-4 gap-x-2">
         {categories.map((item) => (
-          <div
+          <Link
+            to={"/product?category=" + item.value + "&page=1"}
             key={item.id}
-            className="bg-white w-28 flex items-center justify-center flex-col py-4"
+            className="bg-white flex-grow-1 w-28 flex items-center justify-start flex-col pb-3 mt-2"
           >
-            <div className="w-12 h-12 flex items-center justify-center rounded-full bg-[#f5f5f5]">
-              <img src={item.image} alt="" />
+            <div className="h-[70px] flex items-end">
+              <div className="w-12 h-12 flex items-center justify-center rounded-full bg-[#f5f5f5]">
+                <img src={item.image} alt="" />
+              </div>
             </div>
-            <p>{item.name}</p>
-          </div>
+            <p className="text-center">{item.name}</p>
+          </Link>
         ))}
         <Link
           to={"/product"}
-          className="bg-gray-300  w-28 flex items-center justify-center flex-col py-4"
+          className="bg-gray-300 flex-grow-1 mt-2  w-28 flex items-center justify-center flex-col py-4"
         >
           <p className="text-center">
             Tất cả <br></br> sản phẩm
