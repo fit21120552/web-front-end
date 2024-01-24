@@ -21,7 +21,7 @@ export const api = {
   createProduct: IPaddress + "/admin/product/create",
   editProduct: IPaddress + "/admin/product/update",
 
-  //category apu
+  //category api
   getCategory: IPaddress + "/api/v1/category/",
   editCategory: IPaddress + "/admin/category/",
   resetPassword: IPaddress + "/resetpassword",

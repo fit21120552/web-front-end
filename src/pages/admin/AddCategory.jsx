@@ -1,8 +1,10 @@
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { createCategory } from "../../Redux/Actions/CategoryActions";
+import { CATEGORY_CREATE_RESET } from "../../Redux/Constants/CategoryConstants";
 
 const AddCategory = () => {
 
@@ -10,9 +12,19 @@ const AddCategory = () => {
     const { userInfo } = useSelector((state) => state.userLogin)
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const categoryCreate = useSelector((state) =>  state.categoryCreate)
+    const { loading, error, category } = categoryCreate
+
+    useEffect(() => {
+        if (category){
+            dispatch({ type: CATEGORY_CREATE_RESET  })
+            setCategoryName("")
+            alert("Category added!")
+        }
+    })
     const submitHandler = (e) => {
         e.preventDefault()
-        
+        dispatch(createCategory(categoryName))
     }
     const getErrorMessage = (errorCategory) => {
         return errorCategory.response && errorCategory.response.data.message ? 

@@ -152,7 +152,7 @@ const DetailProduct = () => {
                     </div>
 
                     <div className="form mb-4 text-left ">
-                        <label for="prodImg" className="form-label">Product image (don't upload if there is no need to change the image)</label>
+                        <label for="prodImg" className="form-label font-bold">Product image</label>
                         <input 
                                 className="file form-control" 
                                 type="text" 
@@ -177,7 +177,7 @@ const DetailProduct = () => {
                     <div className="flex flex-row justify-center my-2 p-3 text-xl">
                         <Link to={`/admin/product/edit/${id}`}>
                         <button type="submit" className="" >
-                            <p className="bg-[#10b981] px-4 py-2 rounded-lg text-white">
+                            <p className="bg-[#ca8a04] px-4 py-2 rounded-lg text-white">
                                 <FontAwesomeIcon icon={faPencil} color="white"/>
                                 <span> Edit</span>
                             </p>

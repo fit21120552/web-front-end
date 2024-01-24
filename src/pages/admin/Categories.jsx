@@ -6,9 +6,10 @@ import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
 import VerticallyCenteredModal from "../LoadingError/Modal";
 import { useDispatch, useSelector } from "react-redux";
-import { listCategories } from "../../Redux/Actions/CategoryActions";
+import { deleteCategory, listCategories } from "../../Redux/Actions/CategoryActions";
 import Loading from "../LoadingError/Loading";
 import Message from "../LoadingError/Message";
+import { deleteProduct } from "../../Redux/Actions/ProductActions";
 
 const Categories = () => {
  
@@ -20,7 +21,12 @@ const Categories = () => {
   useEffect(() => {
     dispatch(listCategories())
   }, [dispatch])
-
+   
+  const deleteHandler = (id) => {
+    alert(`deleted ${id}`)
+   dispatch(deleteCategory(id))
+  setModalShow(false)
+}
   function Items({ currentItems }) {
     return (
       <>
@@ -38,14 +44,14 @@ const Categories = () => {
               <Link to={`/admin/category/edit/${element._id}`}>
                 <FontAwesomeIcon icon={faPencil} color="#ca8a04" />
               </Link>
-              <button className="rounded-xl px-3 bg-[#ef4444]" onClick={() => setModalShow(true)}>
+              <button className="rounded-xl px-3 bg-[#ef4444]" onClick={(e) => setModalShow(true)}>
                 <FontAwesomeIcon icon={faTrash} color="#B22234" />
               </button>
               <VerticallyCenteredModal
                       show={modalShow}
                       onCancel={() => setModalShow(false)}
-                      onDelete={() => deleteHandler(element._id)}
-                      header={`Are you sure to delete category ${element.name} ?`}
+                      onDelete={() => deleteHandler(element._id)}//setModalShow(false)}//
+                      header={`Are you sure to delete this category ${element.name} ?`}
                       body = {`Product count: ${element.productCount}`}
                       />
             </td>
@@ -104,26 +110,26 @@ const Categories = () => {
           </Link>
         </button>
       </div>
-
-      <table className="mt-8 min-w-[700px] w-4/5 table">
-        <tr className="mb-4">
-          <th className="font-normal text-left text-[#96A5B8]">STT</th>
-          <th className="font-normal text-[#96A5B8]">Name</th>
-          <th className="font-normal text-left text-[#96A5B8]">
-            Total Products
-          </th>
-          <th className="font-normal text-[#96A5B8]">Action</th>
-        </tr>
         {
-           loading ? (<tr className="col-span-1 row-span-full"><Loading/></tr>) : error ? (
-            <tr className="col-span-1">
-            <Message variant="danger" >{error}</Message>
-            </tr>
+           loading ? (<Loading/>) : error ? (
+          
+            <Message variant="danger w-full" >{error}</Message>
+           
            ) : (
-            <PaginatedItems itemsPerPage={7} itemList={categories} />
+            <table className="mt-8 min-w-[700px] w-4/5 table">
+              <tr className="mb-4">
+                <th className="font-normal text-left text-[#96A5B8]">STT</th>
+                <th className="font-normal text-[#96A5B8]">Name</th>
+                <th className="font-normal text-left text-[#96A5B8]">
+                  Total Products
+                </th>
+                <th className="font-normal text-[#96A5B8]">Action</th>
+              </tr>
+                  <PaginatedItems itemsPerPage={7} itemList={categories} />
+            </table>
            )
         }
-      </table>
+     
     </div>
   );
 };

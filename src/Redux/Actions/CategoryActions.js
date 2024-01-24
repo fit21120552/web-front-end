@@ -1,6 +1,6 @@
 import { api } from '../../constants/api'
 import axios from "axios"
-import { CATEGORY_DETAILS_REQUEST, CATEGORY_DETAILS_SUCCESS, CATEGORY_DETAILS_FAIL, CATEGORY_LIST_REQUEST, CATEGORY_LIST_SUCCESS, CATEGORY_LIST_FAIL } from '../Constants/CategoryConstants'
+import { CATEGORY_DETAILS_REQUEST, CATEGORY_DETAILS_SUCCESS, CATEGORY_DETAILS_FAIL, CATEGORY_LIST_REQUEST, CATEGORY_LIST_SUCCESS, CATEGORY_LIST_FAIL, CATEGORY_DELETE_SUCCESS, CATEGORY_DELETE_REQUEST, CATEGORY_DELETE_FAIL, CATEGORY_CREATE_REQUEST, CATEGORY_CREATE_SUCCESS, CATEGORY_CREATE_FAIL } from '../Constants/CategoryConstants'
 
 export const listCategoryDetails = (id) => async (dispatch) => {
     try {
@@ -63,6 +63,83 @@ export const listCategories = () =>  async (dispatch, getState) => {
                 error.response && error.response.data.message ? 
                     error.response.data.message : 
                     error.message,
+        })
+    }
+}
+
+export const deleteCategory=  (id)=>  async (dispatch, getState) => {
+    try {
+        dispatch({type: CATEGORY_DELETE_REQUEST })
+
+        const { 
+            userLogin: { userInfo}, 
+        } = getState()
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userInfo.token}`
+            }
+        }
+        const body = {
+            sessionId: userInfo.sessionId
+        }
+
+        await axios.delete(api.editCategory+id, body, config)
+
+        dispatch({ type: CATEGORY_DELETE_SUCCESS})
+
+
+    } catch (error) {
+        const message = error.response && error.response.data.message ? 
+                        error.response.data.message : 
+                        error.message
+        
+        if (message ==="Token failed") {
+          //  dispatch(logout())
+        }
+        dispatch({
+            type: CATEGORY_DELETE_FAIL,
+            payload: message
+                
+        })
+    }
+}
+
+export const createCategory = (catName) => async (dispatch, getState) => {
+    try {
+        dispatch({type: CATEGORY_CREATE_REQUEST })
+
+        const { 
+            userLogin: { userInfo}, 
+        } = getState()
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userInfo.token}`
+            }
+        }
+        const body = {
+            sessionId: userInfo.sessionId,
+            name: catName,
+        }
+
+        const { data } = await axios.post(api.editCategory, body, config)
+
+        dispatch({ type: CATEGORY_CREATE_SUCCESS, payload: data})
+
+
+    } catch (error) {
+        const message = error.response && error.response.data.message ? 
+                        error.response.data.message : 
+                        error.message
+        
+        if (message ==="Token failed") {
+          //  dispatch(logout())
+        }
+        dispatch({
+            type: CATEGORY_CREATE_FAIL,
+            payload: message
+                
         })
     }
 }

@@ -12,6 +12,7 @@ export const listProduct = () => async(dispatch) => {
     try {
         dispatch({ type: PRODUCT_LIST_REQUEST}) 
         const { data } = await axios.get(api.getAndCreateProduct)
+      //  console.log("list product:", data)
         dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data});
         
     } catch (error) {
@@ -52,7 +53,7 @@ export const listProductDetails = (id) => async(dispatch) => {
 
         const { userLogin: { userInfo }, } = getState()
 
-        console.log("userInfo: ", userInfo)
+       // console.log("userInfo: ", userInfo)
         const config = {
             headers: {
                 Authorization: `Bearer ${userInfo.token}`
@@ -61,7 +62,7 @@ export const listProductDetails = (id) => async(dispatch) => {
 
         const { data } = await axios.get(api.getAndCreateProduct, config)
 
-       // console.log("data: ",data )
+         console.log("data: ",data )
         dispatch({type: PRODUCT_LIST_SUCCESS, payload: data.data.data })
     }  catch (error) {
         dispatch({
@@ -88,8 +89,11 @@ export const deleteProduct = (id) =>  async (dispatch, getState) => {
                 Authorization: `Bearer ${userInfo.token}`
             }
         }
+        const body = {
+            sessionId: userInfo.sessionId
+        }
 
-        await axios.delete(`${api.deleteProduct}${id}`, config)
+        await axios.delete(`${api.deleteProduct}${id}`,body, config)
 
        // console.log("data: ",data )
         dispatch({type: PRODUCT_DELETE_SUCCESS})

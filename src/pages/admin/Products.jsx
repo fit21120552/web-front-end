@@ -26,9 +26,9 @@ const Products = () => {
   },[dispatch, successDelete])
 
   const deleteHandler = (id) => {
-     // alert(`deleted ${id}`)
+      alert(`deleted ${id}`)
      dispatch(deleteProduct(id))
-      setModalShow(false)
+    setModalShow(false)
   }
   const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
   function Items({ currentItems }) {
@@ -63,13 +63,15 @@ const Products = () => {
                   <button className="rounded-xl px-3 bg-[#ef4444]" onClick={() => setModalShow(true)}>                  
                       <FontAwesomeIcon icon={faTrash} size="xs" />               
                   </button>
+                  <div style={{ display: 'none', position: 'initial' }} >
                   <VerticallyCenteredModal 
                       show={modalShow}
-                      onCancel={() => setModalShow(false)}
-                      onDelete={() => deleteHandler(item._id)}
+                      onCancel={(e) => setModalShow(false)}
+                      onDelete={(e) => deleteHandler(item._id)}
                       header={`Are you sure to delete product ${item.title}?`}
                       body = {`Product stock: ${item.stock}`}
                       />
+                      </div>
                 </div>
               </div>
             </div>
