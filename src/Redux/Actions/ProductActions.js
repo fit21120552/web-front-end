@@ -5,6 +5,7 @@ import { PRODUCT_LIST_FAIL, PRODUCT_LIST_REQUEST, PRODUCT_LIST_SUCCESS,
  } from "../Constants/ProductConstants"
 import { api } from '../../constants/api'
 import axios from "axios"
+import { connect } from "react-redux"
 
 //PRODUCT LIST
 export const listProduct = () => async(dispatch) => {
@@ -124,9 +125,19 @@ export const createProduct = (title, price, stock, description, category, thumbn
             },
             withCredentials: true,
         }
-
+        console.log("cate:", category)
+         const body = {
+            title: title,
+             price: price, 
+             stock: stock, 
+             description: description, 
+             category: category, 
+             thumbnail: thumbnail,
+             sessionId: userInfo.sessionId,
+             brand: "fix in product actions in redux"
+         }
         const { data} = await axios.post(`${api.createProduct}`,
-                                            {title, price, stock, description, category, thumbnail},
+                                            body,
                                             config)
 
        console.log("data: ",data )

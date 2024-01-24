@@ -79,7 +79,7 @@ const AddProduct = () => {
             </div>
             <div className="rounded-lg border-2 border-solid bg-white p-3 m-4">
                 <form onSubmit={submitHandler}>
-                    {error && <Message variant={"alert-danger"}>{error}</Message>}
+                    {error && <Message variant={"danger"}>{error}</Message>}
                     { loading && <Loading/>}
                     <div className="form mb-4 text-left input-group">
                         <span className="text-start font-bold input-group-text w-30" for="typeEmailX-2">Title</span>

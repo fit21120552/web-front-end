@@ -1,16 +1,25 @@
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 
 const AddCategory = () => {
 
     const [categoryName, setCategoryName] = useState("")
-
+    const { userInfo } = useSelector((state) => state.userLogin)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
     const submitHandler = (e) => {
         e.preventDefault()
-
+        
     }
+    const getErrorMessage = (errorCategory) => {
+        return errorCategory.response && errorCategory.response.data.message ? 
+                                                errorCategory.response.data.message : 
+                                                errorCategory.message
+    }
+    
     return (
         <div className="flex flex-column">
             <div >
