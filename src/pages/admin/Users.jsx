@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
-import { listUser } from "../../Redux/Actions/UserActions";
+import { deleteUser, listUser } from "../../Redux/Actions/UserActions";
 import { Link } from "react-router-dom";
 import Loading from "../LoadingError/Loading";
 import Message from "../LoadingError/Message";
@@ -20,10 +20,17 @@ const Users = () => {
   const userList = useSelector((state) => state.userList)
   const { loading, error, users } = userList
 
+  const userDelete = useSelector((state) => state.userDelete)
+  const { error: errorDelete, success: successDelete } = userDelete
   useEffect(() => {
     dispatch(listUser())
-  }, [dispatch])
+  }, [dispatch, successDelete])
 
+  const deleteHandler2 = (id) => {
+    if (window.confirm(`Are you sure to delete this user ${id}?`)) {
+      dispatch(deleteUser(id))
+    }
+  }
   const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
 
   function Items({ currentItems }) {
@@ -50,7 +57,7 @@ const Users = () => {
                       <FontAwesomeIcon icon={faEye} size="xs" />
                     </button>
                   </Link>
-                  <button className="rounded-xl px-3 bg-[#ef4444]">
+                  <button className="rounded-xl px-3 bg-[#ef4444]" onClick={() => deleteHandler2(item._id)}>
                     <FontAwesomeIcon icon={faTrash} size="xs" />
                   </button>
                 </div>
@@ -135,6 +142,11 @@ function PaginatedItems({ itemsPerPage, itemList }) {
         </div>
       </div>
       <div className="mt-2">
+      {
+          errorDelete  && (
+            <Message variant="danger">{errorDelete}</Message>
+           )
+      }
       {
            loading ? (<Loading/>) : error ? (
             <Message variant="danger">{error}</Message>

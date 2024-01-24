@@ -96,7 +96,7 @@ export const deleteProduct = (id) =>  async (dispatch, getState) => {
         }
        // console.log("body: ", body)
 
-        console.log(`del ${api.deleteProduct+id}`)
+       // console.log(`del ${api.deleteProduct+id}`)
 
          const { data } = await axios.delete(api.deleteProduct+id,body, config)
          
