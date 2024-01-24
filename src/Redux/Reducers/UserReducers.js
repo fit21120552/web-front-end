@@ -6,6 +6,7 @@ import {
   USER_REGISTER_FAIL,
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
+  USER_LOGIN_CLEAR_ERROR,
 } from "../Constants/UserConstants";
 
 //LOGIN
@@ -17,12 +18,20 @@ export const userLoginReducer = (state = {}, action) => {
       if (typeof action.payload !== "object") {
         return { loading: false, error: action.payload };
       } else {
-        return { loading: false, userInfo: action.payload };
+        return {
+          loading: false,
+          userInfo: {
+            ...action.payload.user,
+            sessionId: action.payload.sessionId,
+          },
+        };
       }
     case USER_LOGIN_FAIL:
       return { loading: false, error: action.payload };
     case USER_LOGOUT:
       return {};
+    case USER_LOGIN_CLEAR_ERROR:
+      return { ...state, error: "" };
     default:
       return state;
   }

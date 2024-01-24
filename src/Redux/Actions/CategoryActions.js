@@ -47,14 +47,15 @@ export const listCategories = () =>  async (dispatch, getState) => {
         console.log("userInfo: ", userInfo)
         const config = {
             headers: {
-                Authorization: `Bearer ${userInfo.token}`
+                Authorization: `Bearer ${userInfo.token}`,
+                
             }
         }
 
         const { data } = await axios.get(api.getCategory, config)
 
        console.log("data: ",data )
-        dispatch({type: CATEGORY_LIST_SUCCESS, payload: data })
+        dispatch({type: CATEGORY_LIST_SUCCESS, payload: data.data.data })
     }  catch (error) {
         dispatch({
             type: CATEGORY_LIST_FAIL,

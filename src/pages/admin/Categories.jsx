@@ -27,16 +27,16 @@ const Categories = () => {
         {currentItems &&
           currentItems.map((element, index) => (
             <tr className=" mb-4 border-t" key={element._id}>
-            <td className="py-2 font-semibold">1</td>
-            <td className="py-2 ">categories name</td>
-            <td className="py-2">1000</td>
+            <td className="py-2 font-semibold">{index}</td>
+            <td className="py-2 ">{element.name}</td>
+            <td className="py-2">{element.productCount}</td>
 
             <td className="py-2 flex gap-2 items-center h-full">
-              <Link to={`/admin/category/${index}`}>
+              <Link to={`/admin/category/${element._id}`}>
                 <FontAwesomeIcon icon={faEye} color="#00E096" />
               </Link>
-              <Link to={`/admin/category/edit/${index}`}>
-                <FontAwesomeIcon icon={faPencil} color="#00E096" />
+              <Link to={`/admin/category/edit/${element._id}`}>
+                <FontAwesomeIcon icon={faPencil} color="#ca8a04" />
               </Link>
               <button className="rounded-xl px-3 bg-[#ef4444]" onClick={() => setModalShow(true)}>
                 <FontAwesomeIcon icon={faTrash} color="#B22234" />
@@ -68,9 +68,9 @@ const Categories = () => {
      }; 
      return (
       <>
-        <div className="grid grid-cols-3 gap-y-6">
+        
           <Items currentItems={currentItems} />
-        </div>
+       
         <ReactPaginate
           nextLabel=">"
           onPageChange={handlePageClick}
@@ -115,10 +115,12 @@ const Categories = () => {
           <th className="font-normal text-[#96A5B8]">Action</th>
         </tr>
         {
-           loading ? (<Loading/>) : error ? (
-            <Message variant="danger">{error}</Message>
+           loading ? (<tr className="col-span-1 row-span-full"><Loading/></tr>) : error ? (
+            <tr className="col-span-1">
+            <Message variant="danger" >{error}</Message>
+            </tr>
            ) : (
-            <PaginatedItems itemsPerPage={10} itemList={categories} />
+            <PaginatedItems itemsPerPage={7} itemList={categories} />
            )
         }
       </table>

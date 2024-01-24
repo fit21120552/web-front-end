@@ -15,6 +15,8 @@ import { faFacebookF } from "@fortawesome/free-brands-svg-icons";
 import { logout } from "../../Redux//Actions/UserActions";
 import { useEffect, useRef, useState } from "react";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
+import { api } from "../../constants/api";
 const Header = ({ title, setTitle }) => {
   const ref = useRef();
   const location = useLocation();
@@ -50,27 +52,29 @@ const Header = ({ title, setTitle }) => {
     dispatch(logout());
   };
 
-  const menuItemsData = [
-    {
-      title: "Camera",
-      url: "/product?category=camera",
-      submenu: [],
-    },
-    {
-      title: "Laptop",
-      url: "/product?category=laptop",
-      submenu: [
-        {
-          title: "Dell",
-          url: "/product?category=laptop&title=dell",
-        },
-        {
-          title: "Macbook",
-          url: "/product?category=laptop&title=macbook",
-        },
-      ],
-    },
-  ];
+  const [menuItemsData, setMenuItemsData] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const res = await axios.get(api.getAllCategory, api.config);
+      if (res.data.status === "success") {
+        const data = res.data.data.data;
+        setMenuItemsData(
+          data.map((item) => ({
+            id: item._id,
+            title: item.name.charAt(0).toUpperCase() + item.name.slice(1),
+            url: "/product?category=" + item.name,
+            submenu: item.subCategory.map((subitem) => ({
+              title:
+                subitem.name.charAt(0).toUpperCase() + subitem.name.slice(1),
+              url: "/product?category=" + item.name + "&title=" + subitem.name,
+            })),
+          }))
+        );
+      }
+    }
+    fetchData();
+  }, []);
 
   return (
     <div>
@@ -160,7 +164,7 @@ const Header = ({ title, setTitle }) => {
             <Row>
               <div className="col-xs-3 col-3 flex items-center">
                 <Link className="navbar-brand flex items-center" to="/">
-                  <img src="./images/dummy.png" alt="logo" width={50} />
+                  <img src="/images/dummy.png" alt="logo" width={50} />
                   <div className="text-sm font-semibold leading-3">
                     <p>SUPER</p>
                     <p className="text-blue-500">STORE</p>
@@ -178,7 +182,7 @@ const Header = ({ title, setTitle }) => {
                       {menuItemsData.map((item, index) => (
                         <div
                           onClick={() => navigate(item.url)}
-                          className="cursor-pointer hover:bg-blue-400 hover:text-white py-1 text-left pl-2 pr-5"
+                          className="cursor-pointer relative hover:bg-blue-400 hover:text-white py-1 text-left pl-2 pr-5"
                           key={index}
                           onMouseEnter={() => {
                             if (item.submenu.length > 0) {
@@ -191,7 +195,7 @@ const Header = ({ title, setTitle }) => {
                             <span className="absolute right-1">&gt;</span>
                           )}
                           {isSubMenuOpen === index && (
-                            <div className="absolute top-9 text-black bg-white shadow-xl  min-w-[107px] -right-[100%] rounded-sm flex flex-col gap-1">
+                            <div className="absolute  text-black bg-white shadow-xl top-[-1px] -right-[93px] rounded-sm flex flex-col gap-1">
                               {item.submenu.map((subitem, subindex) => (
                                 <button
                                   onClick={(e) => {
@@ -280,7 +284,7 @@ const Header = ({ title, setTitle }) => {
                     </div>
                     <Link to="/cart" className="mx-3">
                       <i className="fas fa-shopping-bag"></i>
-                      <span className="badge">{4}</span>
+                      {/* <span className="badge">{4}</span> */}
                     </Link>
                   </div>
                 ) : (

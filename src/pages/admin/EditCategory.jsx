@@ -1,17 +1,90 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
-
+import { api } from "../../constants/api";
+import Loading from "../LoadingError/Loading"
+import Message from "../LoadingError/Message"
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 const EditCategory = () => {
     const [categoryName, setCategoryName] = useState("")
     const [productCount, setProductCount ] = useState("")
     const [productCategory, setProductCategory] = useState([])
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const params = useParams()
+    const { id } = params 
+    const { userInfo } = useSelector((state) => state.userLogin)
 
     const submitHandler = (e) => {
         e.preventDefault()
-
+        updateCategory(id, categoryName)
+        alert("success")
+        navigate(`/admin/category/${id}`)
+        //fetchCategory()
+        
     }
+    const getErrorMessage = (errorCategory) => {
+        return errorCategory.response && errorCategory.response.data.message ? 
+                                                errorCategory.response.data.message : 
+                                                errorCategory.message
+    }
+    let loadingCategory = false
+    let errorCategory = null
+    let loadingProduct = false
+    let errorProduct = null
+
+    const updateCategory = async (catId, name) => {
+        try {
+            loadingCategory = true
+
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${userInfo.token}`,
+                    "Access-Control-Allow-Origin": "*",
+                    "Content-Type":"application/json",
+                }
+            }
+            const body ={
+                sessionId : userInfo.sessionId,
+                name: name,
+            }
+            const { data } = await axios.patch(api.editCategory+catId,body,config)
+            
+            console.log("data:", data)
+            loadingCategory=false
+        } catch (error) {
+            console.log(error)
+            errorCategory=error
+        }
+    }
+    const fetchCategory = async() => {
+        try {
+           loadingCategory =true
+            const { data } = await axios.get(api.getCategory+id)
+            console.log("data:" , data.data.data)
+           
+            const temp = data.data.data
+            //console.log("temp:",temp.title,temp.price, temp)
+           setCategoryName(temp.name)
+           setProductCount(temp.productCount)
+           loadingCategory=false
+           
+        } catch (error) {
+           console.log(error)
+           errorCategory = error
+        }
+    }
+    useEffect( () => {
+       
+         fetchCategory()
+            
+           
+       
+     },[ dispatch, id])
+    
+    
     return (
         <div className="flex flex-column">
             <div >
@@ -27,7 +100,10 @@ const EditCategory = () => {
                 EDIT CATEGORY
             </div>
             <div className="rounded-lg border-2 border-solid bg-white p-3 m-4">
-                <form onSubmit={submitHandler}>
+            {
+                loadingCategory ? (<Loading />) : errorCategory
+                ? (<Message variant="danger">{getErrorMessage(errorCategory)}</Message>)
+                : ( <form onSubmit={submitHandler}>
                     <div class="form mb-4 text-left input-group">
                         <span className="text-start font-bold input-group-text w-30" for="typeEmailX-2">Category name</span>
                         <input type="text"
@@ -69,7 +145,9 @@ const EditCategory = () => {
                             </p>
                         </button>
                     </div>
-                </form>
+                </form>)
+            }
+               
             </div>
         </div>
     )

@@ -1,28 +1,69 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { faSave } from "@fortawesome/free-solid-svg-icons";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { faPencil, faSave } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { listCategoryDetails } from "../../Redux/Actions/CategoryActions";
-
+import axios from "axios";
+import { api } from "../../constants/api";
+import Loading from "../LoadingError/Loading"
+import Message from "../LoadingError/Message"
 const DetailCategory = () => {
     const [categoryName, setCategoryName] = useState("")
     const [productCount, setProductCount ] = useState("")
     const [productCategory, setProductCategory] = useState([])
     const dispatch = useDispatch()
-    const [params, setParams] = useParams()
+    const params = useParams()
     const categoryDetails = useSelector((state) => state.categoryDetails)
     const { loading, error, category } = categoryDetails
     const { id } = params
 
-    useEffect(() => {
-        dispatch(listCategoryDetails(id))
-        setCategoryName(category.name)
-        setProductCount(category.productCount)
-    }, [dispatch,id])
+    const navigate = useNavigate()
+    // useEffect(() => {
+    //     dispatch(listCategoryDetails(id))
+    //     setCategoryName(category.name)
+    //     setProductCount(category.productCount)
+    // }, [dispatch,id])
+
+    const getErrorMessage = (errorCategory) => {
+        return errorCategory.response && errorCategory.response.data.message ? 
+                                                errorCategory.response.data.message : 
+                                                errorCategory.message
+    }
+    let loadingCategory = false
+    let errorCategory = null
+    let loadingProduct = false
+    let errorProduct = null
+    const fetchProduct = async () => {
+
+    }
+    useEffect( () => {
+        const fetchCategory = async() => {
+             try {
+                loadingCategory =true
+                 const { data } = await axios.get(api.getCategory+id)
+                 //console.log("data:" , data.data.data)
+                
+                 const temp = data.data.data
+                 //console.log("temp:",temp.title,temp.price, temp)
+                setCategoryName(temp.name)
+                setProductCount(temp.productCount)
+                loadingCategory=false
+                
+             } catch (error) {
+                console.log(error)
+                errorCategory = error
+             }
+         }
+         fetchCategory()
+            
+           
+       
+     },[ dispatch, id])
+
     const submitHandler = (e) => {
         e.preventDefault()
-
+        navigate(`/admin/category/edit/${id}`)
     }
     return (
         <div className="flex flex-column">
@@ -36,10 +77,14 @@ const DetailCategory = () => {
                 
             </div>
             <div className="flex flex-row justify-center font-bold text-2xl">
-                EDIT CATEGORY
+                DETAIL CATEGORY
             </div>
             <div className="rounded-lg border-2 border-solid bg-white p-3 m-4">
-                <form onSubmit={submitHandler}>
+            {
+                loadingCategory ? (<Loading />) : errorCategory
+                ? (<Message variant="danger">{getErrorMessage(errorCategory)}</Message>)
+                : (
+                    <form onSubmit={submitHandler}>
                     <div class="form mb-4 text-left input-group">
                         <span className="text-start font-bold input-group-text w-30" for="typeEmailX-2">Category name</span>
                         <input type="text"
@@ -48,7 +93,9 @@ const DetailCategory = () => {
                                 className="form-control"
                                 value={categoryName}
                                 onChange={(e) => setCategoryName(e.target.value)}
-                                required />
+                                required 
+                                    readOnly
+                                />
                     </div>
 
                     <div class="form mb-4 text-left input-group">
@@ -59,7 +106,7 @@ const DetailCategory = () => {
                                 className="form-control"
                                 value ={productCount}
                                 onChange={(e) => setProductCount(e.target.value)}
-                                readOnly="true" />
+                                readOnly />
                     </div>
 
                     <div>
@@ -75,13 +122,16 @@ const DetailCategory = () => {
                     
                     <div className="flex flex-row justify-center my-2 p-3 text-xl">
                         <button type="submit" className="">
-                            <p className="bg-[#10b981] px-4 py-2 rounded-lg text-white">
-                                <FontAwesomeIcon icon={faSave} color="white"/>
-                                <span> Save</span>
+                            <p className="bg-[#ca8a04] px-4 py-2 rounded-lg text-white">
+                                <FontAwesomeIcon icon={faPencil} color="white"/>
+                                <span> Edit</span>
                             </p>
                         </button>
                     </div>
                 </form>
+                )
+            }
+               
             </div>
         </div>
     )

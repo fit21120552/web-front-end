@@ -7,13 +7,9 @@ import {
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
   USER_REGISTER_FAIL,
+  USER_LOGIN_CLEAR_ERROR,
 } from "../Constants/UserConstants";
 import { api } from "../../constants/api";
-
-const config = {
-  headers: { "Access-Control-Allow-Origin": "*" },
-  withCredentials: true,
-};
 
 export const login = (username, password) => async (dispatch) => {
   try {
@@ -22,12 +18,18 @@ export const login = (username, password) => async (dispatch) => {
     const { data } = await axios.post(
       api.login,
       { username, password },
-      config
+      api.config
     );
 
     dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
 
-    localStorage.setItem("userInfo", JSON.stringify(data));
+    localStorage.setItem(
+      "userInfo",
+      JSON.stringify({
+        ...data.user,
+        sessionId: data.sessionId,
+      })
+    );
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAIL,
@@ -39,11 +41,19 @@ export const login = (username, password) => async (dispatch) => {
   }
 };
 
+export const clearError = () => async (dispatch) => {
+  try {
+    dispatch({ type: USER_LOGIN_CLEAR_ERROR });
+  } catch (error) {
+    return;
+  }
+};
+
 export const loginGoogle = (email) => async (dispatch) => {
   try {
     dispatch({ type: USER_LOGIN_REQUEST });
 
-    const { data } = await axios.post(api.login, { email }, config);
+    const { data } = await axios.post(api.login, { email }, api.config);
 
     dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
 
@@ -73,7 +83,7 @@ export const register = (username, email, password) => async (dispatch) => {
     const data = await axios.post(
       api.signup,
       { username, email, password },
-      config
+      api.config
     );
 
     dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
