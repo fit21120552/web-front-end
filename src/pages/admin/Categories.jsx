@@ -13,27 +13,56 @@ import { deleteProduct } from "../../Redux/Actions/ProductActions";
 
 const Categories = () => {
  
-  const [modalShow, setModalShow] = React.useState(false);
-  const dispatch = useDispatch()
+ const dispatch = useDispatch()
   const categoryList = useSelector((state) => state.categoryList)
   const { loading, error, categories } = categoryList
+  const categoryDelete = useSelector((state) =>  state.categoryDelete)
+  const { error: errorDelete, success: successDelete } = categoryDelete
+
+  const [deleteItemId, setDeleteItemId] = useState(null);
+const [modalShow, setModalShow] = React.useState(false);
 
   useEffect(() => {
     dispatch(listCategories())
-  }, [dispatch])
+  }, [dispatch, successDelete])
    
   const deleteHandler = (id) => {
+    //console.log(currentItems)
+    console.log(id)
+    dispatch(deleteCategory(id))
+    setDeleteItemId(null)
     alert(`deleted ${id}`)
-   dispatch(deleteCategory(id))
+   
   setModalShow(false)
 }
+
+const deleteHandler2 = (id) => {
+  if (window.confirm(`Are you sure to delete this category ${id}?`)) {
+    dispatch(deleteCategory(id))
+    alert(`deleted ${id}`)
+  }
+}
+    
+useEffect(() => {
+  if (deleteItemId) {
+    deleteHandler(deleteItemId)
+    setDeleteItemId(null)
+  }
+  
+})
   function Items({ currentItems }) {
+  
+    const deleteItem = (itemId) => {
+      setModalShow(true);
+      //setDeleteItemId(itemId);
+      //setDeleteItemId(null)
+    };
     return (
       <>
         {currentItems &&
           currentItems.map((element, index) => (
             <tr className=" mb-4 border-t" key={element._id}>
-            <td className="py-2 font-semibold">{index}</td>
+            <td className="py-2 font-semibold">{index} - {element._id}</td>
             <td className="py-2 ">{element.name}</td>
             <td className="py-2">{element.productCount}</td>
 
@@ -44,13 +73,13 @@ const Categories = () => {
               <Link to={`/admin/category/edit/${element._id}`}>
                 <FontAwesomeIcon icon={faPencil} color="#ca8a04" />
               </Link>
-              <button className="rounded-xl px-3 bg-[#ef4444]" onClick={(e) => setModalShow(true)}>
+              <button className="rounded-xl px-3 bg-[#ef4444]" onClick={(e) =>deleteHandler2(element._id)}>
                 <FontAwesomeIcon icon={faTrash} color="#B22234" />
               </button>
               <VerticallyCenteredModal
                       show={modalShow}
                       onCancel={() => setModalShow(false)}
-                      onDelete={() => deleteHandler(element._id)}//setModalShow(false)}//
+                      onDelete={() => deleteHandler(element._id)}//deleteItem(element._id)}//d//setModalShow(false)}// // setModalShow(true)}>
                       header={`Are you sure to delete this category ${element.name} ?`}
                       body = {`Product count: ${element.productCount}`}
                       />
@@ -110,6 +139,9 @@ const Categories = () => {
           </Link>
         </button>
       </div>
+      {
+         errorDelete ? (  <Message variant="danger w-full mb-2" >{errorDelete}</Message>):null
+      }
         {
            loading ? (<Loading/>) : error ? (
           
