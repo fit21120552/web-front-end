@@ -20,7 +20,7 @@ const Products = () => {
   const { loading, error, products } = productList;
 
   const productDelete = useSelector((state) => state.productDelete)
-  const { error: errorDelete, success: successDelete } = productDelete
+  let { error: errorDelete, success: successDelete } = productDelete
   useEffect(() => {
     dispatch(listProductsAdmin())
   },[dispatch, successDelete])
@@ -98,6 +98,7 @@ const Products = () => {
     const pageCount = Math.ceil(itemList.length / itemsPerPage);
 
     const handlePageClick = (event) => {
+      //errorDelete=null
       const newOffset = (event.selected * itemsPerPage) % itemList.length;
       setItemOffset(newOffset);
     };

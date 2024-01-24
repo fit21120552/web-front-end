@@ -31,4 +31,10 @@ export const api = {
   // product api
   getAllProduct: IPaddress + "/api/v1/product/",
   getAllCategory: IPaddress + "/api/v1/category/",
+
+  //user api
+  getAllUser: IPaddress + "/admin/users/",
+  getUser: IPaddress + "/admin/user/",
+  deleteUser: IPaddress + "/admin/user/delete",
+  
 };
