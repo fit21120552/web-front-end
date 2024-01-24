@@ -31,7 +31,7 @@ const [modalShow, setModalShow] = React.useState(false);
     console.log(id)
     dispatch(deleteCategory(id))
     setDeleteItemId(null)
-    alert(`deleted ${id}`)
+   // alert(`deleted ${id}`)
    
   setModalShow(false)
 }
@@ -39,7 +39,7 @@ const [modalShow, setModalShow] = React.useState(false);
 const deleteHandler2 = (id) => {
   if (window.confirm(`Are you sure to delete this category ${id}?`)) {
     dispatch(deleteCategory(id))
-    alert(`deleted ${id}`)
+    //alert(`deleted ${id}`)
   }
 }
     

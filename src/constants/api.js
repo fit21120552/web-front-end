@@ -18,17 +18,17 @@ export const api = {
   //product api
   getAndCreateProduct: IPaddress + "/api/v1/product/",
   deleteProduct: IPaddress + "/admin/product/delete/",
-  createProduct: IPaddress + "/admin/product/create",
-  editProduct: IPaddress + "/admin/product/update",
+  createProduct: IPaddress + "/admin/product/create/",
+  editProduct: IPaddress + "/admin/product/update/",
 
   //category api
   getCategory: IPaddress + "/api/v1/category/",
   editCategory: IPaddress + "/admin/category/",
-  resetPassword: IPaddress + "/resetpassword",
-  verifyCode: IPaddress + "/verifycode",
+  resetPassword: IPaddress + "/resetpassword/",
+  verifyCode: IPaddress + "/verifycode/",
   changePassword: IPaddress + "/user/passwordm/",
 
   // product api
-  getAllProduct: IPaddress + "/api/v1/product",
-  getAllCategory: IPaddress + "/api/v1/category",
+  getAllProduct: IPaddress + "/api/v1/product/",
+  getAllCategory: IPaddress + "/api/v1/category/",
 };

@@ -85,7 +85,7 @@ export const deleteCategory=  (id)=>  async (dispatch, getState) => {
         }
 
         console.log("delete cat id: ", id)
-        const { data } = await axios.delete(api.editCategory+id, body, config)
+        const { data } = await axios.delete(api.getCategory+id, body, config)
 
         console.log("data del: ", data)
         dispatch({ type: CATEGORY_DELETE_SUCCESS})

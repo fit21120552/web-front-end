@@ -93,7 +93,7 @@ export const deleteProduct = (id) =>  async (dispatch, getState) => {
             sessionId: userInfo.sessionId
         }
 
-        await axios.delete(`${api.deleteProduct}${id}`,body, config)
+        await axios.delete(`${api.getAndCreateProduct}${id}`,body, config)
 
        // console.log("data: ",data )
         dispatch({type: PRODUCT_DELETE_SUCCESS})

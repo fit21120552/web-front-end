@@ -76,14 +76,9 @@ const EditCategory = () => {
            errorCategory = error
         }
     }
-    useEffect( () => {
-       
-         fetchCategory()
-            
-           
-       
+    useEffect( () => {  
+         fetchCategory()    
      },[ dispatch, id])
-    
     
     return (
         <div className="flex flex-column">

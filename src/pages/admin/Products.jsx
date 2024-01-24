@@ -30,6 +30,15 @@ const Products = () => {
      dispatch(deleteProduct(id))
     setModalShow(false)
   }
+
+  const deleteHandler2 = (id) => {
+    if (window.confirm(`Are you sure to delete this product ${id}?`)) {
+      dispatch(deleteProduct(id))
+     // alert(`deleted ${id}`)
+    }
+  }
+    
+  
   const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
   function Items({ currentItems }) {
     return (
@@ -60,7 +69,7 @@ const Products = () => {
                     </Link>
                     
                  
-                  <button className="rounded-xl px-3 bg-[#ef4444]" onClick={() => setModalShow(true)}>                  
+                  <button className="rounded-xl px-3 bg-[#ef4444]" onClick={() => deleteHandler2(item._id)}>         
                       <FontAwesomeIcon icon={faTrash} size="xs" />               
                   </button>
                   <div style={{ display: 'none', position: 'initial' }} >

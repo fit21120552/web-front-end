@@ -75,8 +75,8 @@ const DetailProduct = () => {
         <div className="flex flex-column">
             <div >
                 
-                <Link to="/admin/products bg-[#ef4444] rounded-xl p-2 text-white m-3">
-                    <button className=" ">
+                <Link to="/admin/products" className="">
+                    <button className=" bg-[#ef4444] rounded-xl p-2 text-white m-3 ">
                         Return product list
                         </button>
                 </Link>
