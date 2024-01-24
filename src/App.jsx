@@ -23,6 +23,7 @@ import EditCategory from "./pages/admin/EditCategory";
 import AddCategory from "./pages/admin/AddCategory";
 import DetailCategory from "./pages/admin/DetailCategory";
 import DetailProduct from "./pages/admin/DetailProduct";
+import DetailUser from "./pages/admin/DetailUser";
 
 export default function App() {
   return (
@@ -56,6 +57,7 @@ export default function App() {
           <Route path="/admin/category/edit/:id" element={<EditCategory/>}/>
           <Route path="/admin/category/add/" element={<AddCategory/>}/>
           <Route path="/admin/users" element={<Users />} />
+          <Route path="/admin/user/:id" element = {<DetailUser/>}/>
           <Route path="/admin/promotion" element={<Promotion />} />
           <Route path="/admin/settings" element={<Settings />} />
         </Route>

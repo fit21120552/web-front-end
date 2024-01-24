@@ -148,11 +148,25 @@ export const deleteUser = (id) => async (dispatch, getState) => {
 }
 }
 
-export const listUser = () => async(dispatch) => {
+export const listUser = () => async(dispatch, getState) => {
   try {
       dispatch({ type: USER_LIST_REQUEST}) 
-      const { data } = await axios.get(api.getAllUser)
-    //  console.log("list product:", data)
+      const { userLogin: { userInfo }, } = getState()
+      const body = {
+        sessionId: userInfo.sessionId,
+      }
+      const config = {
+        headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type":"application/json",
+        },
+        withCredentials: true,
+        
+    }
+      const { data } = await axios.post(api.getAllUser,body, config)
+
+     console.log("list user:", data)
       dispatch({ type: USER_LIST_SUCCESS, payload: data});
       
   } catch (error) {
@@ -168,11 +182,11 @@ export const listUser = () => async(dispatch) => {
 
 
 //USER DETAILS
-export const listProductDetails = (id) => async(dispatch) => {
+export const listUserDetails = (id) => async(dispatch) => {
   try {
       dispatch({ type: USER_DETAILS_REQUEST}) 
       const { data } = await axios.get(api.getUser+id)
-      //console.log("data:" , data.data.data)
+      console.log("data:" , data)
       dispatch({ type: USER_DETAILS_SUCCESS, payload: data.data.data});
       
   } catch (error) {

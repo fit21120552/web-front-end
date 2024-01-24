@@ -12,7 +12,7 @@ import Loading from "../LoadingError/Loading"
 import Message from "../LoadingError/Message"
 const Products = () => {
   const [modalShow, setModalShow] = React.useState(false);
-
+  const [itemPerPage, setItemPerPage] = useState(6)
   const dispatch = useDispatch()
 
   const productList = useSelector((state) => state.productList)
@@ -160,9 +160,9 @@ const Products = () => {
             <option value="">Cheap first</option>
             <option value="">Most viewed</option>
           </select>
-          <select name="" id="" className="rounded-lg bg-[#e1e0e0] px-4">
-            <option value="">Show 20</option>
-            <option value="">Show 50</option>
+          <select name="" id="" className="rounded-lg bg-[#e1e0e0] px-4" onChange={(e) => setItemPerPage(e.target.value)}>
+            <option value={3}>Show 3</option>
+            <option value={6} selected>Show 6</option>
           </select>
         </div>
       </div>
@@ -176,7 +176,7 @@ const Products = () => {
            loading ? (<Loading/>) : error ? (
             <Message variant="danger">{error}</Message>
            ) : (
-            <PaginatedItems itemsPerPage={6} itemList={products} />
+            <PaginatedItems itemsPerPage={itemPerPage} itemList={products} />
            )
         }
         

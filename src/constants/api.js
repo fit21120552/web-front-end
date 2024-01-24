@@ -33,7 +33,7 @@ export const api = {
   getAllCategory: IPaddress + "/api/v1/category/",
 
   //user api
-  getAllUser: IPaddress + "/admin/users/",
+  getAllUser: IPaddress + "/admin/",
   getUser: IPaddress + "/admin/user/",
   deleteUser: IPaddress + "/admin/user/delete",
   
