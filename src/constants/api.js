@@ -36,5 +36,8 @@ export const api = {
   getAllUser: IPaddress + "/admin/",
   getUser: IPaddress + "/admin/user/",
   deleteUser: IPaddress + "/admin/user/delete",
+
+  //order
+  getOrder: IPaddress +"/admin/order/",
   
 };
