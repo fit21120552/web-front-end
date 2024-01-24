@@ -1,9 +1,14 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import FileInput from "./FileInput";
 import ImageUpload from "./FileInput";
+import { useDispatch, useSelector } from "react-redux";
+import { editProduct } from "../../Redux/Actions/ProductActions";
+import { PRODUCT_EDIT_RESET } from "../../Redux/Constants/ProductConstants";
+import axios from "axios";
+import { api } from "../../constants/api";
 const EditProduct = () => {
 
     const [title, setTitle] = useState("")
@@ -13,9 +18,80 @@ const EditProduct = () => {
     const [thumbnail, setThumbnail ] = useState(null)
     const [previewImage, setPreviewImage] = useState(null)
     const [stock, setStock] = useState(0)
-    
-    const submitHandler = (e) => {
+    const dispatch = useDispatch()
+    const [searchParams, setSearchParams] = useSearchParams()
+    const params = useParams()
+    const productEdit = useSelector((state) => state.productEdit)
+    const { loading, error, success, product } = productEdit
+    const { id } = params 
+    // useEffect(() => {
+    //     if (success) {
+    //         dispatch({type: PRODUCT_EDIT_RESET})
+    //     }else {
+    //         setTitle(product.name)
+    //         setDescription(product.description)
+    //         setStock(product.stock)
+    //         setThumbnail(product.thumbnail)
+    //         setPrice(product.price)
+    //         setPreviewImage(product.thumbnail)
+    //    }
+    // },[product, dispatch, id])
+
+    useEffect( () => {
+        const fetchProduct = async() => {
+             try {
+                // dispatch({ type: PRODUCT_DETAILS_REQUEST}) 
+                 const { data } = await axios.get(api.getAndCreateProduct+id)
+                 //console.log("data:" , data.data.data)
+                // dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data.data.data});
+                 const temp = data.data.data
+                 console.log("temp:",temp.title,temp.price, temp)
+                 setTitle(temp.title);
+                 setPrice(temp.price);
+                 setDescription(temp.description);
+                 setCategory(temp.category);
+                 //setThumbnail(temp.thumbnail);
+                 setStock(temp.stock);
+                 setPreviewImage((temp.thumbnail));
+             } catch (error) {
+                console.log(error)
+             }
+         }
+         fetchProduct()
+            
+           
+       
+     },[ dispatch, id])
+
+     const { 
+         userInfo
+    } = useSelector((state) => state.userLogin)
+
+    const config = {
+        headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type":"application/json",
+        },
+        withCredentials: true,
+    }
+    const updateProduct = async (id, title, price, stock, description, category, thumbnail)=> {
+        try {
+            const { data} =  await axios.patch(`${api.editProduct}${id}`,
+                                            {title, price, stock, description, category, thumbnail},
+                                            config)
+            console.log("data:", data)
+        } catch (error) {
+            console.log(error)
+        }
+    } 
+    const navigate = useNavigate()
+    const submitHandler = (e) => async (e) => {
         e.preventDefault()
+        await updateProduct()
+        alert("Updated success!")
+        navigate(`/admin/product/${id}`)
+        
     }
     const selectFile = (event) => {
         setThumbnail(event.target.value);
@@ -31,14 +107,16 @@ const EditProduct = () => {
     return (
         <div className="flex flex-column">
             <div >
-                <button className=" bg-[#ef4444] rounded-xl p-2 text-white m-3">
-                    <Link to="/admin/products">
+                
+                <Link to="/admin/products bg-[#ef4444] rounded-xl p-2 text-white m-3">
+                    <button className=" ">
                         Return product list
-                    </Link>
-                </button>
+                        </button>
+                </Link>
+                
             </div>
             <div className="flex flex-row justify-center font-bold text-2xl">
-                ADD PRODUCT
+                EDIT PRODUCT
             </div>
             <div className="rounded-lg border-2 border-solid bg-white p-3 m-4">
                 <form onSubmit={submitHandler}>
@@ -118,7 +196,7 @@ const EditProduct = () => {
                                 value={thumbnail}
                                 onChange={selectFile} 
                                 single
-                                required></input>
+                                ></input>
                            
                     </div>
 

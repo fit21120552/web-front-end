@@ -46,7 +46,13 @@ filter: alpha(opacity=50);
 .modal { 
 --bs-modal-bg: #00000000 !important; 
 }
-
+.modal-backdrop.active {
+    opacity: 1;
+  }
+  
+.modal-backdrop.inactive {
+    opacity: 0.5;
+  }
 .cart-buttons {
     margin-top: 8vmax;
     margin-bottom: 8vmax;

@@ -1,18 +1,34 @@
 /* eslint-disable react/prop-types */
-import { faEdit, faSearch, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faEye, faSearch, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
 import VerticallyCenteredModal from "../LoadingError/Modal";
 import { Alert, Button } from "react-bootstrap";
-
+import { useDispatch, useSelector } from "react-redux";
+import { deleteProduct, listProductsAdmin } from "../../Redux/Actions/ProductActions";
+import Loading from "../LoadingError/Loading"
+import Message from "../LoadingError/Message"
 const Products = () => {
   const [modalShow, setModalShow] = React.useState(false);
 
-  const deleteHandler = (index) => {
-      alert(`deleted ${index}`)
-      setModalShow(false)
+  const dispatch = useDispatch()
+
+  const productList = useSelector((state) => state.productList)
+
+  const { loading, error, products } = productList;
+
+  const productDelete = useSelector((state) => state.productDelete)
+  const { error: errorDelete, success: successDelete } = productDelete
+  useEffect(() => {
+    dispatch(listProductsAdmin())
+  },[dispatch, successDelete])
+
+  const deleteHandler = (id) => {
+      alert(`deleted ${id}`)
+     dispatch(deleteProduct(id))
+    setModalShow(false)
   }
   const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
   function Items({ currentItems }) {
@@ -21,18 +37,23 @@ const Products = () => {
         {currentItems &&
           currentItems.map((item, index) => (
             <div
-              key={index}
-              className="border rounded-md flex flex-col max-w-[250px] p-2"
+              key={item._id}
+              className="border rounded-md flex flex-col max-w-[250px] px-2 pt-2 pb-0 max-h-[250px]"
             >
-              <div className="bg-white rounded-lg w-32 h-32 mx-auto">
-                <img src="" alt="" />
+              <div className="bg-white rounded-lg mx-auto w-2/3 h-1/2 ">
+                <img src={item.thumbnail} alt={item.title} className="w-4/5 h-4/5"/>
               </div>
-              <p>Shoes Air port</p>
+              <p>{item.title}</p>
               <div className="flex justify-between">
-                <p className="font-semibold">25$</p>
+                <p className="font-semibold">${item.price}</p>
                 <div className="flex gap-1">
                   
-                    <Link to={`/admin/product/edit/${index}`}>
+                    <Link to={`/admin/product/${item._id}`}>
+                      <button className="rounded-xl px-3 bg-[#4ade80]">
+                        <FontAwesomeIcon icon={faEye} size="xs" /> 
+                      </button>
+                    </Link>
+                    <Link to={`/admin/product/edit/${item._id}`}>
                       <button className="rounded-xl px-3 bg-[#FFBE18]">
                       <FontAwesomeIcon icon={faEdit} size="xs" /> 
                       </button>
@@ -42,13 +63,15 @@ const Products = () => {
                   <button className="rounded-xl px-3 bg-[#ef4444]" onClick={() => setModalShow(true)}>                  
                       <FontAwesomeIcon icon={faTrash} size="xs" />               
                   </button>
+                  <div style={{ display: 'none', position: 'initial' }} >
                   <VerticallyCenteredModal 
                       show={modalShow}
-                      onCancel={() => setModalShow(false)}
-                      onDelete={() => deleteHandler(index)}
-                      header={`Are you sure to delete product ${index}?`}
-                      body = {`${index}`}
+                      onCancel={(e) => setModalShow(false)}
+                      onDelete={(e) => deleteHandler(item._id)}
+                      header={`Are you sure to delete product ${item.title}?`}
+                      body = {`Product stock: ${item.stock}`}
                       />
+                      </div>
                 </div>
               </div>
             </div>
@@ -57,15 +80,16 @@ const Products = () => {
     );
   }
 
-  function PaginatedItems({ itemsPerPage }) {
+  function PaginatedItems({ itemsPerPage, itemList }) {
+   // console.log("item: ", itemList.length)
     const [itemOffset, setItemOffset] = useState(0);
 
     const endOffset = itemOffset + itemsPerPage;
-    const currentItems = items.slice(itemOffset, endOffset);
-    const pageCount = Math.ceil(items.length / itemsPerPage);
+    const currentItems = itemList.slice(itemOffset, endOffset);
+    const pageCount = Math.ceil(itemList.length / itemsPerPage);
 
     const handlePageClick = (event) => {
-      const newOffset = (event.selected * itemsPerPage) % items.length;
+      const newOffset = (event.selected * itemsPerPage) % itemList.length;
       setItemOffset(newOffset);
     };
 
@@ -100,13 +124,15 @@ const Products = () => {
 
   return (
     <div className="px-10">
-      <div className="flex justify-between mt-10">
+      <div className="flex justify-between mt-3">
         <div className=""></div>
-        <button className="bg-[#0CA91B] rounded-lg px-4 py-2 text-white">
+        
           <Link to="/admin/product/add">
-            Create new <span className="text-lg">+</span>
+            <button className="bg-[#0CA91B] rounded-lg px-4 py-2 text-white">
+              Create new <span className="text-lg">+</span>
+            </button>
           </Link>
-        </button>
+        
       </div>
       <div className="mt-4 flex justify-between ">
         <div className="bg-[#e1e0e0] flex gap-3 items-center rounded-lg px-4 py-2">
@@ -120,8 +146,9 @@ const Products = () => {
         <div className="flex gap-4">
           <select name="" id="" className="rounded-lg bg-[#e1e0e0] px-4">
             <option value="">All category</option>
-            <option value="">Delivered</option>
-            <option value="">Not delivered</option>
+            <option value="">Latest added</option>
+            <option value="">Cheap first</option>
+            <option value="">Most viewed</option>
           </select>
           <select name="" id="" className="rounded-lg bg-[#e1e0e0] px-4">
             <option value="">Show 20</option>
@@ -130,7 +157,19 @@ const Products = () => {
         </div>
       </div>
       <div className="mt-4">
-        <PaginatedItems itemsPerPage={6} />
+        {
+          errorDelete && (
+            <Message variant="danger">{errorDelete}</Message>
+           )
+        }
+        {
+           loading ? (<Loading/>) : error ? (
+            <Message variant="danger">{error}</Message>
+           ) : (
+            <PaginatedItems itemsPerPage={6} itemList={products} />
+           )
+        }
+        
       </div>
     </div>
   );

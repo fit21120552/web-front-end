@@ -11,8 +11,19 @@ export const api = {
   login: IPaddress + "/signin/",
   loginWithGoogle: IPaddress + "/auth/google/",
   profile: IPaddress + "/user/",
-  getAndCreateProduct: IPaddress + "/api/v1/product/",
+  
   getCart: IPaddress + "/api/v1/carts/",
+  getUser: IPaddress + "/api/v1/user/",
+
+  //product api
+  getAndCreateProduct: IPaddress + "/api/v1/product/",
+  deleteProduct: IPaddress + "/admin/product/delete/",
+  createProduct: IPaddress + "/admin/product/create",
+  editProduct: IPaddress + "/admin/product/update",
+
+  //category api
+  getCategory: IPaddress + "/api/v1/category/",
+  editCategory: IPaddress + "/admin/category/",
   resetPassword: IPaddress + "/resetpassword",
   verifyCode: IPaddress + "/verifycode",
   changePassword: IPaddress + "/user/passwordm/",
