@@ -1,180 +1,61 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { addTocart, removeFromCart } from "../../Redux/Actions/CartActions";
 import { useDispatch, useSelector } from "react-redux";
 import { Alert, Button, Col, Row } from "react-bootstrap";
 import Message from "../LoadingError/Message";
 
-const Cart = ({ match, location, history }) => {
-  // window.scrollTo(0,0);
-
-  // const productId = match.params.id
-  // const quantity = location.search ? Number(location.search.split("=")[1]) : 1
-
-  const setQuantity = ({ product, quantity }) => {
-    // console.log("value: ",quantity)
-    if (quantity <= product.stock && quantity >= 1) {
-      const updatedCartItems = cartItems.map((item) => {
-        if (product._id === item._id) {
-          item.quantity = quantity;
-          //console.log("oke", cartItems)
-        }
-        return item;
-      });
-      setCartItems(updatedCartItems);
-    }
-  };
+const Cart = () => {
+  const params = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const cart = useSelector((state) => state.cart);
-  //let { cartItems } = cart
+  const { cartItems } = useSelector((state) => state.cart);
 
-  let [cartItems, setCartItems] = useState([
-    {
-      discountPercentage: "14.87",
-      rating: 4.93,
-      ratingsAverage: 4.5,
-      ratingsQuantity: 0,
-      images: [
-        "https://i.dummyjson.com/data/products/75/1.jpg",
-        "https://i.dummyjson.com/data/products/75/2.jpg",
-        "https://i.dummyjson.com/data/products/75/3.jpg",
-        "https://i.dummyjson.com/data/products/75/thumbnail.jpg",
-      ],
-      _id: "65a9d7b4ad47b243bc49b007",
-      title: "Seven Pocket Women Bag",
-      description:
-        "Seven Pocket Women Bag Handbags Lady Shoulder Crossbody Bag Female Purse Seven Pocket Bag",
-      price: 68,
-      stock: 13,
-      brand: "Steal Frame",
-      category: "womens-bags",
-      thumbnail: "https://i.dummyjson.com/data/products/75/thumbnail.jpg",
-      id: "65a9d7b4ad47b243bc49b007",
-      quantity: 1,
-    },
-    {
-      discountPercentage: "14.87",
-      rating: 4.93,
-      ratingsAverage: 4.5,
-      ratingsQuantity: 0,
-      images: [
-        "https://i.dummyjson.com/data/products/75/1.jpg",
-        "https://i.dummyjson.com/data/products/75/2.jpg",
-        "https://i.dummyjson.com/data/products/75/3.jpg",
-        "https://i.dummyjson.com/data/products/75/thumbnail.jpg",
-      ],
-      _id: "65a9d7b4ad47b243bc49b0071",
-      title: "Seven Pocket Women Bag",
-      description:
-        "Seven Pocket Women Bag Handbags Lady Shoulder Crossbody Bag Female Purse Seven Pocket Bag",
-      price: 68,
-      stock: 13,
-      brand: "Steal Frame",
-      category: "womens-bags",
-      thumbnail: "https://i.dummyjson.com/data/products/75/thumbnail.jpg",
-      id: "65a9d7b4ad47b243bc49b0071",
-      quantity: 2,
-    },
-    {
-      discountPercentage: "14.87",
-      rating: 4.93,
-      ratingsAverage: 4.5,
-      ratingsQuantity: 0,
-      images: [
-        "https://i.dummyjson.com/data/products/75/1.jpg",
-        "https://i.dummyjson.com/data/products/75/2.jpg",
-        "https://i.dummyjson.com/data/products/75/3.jpg",
-        "https://i.dummyjson.com/data/products/75/thumbnail.jpg",
-      ],
-      _id: "65a9d7b4ad47b243bc49b0072",
-      title: "Seven Pocket Women Bag",
-      description:
-        "Seven Pocket Women Bag Handbags Lady Shoulder Crossbody Bag Female Purse Seven Pocket Bag",
-      price: 68,
-      stock: 13,
-      brand: "Steal Frame",
-      category: "womens-bags",
-      thumbnail: "https://i.dummyjson.com/data/products/75/thumbnail.jpg",
-      id: "65a9d7b4ad47b243bc49b0072",
-      quantity: 3,
-    },
-    {
-      discountPercentage: "14.87",
-      rating: 4.93,
-      ratingsAverage: 4.5,
-      ratingsQuantity: 0,
-      images: [
-        "https://i.dummyjson.com/data/products/75/1.jpg",
-        "https://i.dummyjson.com/data/products/75/2.jpg",
-        "https://i.dummyjson.com/data/products/75/3.jpg",
-        "https://i.dummyjson.com/data/products/75/thumbnail.jpg",
-      ],
-      _id: "65a9d7b4ad47b243bc49b0073",
-      title: "Seven Pocket Women Bag",
-      description:
-        "Seven Pocket Women Bag Handbags Lady Shoulder Crossbody Bag Female Purse Seven Pocket Bag",
-      price: 68,
-      stock: 13,
-      brand: "Steal Frame",
-      category: "womens-bags",
-      thumbnail: "https://i.dummyjson.com/data/products/75/thumbnail.jpg",
-      id: "65a9d7b4ad47b243bc49b0073",
-      quantity: 4,
-    },
-  ]);
-  useEffect(() => {
-    cartItems.map((item) => {
-      //console.log(item)
-    });
-  });
   const total = cartItems
     .reduce((a, i) => a + i.quantity * i.price, 0)
     .toFixed(2);
-  // useEffect(() => {
-  //     if (productId) {
-  //         dispatch(addTocart(productId, quantity))
-  //     }
-  // }, [dispatch, productId, quantity])
+
+  const productId = params.id;
+  const quantity = searchParams.get("quantity");
+
+  useEffect(() => {
+    if (productId) {
+      dispatch(addTocart(productId, quantity));
+    }
+  }, [dispatch, productId, quantity]);
 
   const increaseProductQuantity = (product) => {
-    // e.preventDefault()
-    // console.log(product)
     if (product.quantity + 1 <= product.stock) {
-      const updatedCartItems = cartItems.map((item) => {
-        if (product._id === item._id) {
-          item.quantity = product.quantity + 1;
-          //console.log("oke", cartItems)
-        }
-        return item;
-      });
-      setCartItems(updatedCartItems);
+      // const updatedCartItems = cartItems.map((item) => {
+      //   if (product._id === item._id) {
+      //     item.quantity = product.quantity + 1;
+      //   }
+      //   return item;
+      // });
+      dispatch(increaseProductQuantity(productId));
     }
   };
   const decreaseProductQuantity = (product) => {
-    // e.preventDefault()
-    //console.log(product)
     if (product.quantity - 1 >= 1) {
-      const updatedCartItems = cartItems.map((item) => {
-        if (product._id === item._id) {
-          item.quantity = product.quantity - 1;
-          //console.log("oke", cartItems)
-        }
-        return item;
-      });
-      setCartItems(updatedCartItems);
+      dispatch(decreaseProductQuantity(productId));
     }
   };
 
   const checkOutHandler = (e) => {
     e.preventDefault();
     navigate("/ship");
-    //history.push('/login?redirect=shipping')
   };
 
   const removeFromCardHandler = (id) => {
     dispatch(removeFromCart(id));
   };
+
   return (
     <div className="container max-w-screen-xl mt-4">
       {cartItems.length === 0 ? (
@@ -183,7 +64,7 @@ const Cart = ({ match, location, history }) => {
             Your cart is empty now
             <Link
               className="btn-success mx-5 px-5 p-3 rounded-full"
-              to="/"
+              to="/product"
               style={{
                 fontSize: "12px",
               }}
@@ -205,77 +86,70 @@ const Cart = ({ match, location, history }) => {
           </div>
 
           <div className="flex justify-between gap-4">
-            <div className="flex-1">
-              {cartItems.map((item) => (
-                <div key={item._id}>
-                  <div className="cart-item flex justify-between gap-2 p-2 rounded-lg border-2 border-solid bg-white mx-2">
-                    <Link
-                      to={`/product/${item._id}`}
-                      className="cart-image flex gap-2"
-                    >
-                      <img
-                        src={item.thumbnail}
-                        alt={item.title}
-                        className="w-[100px] h-[100px]"
-                      />
-                      <Link
-                        to={`/product/${item._id}`}
-                        className="font-mono font-bold mt-2 flex items-center"
-                      >
-                        <h4>{item.title}</h4>
-                      </Link>
-                    </Link>
-
-                    <div className="cart-quantity col-md-2 col-sm-5 mt-3 mt-md-0 flex flex-column justify-center">
-                      <h6 className=" text-slate-500 font-semibold mb-2">
-                        Quantity
-                      </h6>
-                      <div className="flex justify-start items-center">
-                        <button
-                          className="bg-[#16a34a] text-white rounded-full w-6 h-6 font-bold text-xl"
-                          onClick={() => increaseProductQuantity(item)}
-                        >
-                          <span className="relative bottom-[4px]">+</span>
-                        </button>
-                        <input
-                          type="text"
-                          readOnly
-                          name="quantity"
-                          className="w-[40px] outline-none text-center bg-gray-200 rounded-xl mx-2"
-                          min="1"
-                          max={`${item.stock}`}
-                          value={item.quantity}
-                          onChange={(e) =>
-                            setQuantity({
-                              product: item,
-                              quantity: e.target.value,
-                            })
-                          }
-                        ></input>
-
-                        <button
-                          className="bg-[#b91c1c] text-white rounded-full w-6 h-6  font-bold text-xl"
-                          onClick={() => decreaseProductQuantity(item)}
-                        >
-                          <span className="relative bottom-[4px]">-</span>
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="cart-price mt-3 mt-md-0 col-md-2 items-end flex flex-column justify-center ">
-                      <h6 className="font-semibold  text-slate-500">
-                        Sub Total
-                      </h6>
-                      <h4 className="font-bold text-lg">
-                        {item.price * item.quantity} VNĐ
-                      </h4>
-                    </div>
+            <div className="flex-1 gap-2 flex flex-col">
+              {cartItems.map((item, index) => (
+                <div
+                  key={index}
+                  className="cart-item flex justify-between gap-2 p-2 rounded-lg border-2 border-solid bg-white mx-2"
+                >
+                  <Link
+                    to={`/product/${item._id}`}
+                    className="cart-image flex gap-2"
+                  >
+                    <img
+                      src={item.thumbnail}
+                      alt={item.title}
+                      className="w-[100px] h-[100px]"
+                    />
                     <div
-                      onClick={() => removeFromCardHandler(item._id)}
-                      className="remove-button flex flex-row justify-start items-center "
+                      to={`/product/${item._id}`}
+                      className="font-mono font-bold mt-2 flex items-center"
                     >
-                      <i className="fas fa-times bg-[#ef4444] text-white w-8 h-8 flex items-center justify-center rounded-full"></i>
+                      <p>{item.title}</p>
                     </div>
+                  </Link>
+
+                  <div className="cart-quantity col-md-2 col-sm-5 mt-3 mt-md-0 flex flex-column justify-center">
+                    <h6 className=" text-slate-500 font-semibold mb-2">
+                      Quantity
+                    </h6>
+                    <div className="flex justify-start items-center">
+                      <button
+                        className="bg-[#16a34a] text-white rounded-full w-6 h-6 font-bold text-xl"
+                        onClick={() => increaseProductQuantity(item)}
+                      >
+                        <span className="relative bottom-[4px]">+</span>
+                      </button>
+                      <input
+                        type="text"
+                        readOnly
+                        name="quantity"
+                        className="w-[40px] outline-none text-center bg-gray-200 rounded-xl mx-2"
+                        min="1"
+                        max={`${item.stock}`}
+                        value={item.quantity}
+                      ></input>
+
+                      <button
+                        className="bg-[#b91c1c] text-white rounded-full w-6 h-6  font-bold text-xl"
+                        onClick={() => decreaseProductQuantity(item)}
+                      >
+                        <span className="relative bottom-[4px]">-</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="cart-price mt-3 mt-md-0 col-md-2 items-end flex flex-column justify-center ">
+                    <h6 className="font-semibold  text-slate-500">Sub Total</h6>
+                    <p className="font-bold text-lg">
+                      {item.price * item.quantity} VNĐ
+                    </p>
+                  </div>
+                  <div
+                    onClick={() => removeFromCardHandler(item._id)}
+                    className="remove-button flex flex-row justify-start items-center "
+                  >
+                    <i className="fas fa-times bg-[#ef4444] text-white w-8 h-8 flex items-center justify-center rounded-full"></i>
                   </div>
                 </div>
               ))}

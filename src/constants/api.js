@@ -20,4 +20,5 @@ export const api = {
   // product api
   getAllProduct: IPaddress + "/api/v1/product",
   getAllCategory: IPaddress + "/api/v1/category",
+  getRelatedProduct: IPaddress + "/api/v1/product/related-products/",
 };

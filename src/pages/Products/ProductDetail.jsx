@@ -36,7 +36,7 @@ const ProductDetail = ({ history, match }) => {
   const addToCartHandler = (e) => {
     e.preventDefault();
     //history.push(`/cart/${product._id}?${quantity}`);
-    navigate(`/cart/${product?._id}?${quantity}`);
+    navigate(`/cart/${product?._id}?quantity=${quantity}`);
   };
 
   const increaseProduct = (e) => {
