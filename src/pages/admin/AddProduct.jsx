@@ -11,6 +11,7 @@ import { createProduct } from "../../Redux/Actions/ProductActions";
 import Message from "../LoadingError/Message"
 import Toast from "../LoadingError/Toast"
 import Loading from "../LoadingError/Loading"
+import { listCategories } from "../../Redux/Actions/CategoryActions";
 const ToastObjects = {
     pauseOnFoccusLoss: false,
     draggable: false,
@@ -32,7 +33,11 @@ const AddProduct = () => {
     const productCreate = useSelector((state) => state.productCreate)
     const { loading, error, product} = productCreate
 
+    const categoryList = useSelector((state) => state.categoryList)
+    const { loadingCategory, errorCategory, categories } = categoryList
+
     useEffect(() => {
+        dispatch(listCategories())
         if (product) {
            // toast.success("Product Added!", ToastObjects)
             
@@ -62,7 +67,7 @@ const AddProduct = () => {
         setPreviewImage(null)
       } 
 
-    const categories=["bag","fan","car"]
+   // const categories=["bag","fan","car"]
     return (<>
         <Toast/>
     
@@ -80,7 +85,7 @@ const AddProduct = () => {
             <div className="rounded-lg border-2 border-solid bg-white p-3 m-4">
                 <form onSubmit={submitHandler}>
                     {error && <Message variant={"danger"}>{error}</Message>}
-                    { loading && <Loading/>}
+                    { loading || loadingCategory && <Loading/>}
                     <div className="form mb-4 text-left input-group">
                         <span className="text-start font-bold input-group-text w-30" for="typeEmailX-2">Title</span>
                         <input type="text"
@@ -135,10 +140,11 @@ const AddProduct = () => {
                                 value={category}
                                 onChange={(e) => setCategory(e.target.value)}
                                 required >
+                                <option value={""}>Select...</option>
                                     {categories.map(
                                         (x) => (
-                                            <option key = {x} value = {x}>
-                                                {x}
+                                            <option key = {x._id} value = {x.name}>
+                                                {x.name}
                                             </option>
                                         )
                                     )}

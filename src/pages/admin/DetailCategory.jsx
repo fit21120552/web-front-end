@@ -48,6 +48,8 @@ const DetailCategory = () => {
                  //console.log("temp:",temp.title,temp.price, temp)
                 setCategoryName(temp.name)
                 setProductCount(temp.productCount)
+                //TODO
+                //setProductCategory(temp.)
                 loadingCategory=false
                 
              } catch (error) {

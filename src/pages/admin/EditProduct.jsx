@@ -11,6 +11,7 @@ import axios from "axios";
 import { api } from "../../constants/api";
 import Loading from "../LoadingError/Loading";
 import Message from "../LoadingError/Message";
+import { listCategories } from "../../Redux/Actions/CategoryActions";
 const EditProduct = () => {
 
     const [title, setTitle] = useState("")
@@ -43,6 +44,10 @@ const EditProduct = () => {
     //    }
     // },[product, dispatch, id])
 
+    const categoryList = useSelector((state) => state.categoryList)
+    const { loadingCategory, errorCategory, categories } = categoryList
+
+
     let loadingProduct = false
     let errorProduct = null
 
@@ -71,7 +76,9 @@ const EditProduct = () => {
     }
 
     useEffect( () => {
+
          fetchProduct()     
+         dispatch(listCategories())
      },[ dispatch, id])
 
    
@@ -130,7 +137,7 @@ const EditProduct = () => {
         setPreviewImage(null)
       } 
 
-    const categories=["bag","fan","car"]
+   // const categories=["bag","fan","car"]
     return (
         <div className="flex flex-column">
             <div >
@@ -147,7 +154,7 @@ const EditProduct = () => {
             </div>
             <div className="rounded-lg border-2 border-solid bg-white p-3 m-4">
                 {
-                    loadingProduct ? (<Loading/>) : errorProduct 
+                    loadingProduct || loadingCategory ? (<Loading/>) : errorProduct 
                     ? (<Message variant={'danger'}>{getErrorMessage(errorProduct)}</Message>)
                     : (
                         <form onSubmit={submitHandler}>
@@ -205,6 +212,7 @@ const EditProduct = () => {
                                         value={category}
                                         onChange={(e) => setCategory(e.target.value)}
                                         required >
+                                         <option value={""}>Select...</option>
                                             {categories.map(
                                                 (x) => (
                                                     <option key = {x} value = {x}>

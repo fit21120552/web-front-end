@@ -86,16 +86,20 @@ export const deleteProduct = (id) =>  async (dispatch, getState) => {
 
         const config = {
             headers: {
-                Authorization: `Bearer ${userInfo.token}`
+                Authorization: `Bearer ${userInfo.token}`,
+                "Access-Control-Allow-Origin": "*",
+                "Content-Type":"application/json",
             }
         }
         const body = {
             sessionId: userInfo.sessionId
         }
 
-        await axios.delete(`${api.getAndCreateProduct}${id}`,body, config)
+        console.log(`del ${api.deleteProduct+id}`)
 
-       // console.log("data: ",data )
+         const { data } = await axios.delete(api.deleteProduct+id,body, config)
+
+        console.log("data: ",data )
         dispatch({type: PRODUCT_DELETE_SUCCESS})
     }  catch (error) {
         const message = error.response && error.response.data.message ? 

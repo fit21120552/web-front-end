@@ -77,14 +77,16 @@ export const deleteCategory=  (id)=>  async (dispatch, getState) => {
 
         const config = {
             headers: {
-                Authorization: `Bearer ${userInfo.token}`
+                Authorization: `Bearer ${userInfo.token}`,
+                "Access-Control-Allow-Origin": "*",
+                "Content-Type":"application/json",
             }
         }
         const body = {
             sessionId: userInfo.sessionId
         }
 
-        console.log("delete cat id: ", id)
+       // console.log("delete cat id: ", id)
         const { data } = await axios.delete(api.getCategory+id, body, config)
 
         console.log("data del: ", data)
