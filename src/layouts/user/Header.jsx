@@ -183,7 +183,7 @@ const Header = ({ title, setTitle }) => {
                   <FontAwesomeIcon icon={faBars} size="lg" />
                   <p className="text-sm font-semibold">Danh mục</p>
                   {isMenuOpen && (
-                    <div className="absolute top-10 text-black bg-white shadow-xl  min-w-[107px] -left-[1px] rounded-sm flex flex-col gap-1">
+                    <div className="absolute z-10 top-10 text-black bg-white shadow-xl  min-w-[107px] -left-[1px] rounded-sm flex flex-col gap-1">
                       {menuItemsData.map((item, index) => (
                         <div
                           onClick={() => navigate(item.url)}
