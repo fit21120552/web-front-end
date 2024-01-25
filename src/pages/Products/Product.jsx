@@ -55,7 +55,7 @@ export default function Product() {
   const error = false;
 
   const category = searchParams.get("category") || "";
-  const sortBy = searchParams.get("sortBy") || "";
+  const sort = searchParams.get("sort") || "";
 
   const titleParam = searchParams.get("title") || "";
   useEffect(() => {
@@ -97,11 +97,11 @@ export default function Product() {
           <p className="mr-2">Sắp xếp theo</p>
           <button
             className={` px-3 py-2 ${
-              sortBy === "" ? "bg-blue-500 text-white" : "bg-white"
+              sort === "" ? "bg-blue-500 text-white" : "bg-white"
             }`}
             onClick={() =>
               setSearchParams((params) => {
-                params.delete("sortBy");
+                params.delete("sort");
                 params.set("page", 1);
                 return params;
               })
@@ -111,11 +111,11 @@ export default function Product() {
           </button>
           <button
             className={` px-3 py-2 ${
-              sortBy === "ctime" ? "bg-blue-500 text-white" : "bg-white"
+              sort === "-createdAt" ? "bg-blue-500 text-white" : "bg-white"
             }`}
             onClick={() =>
               setSearchParams((params) => {
-                params.set("sortBy", "ctime");
+                params.set("sort", "-createdAt");
                 params.set("page", 1);
                 return params;
               })
@@ -125,11 +125,11 @@ export default function Product() {
           </button>
           <button
             className={` px-3 py-2 ${
-              sortBy === "sales" ? "bg-blue-500 text-white" : "bg-white"
+              sort === "sales" ? "bg-blue-500 text-white" : "bg-white"
             }`}
             onClick={() =>
               setSearchParams((params) => {
-                params.set("sortBy", "sales");
+                params.set("sort", "sales");
                 params.set("page", 1);
                 return params;
               })
@@ -139,11 +139,11 @@ export default function Product() {
           </button>
           <button
             className={` px-3 py-2 ${
-              sortBy === "priceAsc" ? "bg-blue-500 text-white" : "bg-white"
+              sort === "price" ? "bg-blue-500 text-white" : "bg-white"
             }`}
             onClick={() =>
               setSearchParams((params) => {
-                params.set("sortBy", "priceAsc");
+                params.set("sort", "price");
                 params.set("page", 1);
                 return params;
               })
@@ -153,11 +153,11 @@ export default function Product() {
           </button>
           <button
             className={` px-3 py-2 ${
-              sortBy === "priceDesc" ? "bg-blue-500 text-white" : "bg-white"
+              sort === "-price" ? "bg-blue-500 text-white" : "bg-white"
             }`}
             onClick={() =>
               setSearchParams((params) => {
-                params.set("sortBy", "priceDesc");
+                params.set("sort", "-price");
                 params.set("page", 1);
                 return params;
               })

@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { logout } from "../../Redux/Actions/UserActions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const Header = () => {
   const location = useLocation();
@@ -24,7 +24,8 @@ const Header = () => {
       ? "Dashboard"
       : location.pathname.split("/")[2].charAt(0).toUpperCase() +
         location.pathname.split("/")[2].slice(1);
-  const [openProfile, setOpenProfile] = useState(false);
+
+  const { userInfo } = useSelector((state) => state.userLogin);
 
   return (
     <div className="px-4  bg-white py-4 flex justify-between">
@@ -34,55 +35,18 @@ const Header = () => {
         <input
           type="text"
           placeholder="Search here..."
-          className="bg-[#eeeeef] min-w-[300px]"
+          className="bg-[#eeeeef] min-w-[300px] outline-none"
         />
       </div>
-      <div className="flex gap-3 items-center">
-        <button className="bg-[#FFFAF1] rounded-xl font-semibold w-10 h-10 flex items-center justify-center">
-          <FontAwesomeIcon icon={faSun} />
+
+      <div className="flex shadow-outer  bg-red-400 p-2 items-center gap-2 rounded-3xl">
+        <button
+          className="font-semibold px-2 text-white"
+          onClick={() => handleLogout()}
+        >
+          Đăng xuất
         </button>
-        <button className="bg-[#FFFAF1] rounded-xl font-semibold w-10 h-10 flex items-center justify-center">
-          <FontAwesomeIcon icon={faBell} />
-        </button>
-        {openProfile ? (
-          <div
-            onClick={() => setOpenProfile(false)}
-            className="flex items-center gap-2"
-          >
-            <button className="rounded-xl bg-[#d9d9d9] font-semibold w-12 h-12 flex items-center justify-center">
-              <FontAwesomeIcon icon={faUser} size="lg" />
-            </button>
-            <FontAwesomeIcon icon={faAngleUp} />
-          </div>
-        ) : (
-          <div
-            onClick={() => setOpenProfile(true)}
-            className="flex items-center gap-2"
-          >
-            <button className="rounded-xl bg-[#d9d9d9] font-semibold w-12 h-12 flex items-center justify-center">
-              <FontAwesomeIcon icon={faUser} size="lg" />
-            </button>
-            <FontAwesomeIcon icon={faAngleDown} />
-          </div>
-        )}
       </div>
-      {openProfile && (
-        <div className="shadow-outer absolute right-8 top-20 bg-white rounded-lg z-10 px-4 pt-2 font-semibold">
-          <div className="flex shadow-outer p-2 items-center gap-2 rounded-3xl">
-            <div className="rounded-full bg-[#d9d9d9] font-semibold w-10 h-10 flex items-center justify-center">
-              <FontAwesomeIcon icon={faUser} size="md" />
-            </div>
-            <p className="text-lg mr-2">Nguyen Van A</p>
-          </div>
-          <hr className="mt-3 border-[#CCCCCC]" />
-          <div className="flex flex-col text-lg mt-2 gap-4 mb-4 px-4">
-            <Link to="/profile" onClick={() => setOpenProfile(false)}>
-              Quản lý tài khoản
-            </Link>
-            <button onClick={() => handleLogout()}>Đăng xuất</button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
