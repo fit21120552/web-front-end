@@ -98,7 +98,7 @@ export const deleteCategory = (id) => async (dispatch, getState) => {
       sessionId: userInfo.sessionId,
     };
 
-    console.log("delete cat id: ", id);
+    console.log("delete cat id: ", body);
     const { data } = await axios.delete(api.editCategory + id, body, config);
 
     console.log("data del: ", data);

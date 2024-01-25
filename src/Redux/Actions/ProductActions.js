@@ -91,6 +91,7 @@ export const deleteProduct = (id) =>  async (dispatch, getState) => {
                 "Content-Type":"application/json",
             }
         }
+        
         const body = {
             sessionId: userInfo.sessionId
         }
