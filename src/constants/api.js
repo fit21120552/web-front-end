@@ -28,7 +28,7 @@ export const api = {
   changePassword: IPaddress + "/user/passwordm/",
 
   // product api
-  getAllProduct: IPaddress + "/api/v1/product",
+  getAllProduct: IPaddress + "/api/v1/product/",
   getAllCategory: IPaddress + "/api/v1/category/",
   getRelatedProduct: IPaddress + "/api/v1/product/related-products/",
   getTodayProducts: IPaddress + "/api/v1/product?stock[gt]=50&limit=4",
@@ -36,7 +36,7 @@ export const api = {
   //user api
   getAllUser: IPaddress + "/admin/",
   getUser: IPaddress + "/admin/user/",
-  deleteUser: IPaddress + "/admin/user/delete",
+  deleteUser: IPaddress + "/admin/user/delete/",
 
   //order
   getOrder: IPaddress + "/admin/order/",

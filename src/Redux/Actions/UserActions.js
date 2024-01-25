@@ -127,7 +127,7 @@ export const deleteUser = (id) => async (dispatch, getState) => {
     }
    // console.log("body: ", body)
 
-    console.log(`del ${api.deleteProduct+id}`)
+    console.log(`del ${api.deleteUser+id}`)
 
      const { data } = await axios.delete(api.deleteUser+id,body, config)
     console.log("data: ",data )
