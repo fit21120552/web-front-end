@@ -32,6 +32,17 @@ export const login = (username, password) => async (dispatch) => {
       api.config
     );
 
+    const res = await axios.post(
+      "https://localhost:3003/register",
+      { username },
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+        withCredentials: true,
+      }
+    );
+
     dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
     dispatch({ type: CLEAR_CART });
 
