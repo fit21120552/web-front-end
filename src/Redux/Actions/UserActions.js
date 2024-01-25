@@ -17,8 +17,9 @@ import {
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
   USER_DETAILS_FAIL,
-  CLEAR_CART,
 } from "../Constants/UserConstants";
+
+import { CLEAR_CART } from "../Constants/CartConstants";
 import { api } from "../../constants/api";
 
 export const login = (username, password) => async (dispatch) => {
