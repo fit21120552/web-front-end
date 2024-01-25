@@ -63,11 +63,16 @@ const Header = ({ title, setTitle }) => {
           data.map((item) => ({
             id: item._id,
             title: item.name.charAt(0).toUpperCase() + item.name.slice(1),
-            url: "/product?category=" + item.name,
+            url: "/product?category=" + item.name + "&page=1",
             submenu: item.subCategory.map((subitem) => ({
               title:
                 subitem.name.charAt(0).toUpperCase() + subitem.name.slice(1),
-              url: "/product?category=" + item.name + "&title=" + subitem.name,
+              url:
+                "/product?category=" +
+                item.name +
+                "&title[regex]=" +
+                subitem.name +
+                "&page=1",
             })),
           }))
         );
@@ -234,16 +239,16 @@ const Header = ({ title, setTitle }) => {
                       const currentUrl = location.pathname;
                       if (currentUrl !== "/product") {
                         if (title !== "") {
-                          navigate("/product?title=" + title);
+                          navigate("/product?page=1&title[regex]=" + title);
                         } else {
                           navigate("/product");
                         }
                       } else {
                         setSearchParams((params) => {
                           if (title !== "") {
-                            params.set("title", title);
+                            params.set("title[regex]", title);
                           } else {
-                            params.delete("title");
+                            params.delete("title[regex]");
                           }
                           return params;
                         });

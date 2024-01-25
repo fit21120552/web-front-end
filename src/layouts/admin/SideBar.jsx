@@ -76,28 +76,6 @@ const SideBar = () => {
           <FontAwesomeIcon icon={faUsers} />
           Users
         </NavLink>
-        <NavLink
-          to="/admin/promotion"
-          className={({ isActive }) =>
-            isActive
-              ? " bg-main text-white font-semibold  rounded-xl py-2 px-4 flex items-center gap-3"
-              : "px-4 flex items-center gap-3"
-          }
-        >
-          <FontAwesomeIcon icon={faPercent} />
-          Promotion
-        </NavLink>
-        <NavLink
-          to="/admin/settings"
-          className={({ isActive }) =>
-            isActive
-              ? " bg-main text-white font-semibold  rounded-xl py-2 px-4 flex items-center gap-3"
-              : "px-4 flex items-center gap-3"
-          }
-        >
-          <FontAwesomeIcon icon={faGear} />
-          Settings
-        </NavLink>
       </div>
     </div>
   );

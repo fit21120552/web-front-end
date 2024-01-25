@@ -20,11 +20,16 @@ const ProductDetail = ({ history, match }) => {
   const navigate = useNavigate();
 
   const [product, setProduct] = useState();
+  const [relatedProducts, setRelatedProducts] = useState([]);
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const res = await axios.get(api.getAndCreateProduct + params.id);
-      if (res.data.status === "success") setProduct(res.data.data.data);
+      const res1 = await axios.get(api.getAndCreateProduct + params.id);
+      if (res1.data.status === "success") setProduct(res1.data.data.data);
+
+      const res2 = await axios.get(api.getRelatedProduct + params.id);
+      if (res2.data.status === "success")
+        setRelatedProducts(res2.data.data.data);
     };
 
     fetchProduct();
@@ -36,7 +41,7 @@ const ProductDetail = ({ history, match }) => {
   const addToCartHandler = (e) => {
     e.preventDefault();
     //history.push(`/cart/${product._id}?${quantity}`);
-    navigate(`/cart/${product?._id}?${quantity}`);
+    navigate(`/cart/${product?._id}?quantity=${quantity}`);
   };
 
   const increaseProduct = (e) => {
@@ -141,43 +146,31 @@ const ProductDetail = ({ history, match }) => {
             </Col>
           </Row>
           <div className=" font-semibold text-2xl mt-6">Related products</div>
-          <Row className=" mt-4">
-            <Col lg={3} md={6} sm={12}>
+          <div className=" mt-4 flex gap-2">
+            {relatedProducts.map((product) => (
               <div
-                className="shop w-full p-2 rounded-lg border-2 border-solid"
+                className=" p-2 rounded-lg border-2 border-solid"
                 key={product?._id}
               >
-                <div className="border-product">
-                  <Link to={`/product/${product?._id}`}>
-                    <div className="shopBack">
-                      <img
-                        src={product?.thumbnail}
-                        alt={product?.name}
-                        height="100px"
-                        className="bg-[#bbf7d0]"
-                      />
-                    </div>
-                  </Link>
+                <Link to={`/product/${product?._id}`} className=" w-fit">
+                  <img
+                    src={product?.thumbnail}
+                    alt={product?.name}
+                    className="bg-[#bbf7d0]  h-[150px] object-cover"
+                  />
 
-                  <div className="shoptext">
-                    <div>
-                      <Link
-                        to={`/product/${product?._id}`}
-                        className="font-serif"
-                      >
-                        {product?.title}
-                      </Link>
-                      <Rating
-                        value={product?.rating}
-                        text={`${product?.ratingsQuantity} reviews`}
-                      ></Rating>
-                      <h3 className="text-2xl font-bold">${product?.price}</h3>
-                    </div>
+                  <div className="w-fit">
+                    <p className="font-serif">{product?.title}</p>
+                    <Rating
+                      value={product?.rating}
+                      text={`${product?.ratingsQuantity} reviews`}
+                    ></Rating>
+                    <h3 className="text-2xl font-bold">${product?.price}</h3>
                   </div>
-                </div>
+                </Link>
               </div>
-            </Col>
-          </Row>
+            ))}
+          </div>
 
           <Row className=" my-5">
             <Col className="">
