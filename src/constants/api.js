@@ -40,4 +40,7 @@ export const api = {
 
   //order
   getOrder: IPaddress + "/admin/order/",
+
+  //payment api
+  checkout: "https://localhost:3003/pay/tranfer",
 };

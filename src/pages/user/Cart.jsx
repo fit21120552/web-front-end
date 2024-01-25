@@ -14,6 +14,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { Alert, Button, Col, Row } from "react-bootstrap";
 import Message from "../LoadingError/Message";
+import axios from "axios";
+import { api } from "../../constants/api";
 
 const Cart = () => {
   const params = useParams();
@@ -46,9 +48,25 @@ const Cart = () => {
     }
   };
 
-  const checkOutHandler = (e) => {
+  const { userInfo } = useSelector((state) => state.userLogin);
+
+  const checkOutHandler = async (e) => {
     e.preventDefault();
-    navigate("/ship");
+    const res = await axios.post(
+      api.checkout,
+      { total },
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          sessionId: userInfo.sessionId,
+        },
+        withCredentials: true,
+      }
+    );
+    if (res.data.status === "success") {
+      const data = res.data.data.data;
+      console.log(data);
+    }
   };
 
   const removeFromCardHandler = (id) => {
