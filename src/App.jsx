@@ -24,6 +24,7 @@ import AddCategory from "./pages/admin/AddCategory";
 import DetailCategory from "./pages/admin/DetailCategory";
 import DetailProduct from "./pages/admin/DetailProduct";
 import DetailUser from "./pages/admin/DetailUser";
+import DetailOrder from "./pages/admin/DetailOrder";
 
 export default function App() {
   return (
@@ -48,6 +49,7 @@ export default function App() {
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="/admin" exact element={<Dashboard />} />
           <Route path="/admin/orders" element={<Orders />} />
+          <Route path="/admin/order/:id" element={<DetailOrder/>}/>
           <Route path="/admin/products" element={<Products />} />
           <Route path="/admin/product/:id" element={<DetailProduct />} />
           <Route path="/admin/product/add" element={<AddProduct />} />
