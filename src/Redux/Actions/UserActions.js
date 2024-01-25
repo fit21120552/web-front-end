@@ -32,17 +32,6 @@ export const login = (username, password) => async (dispatch) => {
       api.config
     );
 
-    const res = await axios.post(
-      "https://localhost:3003/register",
-      { username },
-      {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
-        withCredentials: true,
-      }
-    );
-
     dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
     dispatch({ type: CLEAR_CART });
 
@@ -109,7 +98,16 @@ export const register = (username, email, password) => async (dispatch) => {
       { username, email, password },
       api.config
     );
-
+    const res = await axios.post(
+      "https://localhost:3003/register",
+      { username },
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+        withCredentials: true,
+      }
+    );
     dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
