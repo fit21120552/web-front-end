@@ -25,97 +25,7 @@ export default function Home() {
   const loading = false;
   const error = false;
 
-  const products = [
-    {
-      discountPercentage: "14.87",
-      rating: 4.93,
-      ratingsAverage: 4.5,
-      ratingsQuantity: 0,
-      images: [
-        "https://i.dummyjson.com/data/products/75/1.jpg",
-        "https://i.dummyjson.com/data/products/75/2.jpg",
-        "https://i.dummyjson.com/data/products/75/3.jpg",
-        "https://i.dummyjson.com/data/products/75/thumbnail.jpg",
-      ],
-      _id: "65a9d7b4ad47b243bc49b007",
-      title: "Seven Pocket Women Bag",
-      description:
-        "Seven Pocket Women Bag Handbags Lady Shoulder Crossbody Bag Female Purse Seven Pocket Bag",
-      price: 68,
-      stock: 13,
-      brand: "Steal Frame",
-      category: "womens-bags",
-      thumbnail: "https://i.dummyjson.com/data/products/75/thumbnail.jpg",
-      id: "65a9d7b4ad47b243bc49b007",
-    },
-    {
-      discountPercentage: "14.87",
-      rating: 4.93,
-      ratingsAverage: 4.5,
-      ratingsQuantity: 0,
-      images: [
-        "https://i.dummyjson.com/data/products/75/1.jpg",
-        "https://i.dummyjson.com/data/products/75/2.jpg",
-        "https://i.dummyjson.com/data/products/75/3.jpg",
-        "https://i.dummyjson.com/data/products/75/thumbnail.jpg",
-      ],
-      _id: "65a9d7b4ad47b243bc49b0071",
-      title: "Seven Pocket Women Bag",
-      description:
-        "Seven Pocket Women Bag Handbags Lady Shoulder Crossbody Bag Female Purse Seven Pocket Bag",
-      price: 68,
-      stock: 13,
-      brand: "Steal Frame",
-      category: "womens-bags",
-      thumbnail: "https://i.dummyjson.com/data/products/75/thumbnail.jpg",
-      id: "65a9d7b4ad47b243bc49b0071",
-    },
-    {
-      discountPercentage: "14.87",
-      rating: 4.93,
-      ratingsAverage: 4.5,
-      ratingsQuantity: 0,
-      images: [
-        "https://i.dummyjson.com/data/products/75/1.jpg",
-        "https://i.dummyjson.com/data/products/75/2.jpg",
-        "https://i.dummyjson.com/data/products/75/3.jpg",
-        "https://i.dummyjson.com/data/products/75/thumbnail.jpg",
-      ],
-      _id: "65a9d7b4ad47b243bc49b0072",
-      title: "Seven Pocket Women Bag",
-      description:
-        "Seven Pocket Women Bag Handbags Lady Shoulder Crossbody Bag Female Purse Seven Pocket Bag",
-      price: 68,
-      stock: 13,
-      brand: "Steal Frame",
-      category: "womens-bags",
-      thumbnail: "https://i.dummyjson.com/data/products/75/thumbnail.jpg",
-      id: "65a9d7b4ad47b243bc49b0072",
-    },
-    {
-      discountPercentage: "14.87",
-      rating: 4.93,
-      ratingsAverage: 4.5,
-      ratingsQuantity: 0,
-      images: [
-        "https://i.dummyjson.com/data/products/75/1.jpg",
-        "https://i.dummyjson.com/data/products/75/2.jpg",
-        "https://i.dummyjson.com/data/products/75/3.jpg",
-        "https://i.dummyjson.com/data/products/75/thumbnail.jpg",
-      ],
-      _id: "65a9d7b4ad47b243bc49b0073",
-      title: "Seven Pocket Women Bag",
-      description:
-        "Seven Pocket Women Bag Handbags Lady Shoulder Crossbody Bag Female Purse Seven Pocket Bag",
-      price: 68,
-      stock: 13,
-      brand: "Steal Frame",
-      category: "womens-bags",
-      thumbnail: "https://i.dummyjson.com/data/products/75/thumbnail.jpg",
-      id: "65a9d7b4ad47b243bc49b0073",
-    },
-  ];
-
+  const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
@@ -135,6 +45,11 @@ export default function Home() {
             })),
           }))
         );
+      }
+
+      const res2 = await axios.get(api.getTodayProducts, api.config);
+      if (res2.data.status === "success") {
+        setProducts(res2.data.data.data);
       }
     }
     fetchData();
@@ -194,7 +109,7 @@ export default function Home() {
                               src={product.thumbnail}
                               alt={product.name}
                               height="100px"
-                              className="bg-[#bbf7d0]"
+                              className="bg-[#bbf7d0]  h-[250px] object-cover"
                             />
                           </div>
                         </Link>

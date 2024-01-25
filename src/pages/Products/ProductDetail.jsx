@@ -20,11 +20,16 @@ const ProductDetail = ({ history, match }) => {
   const navigate = useNavigate();
 
   const [product, setProduct] = useState();
+  const [relatedProducts, setRelatedProducts] = useState([]);
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const res = await axios.get(api.getAndCreateProduct + params.id);
-      if (res.data.status === "success") setProduct(res.data.data.data);
+      const res1 = await axios.get(api.getAndCreateProduct + params.id);
+      if (res1.data.status === "success") setProduct(res1.data.data.data);
+
+      const res2 = await axios.get(api.getRelatedProduct + params.id);
+      if (res2.data.status === "success")
+        setRelatedProducts(res2.data.data.data);
     };
 
     fetchProduct();
@@ -36,7 +41,7 @@ const ProductDetail = ({ history, match }) => {
   const addToCartHandler = (e) => {
     e.preventDefault();
     //history.push(`/cart/${product._id}?${quantity}`);
-    navigate(`/cart/${product?._id}?${quantity}`);
+    navigate(`/cart/${product?._id}?quantity=${quantity}`);
   };
 
   const increaseProduct = (e) => {
@@ -142,7 +147,7 @@ const ProductDetail = ({ history, match }) => {
           </Row>
           <div className=" font-semibold text-2xl mt-6">Related products</div>
           <Row className=" mt-4">
-            <Col lg={3} md={6} sm={12}>
+            {relatedProducts.map((product) => (
               <div
                 className="shop w-full p-2 rounded-lg border-2 border-solid"
                 key={product?._id}
@@ -176,7 +181,7 @@ const ProductDetail = ({ history, match }) => {
                   </div>
                 </div>
               </div>
-            </Col>
+            ))}
           </Row>
 
           <Row className=" my-5">
