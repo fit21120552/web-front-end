@@ -12,7 +12,7 @@ import { cartReducer } from "./Reducers/CartReducers";
 import { userDeleteReducer, userDetailsReducer, userListReducer, userLoginReducer } from "./Reducers/UserReducers";
 import { userRegisterReducer } from "./Reducers/UserReducers";
 import { categoryCreateReducer, categoryDeleteReducer, categoryDetailsReducer, categoryListReducer } from "./Reducers/CategoryReducers";
-import { orderDeleteReducer, orderDetailsReducer, orderListReducer } from "./Reducers/OrderReducers";
+import { orderCreateReducer, orderDeleteReducer, orderDetailsReducer, orderListReducer } from "./Reducers/OrderReducers";
 import { reviewCreateReducer, reviewListReducer } from "./Reducers/ReviewReducers";
 
 const reducer = combineReducers({
@@ -34,6 +34,7 @@ const reducer = combineReducers({
   orderList: orderListReducer,
   orderDetails: orderDetailsReducer,
   orderDelete: orderDeleteReducer,
+  orderCreate: orderCreateReducer,
   reviewCreate: reviewCreateReducer,
   reviewList: reviewListReducer,
   

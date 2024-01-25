@@ -1,6 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import Message from "../LoadingError/Message";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { ORDER_CREATE_RESET } from "../../Redux/Constants/OrderConstants";
+import { createOrder } from "../../Redux/Actions/OrderActions";
 
 const PlaceOrder = () => {
     //const cartItems=[]
@@ -9,7 +12,8 @@ const PlaceOrder = () => {
     const { userInfo } =  userLogin
     const cart = useSelector((state) =>  state.cart)
     const  { cartItems, paymentMethod, shippingAddress } = cart
-    
+    const orderCreate = useSelector((state) => state.orderCreate)
+    const { loading, error, success, order } = orderCreate
     const navigate = useNavigate()
     
     if (!shippingAddress) {
@@ -18,8 +22,30 @@ const PlaceOrder = () => {
     if (!paymentMethod) {
         navigate("/choose-payment")
     }
+
+    useEffect(() => {
+        if (success) {
+            dispatch({type: ORDER_CREATE_RESET})
+            navigate(`/order/${order._id}`)
+        }
+    },[dispatch, success, order])
+
     const PlaceOrderHandler = (e) => {
         e.preventDefault()
+        dispatch(createOrder({
+            product: cartItems,
+            user: userInfo._id,
+            price: calculateTotalProductPrice(cartItems),
+            tax: calculateTax(20),
+            ShipCost: 20,
+            address: shippingAddress.address,
+            city: shippingAddress.city,
+            phone: "09839709485",
+            postalCode: shippingAddress.postalCode,
+            country: shippingAddress.country,
+            paymentMethod: paymentMethod.paymentMethod,
+            
+        }))
     }
 
     const calculateTotalProductPrice = (items) => {
