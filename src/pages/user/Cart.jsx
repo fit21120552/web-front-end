@@ -10,12 +10,14 @@ import {
   removeFromCart,
   increaseQuantity,
   decreaseQuantity,
+  clearCart,
 } from "../../Redux/Actions/CartActions";
 import { useDispatch, useSelector } from "react-redux";
 import { Alert, Button, Col, Row } from "react-bootstrap";
 import Message from "../LoadingError/Message";
 import axios from "axios";
 import { api } from "../../constants/api";
+import { ToastContainer, toast } from "react-toastify";
 
 const Cart = () => {
   const params = useParams();
@@ -63,9 +65,12 @@ const Cart = () => {
         withCredentials: true,
       }
     );
-    if (res.data.status === "success") {
-      const data = res.data.data.data;
-      console.log(data);
+
+    if (res.data === "success") {
+      dispatch(clearCart());
+      toast.info("Cập nhật thành công!");
+    } else {
+      toast.error(res.data);
     }
   };
 
@@ -75,6 +80,7 @@ const Cart = () => {
 
   return (
     <div className="container max-w-screen-xl mt-4">
+      <ToastContainer />
       {cartItems.length === 0 ? (
         <>
           <Alert className="text-center mt-3 mx-3" variant="info">
