@@ -10,7 +10,8 @@ export const listReviewProduct = (productId) => async (dispatch) => {
         
         const { data } = await axios.get(`${api.getReviewOfAProduct}${productId}/reviews`)
 
-        dispatch({type: REVIEW_PRODUCT_LIST_SUCCESS, payload: data })
+       //console.log("review get: ",data)
+        dispatch({type: REVIEW_PRODUCT_LIST_SUCCESS, payload: data.data.data })
 
     }  catch (error) {
         const message = error.response && error.response.data.message ? 

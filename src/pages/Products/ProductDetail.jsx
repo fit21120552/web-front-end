@@ -7,21 +7,39 @@ import axios from "axios";
 import { api } from "../../constants/api";
 import { useDispatch, useSelector } from "react-redux";
 import { listProductDetails } from "../../Redux/Actions/ProductActions";
-import { Alert } from "react-bootstrap";
+import { Alert, Toast, ToastContainer } from "react-bootstrap";
 import Loading from "../LoadingError/Loading";
+
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { createReview, listReviewProduct } from "../../Redux/Actions/ReviewActions";
+import { REVIEW_CREATE_RESET } from "../../Redux/Constants/ReviewConstants";
+import { toast } from "react-toastify";
 const ProductDetail = ({ history, match }) => {
   const [quantity, setQuantity] = useState(1);
+  const [rating, setRating] = useState(5)
+  const [comment, setComment] = useState("")
   const params = useParams();
-
+  const userLogin = useSelector((state) => state.userLogin)
   const navigate = useNavigate();
-
+  const dispatch = useDispatch()
+  const toastId = useState(null)
   const [product, setProduct] = useState();
   const [relatedProducts, setRelatedProducts] = useState([]);
+  const { id } = params
+  const reviewList = useSelector((state) => state.reviewList)
+  const { loading: loadingReviewList, error: errorReviewList, reviews } = reviewList
 
+  const reviewCreate = useSelector((state)=> state.reviewCreate)
+  const { loading: loadingReviewCreate, error: errorReviewCreate, success: successReviewCreate } = reviewCreate
+  const ToastObjects = {
+    pauseOnFoccusLoss: false,
+    draggable: false,
+    pauseOnHover: false,
+    autoClose: 2000,
+};
   useEffect(() => {
     const fetchProduct = async () => {
       const res1 = await axios.get(api.getAndCreateProduct + params.id);
@@ -33,8 +51,15 @@ const ProductDetail = ({ history, match }) => {
     };
 
     fetchProduct();
-  }, [params.id]);
+    dispatch(listReviewProduct(id))    
+    if (successReviewCreate) {
+      dispatch({ type: REVIEW_CREATE_RESET})
+      setRating(5)
+      setComment("")
+    }
+  }, [params.id, dispatch, successReviewCreate]);
 
+  
   const loading = false;
   const error = false;
 
@@ -56,8 +81,25 @@ const ProductDetail = ({ history, match }) => {
       setQuantity(quantity - 1);
     }
   };
+
+  const submitHandler = (e) => {
+      e.preventDefault()
+      if (comment==="") {
+        return alert("Please write some comment!")
+      }
+
+      dispatch(createReview(id,rating, comment))
+
+  }
+  const showToast = () => {
+    toast.success('Success!', {
+      position: toast.POSITION.TOP_RIGHT
+    });
+  };
+
   return (
     <div className="container mt-6 max-w-screen-xl">
+   <Toast/>
       {loading ? (
         <Loading />
       ) : error ? (
@@ -175,58 +217,95 @@ const ProductDetail = ({ history, match }) => {
           <Row className=" my-5">
             <Col className="">
               <h6 className="mb-3 font-bold ">REVIEWS</h6>
-              <Message variant="info" className="mt-3">
-                No Reviews
-              </Message>
-              <div className="mb-5 mb-md-3 bg-[#f1f5f9] p-3 shadow-sm rounded-lg">
-                <strong>User name</strong>
-                <Rating value={3.5} />
-                <span>Date review</span>
-                <Alert key="info" variant="info" className="mt-3">
-                  simply dummy
-                </Alert>
-              </div>
+              {
+                loadingReviewList ? (<Loading/>) : errorReviewList 
+                ? (
+                  <Message variant="info" className="mt-3">
+                    {errorReviewList}
+                  </Message>
+                ) : (
+                  reviews.length >=0 ? (
+                    reviews.map((review) => (
+                      <div className="mb-5 mb-md-3 bg-[#f1f5f9] p-3 shadow-sm rounded-lg" key={review._id}>
+                      <strong>Anonymous user</strong>
+                      <Rating value={review.rating} />
+                      <span>{review.createdAt}</span>
+                      <Alert key="info" variant="info" className="mt-3">
+                        {review.review}
+                      </Alert>
+                    </div>
+                    ))
+                    
+                  ) : (
+                    <Message variant="info" className="mt-3">
+                      No Reviews
+                    </Message>
+                  )
+                )
+              }
+              
+             
             </Col>
 
             <Col className="">
               <h6 className="font-bold ">WRITE A CUSTOMER REVIEW</h6>
               <div className="my-4"></div>
+              {
+                userLogin.userInfo && userLogin.userInfo._id ? 
+                  
+                    loadingReviewCreate ? (<Loading/>) :
+                    errorReviewCreate ? (  
+                      <Message variant="danger" className="mt-3">
+                      
+                        {errorReviewCreate}
+                      </Message>) : (
+                        <form>
+                          <div className="my-4">
+                            <strong>Rating</strong>
+                            <select className="col-12 bg-[#fafafa] p-3 mt-2 rounded-full" 
+                                    onChange={(e) => setRating(e.target.value)}
+                                    value={rating}>
+                              
+                              <option value={1}>1 - Poor</option>
+                              <option value={2}>2 - Fair</option>
+                              <option value={3}>3 - Good</option>
+                              <option value={4}>4 - Very Good</option>
+                              <option value={5}>5 - Excellent</option>
+                            </select>
+                          </div>
+                          <div className="my-4">
+                            <strong>Comment</strong>
+                            <textarea
+                              rows="3"
+                              className="col-12 bg-[#fafafa] p-3 mt-2 rounded-lg"
+                              value={comment}
+                              onChange={(e) => setComment(e.target.value)}
+                            ></textarea>
+                          </div>
+                          <div className="my-3">
+                            <button className="col-2 bg-[#09090b] p-3 rounded-full text-white" type="submit" onClick={(e)=> submitHandler(e)}>
+                              SUBMIT
+                            </button>
+                          </div>
+                        </form>
+                      )
+                  
+                 
+                 : (
+                  <div className="my-3">
+                    <Message variant="warning">
+                      Please{" "}
+                      <Link to="/login">
+                        " <strong>Login</strong> "
+                      </Link>
+                      to write a review{" "}
+                    </Message>
+                  </div>
+                )
+              }
+             
 
-              <form>
-                <div className="my-4">
-                  <strong>Rating</strong>
-                  <select className="col-12 bg-[#fafafa] p-3 mt-2 rounded-full">
-                    <option value="">Select ...</option>
-                    <option value="1">1 - Poor</option>
-                    <option value="2">2 - Fair</option>
-                    <option value="3">3 - Good</option>
-                    <option value="4">4 - Very Good</option>
-                    <option value="5">5 - Excellent</option>
-                  </select>
-                </div>
-                <div className="my-4">
-                  <strong>Comment</strong>
-                  <textarea
-                    rows="3"
-                    className="col-12 bg-[#fafafa] p-3 mt-2 rounded-lg"
-                  ></textarea>
-                </div>
-                <div className="my-3">
-                  <button className="col-2 bg-[#09090b] p-3 rounded-full text-white">
-                    SUBMIT
-                  </button>
-                </div>
-              </form>
-
-              <div className="my-3">
-                <Message variant="warning">
-                  Please{" "}
-                  <Link to="/login">
-                    " <strong>Login</strong> "
-                  </Link>
-                  to write a review{" "}
-                </Message>
-              </div>
+              
             </Col>
           </Row>
         </>

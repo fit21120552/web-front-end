@@ -42,8 +42,8 @@ export const api = {
   getOrder: IPaddress + "/admin/order/",
 
   //review
-  createReviewOfAProduct: IPaddress + "/api/v1/product/",
-  getReviewOfAProduct: IPaddress + "/api/v1/reviews",
+  createReviewOfAProduct: IPaddress + "/api/v1/reviews/",
+  getReviewOfAProduct: IPaddress + "/api/v1/product/",
 
   
 };
