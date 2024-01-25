@@ -11,7 +11,7 @@ export const api = {
   login: IPaddress + "/signin/",
   loginWithGoogle: IPaddress + "/auth/google/",
   profile: IPaddress + "/user/",
-  
+
   getCart: IPaddress + "/api/v1/carts/",
   getUser: IPaddress + "/api/v1/user/",
 
@@ -32,4 +32,5 @@ export const api = {
   getAllProduct: IPaddress + "/api/v1/product",
   getAllCategory: IPaddress + "/api/v1/category",
   getRelatedProduct: IPaddress + "/api/v1/product/related-products/",
+  getTodayProducts: IPaddress + "/api/v1/product?stock[gt]=50&limit=4",
 };

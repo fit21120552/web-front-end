@@ -5,7 +5,12 @@ import {
   useParams,
   useSearchParams,
 } from "react-router-dom";
-import { addTocart, removeFromCart } from "../../Redux/Actions/CartActions";
+import {
+  addTocart,
+  removeFromCart,
+  increaseQuantity,
+  decreaseQuantity,
+} from "../../Redux/Actions/CartActions";
 import { useDispatch, useSelector } from "react-redux";
 import { Alert, Button, Col, Row } from "react-bootstrap";
 import Message from "../LoadingError/Message";
@@ -32,18 +37,12 @@ const Cart = () => {
 
   const increaseProductQuantity = (product) => {
     if (product.quantity + 1 <= product.stock) {
-      // const updatedCartItems = cartItems.map((item) => {
-      //   if (product._id === item._id) {
-      //     item.quantity = product.quantity + 1;
-      //   }
-      //   return item;
-      // });
-      dispatch(increaseProductQuantity(productId));
+      dispatch(increaseQuantity(productId));
     }
   };
   const decreaseProductQuantity = (product) => {
     if (product.quantity - 1 >= 1) {
-      dispatch(decreaseProductQuantity(productId));
+      dispatch(decreaseQuantity(productId));
     }
   };
 
@@ -90,11 +89,11 @@ const Cart = () => {
               {cartItems.map((item, index) => (
                 <div
                   key={index}
-                  className="cart-item flex justify-between gap-2 p-2 rounded-lg border-2 border-solid bg-white mx-2"
+                  className="cart-item flex gap-2 p-2 rounded-lg border-2 border-solid bg-white mx-2"
                 >
                   <Link
                     to={`/product/${item._id}`}
-                    className="cart-image flex gap-2"
+                    className="cart-image flex gap-2 flex-1"
                   >
                     <img
                       src={item.thumbnail}
@@ -109,7 +108,7 @@ const Cart = () => {
                     </div>
                   </Link>
 
-                  <div className="cart-quantity col-md-2 col-sm-5 mt-3 mt-md-0 flex flex-column justify-center">
+                  <div className="flex-1 cart-quantity col-md-2 col-sm-5 mt-3 mt-md-0 flex flex-column items-center justify-center">
                     <h6 className=" text-slate-500 font-semibold mb-2">
                       Quantity
                     </h6>
@@ -138,18 +137,21 @@ const Cart = () => {
                       </button>
                     </div>
                   </div>
-
-                  <div className="cart-price mt-3 mt-md-0 col-md-2 items-end flex flex-column justify-center ">
-                    <h6 className="font-semibold  text-slate-500">Sub Total</h6>
-                    <p className="font-bold text-lg">
-                      {item.price * item.quantity} VNĐ
-                    </p>
-                  </div>
-                  <div
-                    onClick={() => removeFromCardHandler(item._id)}
-                    className="remove-button flex flex-row justify-start items-center "
-                  >
-                    <i className="fas fa-times bg-[#ef4444] text-white w-8 h-8 flex items-center justify-center rounded-full"></i>
+                  <div className="flex-1 flex justify-center items-center gap-4">
+                    <div className="cart-price ">
+                      <h6 className="font-semibold  text-slate-500">
+                        Sub Total
+                      </h6>
+                      <p className="font-bold text-lg">
+                        {item.price * item.quantity} VNĐ
+                      </p>
+                    </div>
+                    <div
+                      onClick={() => removeFromCardHandler(item._id)}
+                      className="remove-button flex flex-row justify-start items-center "
+                    >
+                      <i className="fas fa-times bg-[#ef4444] text-white w-8 h-8 flex items-center justify-center rounded-full"></i>
+                    </div>
                   </div>
                 </div>
               ))}

@@ -1,6 +1,11 @@
 import axios from "axios";
 import { api } from "../../constants/api";
-import { CART_REMOVE_ITEM, CART_ADD_ITEM } from "../Constants/CartConstants";
+import {
+  CART_REMOVE_ITEM,
+  CART_ADD_ITEM,
+  CART_INCREASE_ITEM,
+  CART_DECREASE_ITEM,
+} from "../Constants/CartConstants";
 
 export const addTocart = (id, quantity) => async (dispatch, getState) => {
   const { data } = await axios.get(`${api.getAndCreateProduct}${id}`);
@@ -8,7 +13,7 @@ export const addTocart = (id, quantity) => async (dispatch, getState) => {
   dispatch({
     type: CART_ADD_ITEM,
     payload: {
-      product: data.data.data._id,
+      _id: data.data.data._id,
       title: data.data.data.title,
       thumbnail: data.data.data.thumbnail,
       price: data.data.data.price,
@@ -23,6 +28,24 @@ export const addTocart = (id, quantity) => async (dispatch, getState) => {
 export const removeFromCart = (id) => (dispatch, getState) => {
   dispatch({
     type: CART_REMOVE_ITEM,
+    payload: id,
+  });
+
+  localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
+};
+
+export const increaseQuantity = (id) => (dispatch, getState) => {
+  dispatch({
+    type: CART_INCREASE_ITEM,
+    payload: id,
+  });
+
+  localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
+};
+
+export const decreaseQuantity = (id) => (dispatch, getState) => {
+  dispatch({
+    type: CART_DECREASE_ITEM,
     payload: id,
   });
 
