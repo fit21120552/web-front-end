@@ -17,6 +17,7 @@ import Col from "react-bootstrap/Col";
 import { createReview, listReviewProduct } from "../../Redux/Actions/ReviewActions";
 import { REVIEW_CREATE_RESET } from "../../Redux/Constants/ReviewConstants";
 import { toast } from "react-toastify";
+import ReactPaginate from "react-paginate";
 const ProductDetail = ({ history, match }) => {
   const [quantity, setQuantity] = useState(1);
   const [rating, setRating] = useState(5)
@@ -96,6 +97,67 @@ const ProductDetail = ({ history, match }) => {
       position: toast.POSITION.TOP_RIGHT
     });
   };
+
+  function Items({ currentItems }) {
+    return (
+      <>
+        {currentItems &&
+          currentItems.map((review, index) => (
+            <div className="mb-5 mb-md-3 bg-[#f1f5f9] p-3 shadow-sm rounded-lg" key={review._id}>
+                      <strong>Anonymous user</strong>
+                      <Rating value={review.rating} />
+                      <span>{review.createdAt}</span>
+                      <Alert key="info" variant="info" className="mt-3">
+                        {review.review}
+                      </Alert>
+                    </div>
+          ))}
+      </>
+    );
+  }
+
+  function PaginatedItems({ itemsPerPage, itemList }) {
+   // console.log("item: ", itemList.length)
+    const [itemOffset, setItemOffset] = useState(0);
+
+    const endOffset = itemOffset + itemsPerPage;
+    const currentItems = itemList.slice(itemOffset, endOffset);
+    const pageCount = Math.ceil(itemList.length / itemsPerPage);
+
+    const handlePageClick = (event) => {
+      //errorDelete=null
+      const newOffset = (event.selected * itemsPerPage) % itemList.length;
+      setItemOffset(newOffset);
+    };
+
+    return (
+      <>
+        
+          <Items currentItems={currentItems} />
+      
+        <ReactPaginate
+          nextLabel=">"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={3}
+          marginPagesDisplayed={2}
+          pageCount={pageCount}
+          previousLabel="<"
+          pageClassName="page-item"
+          pageLinkClassName="page-link"
+          previousClassName="page-item"
+          previousLinkClassName="page-link"
+          nextClassName="page-item"
+          nextLinkClassName="page-link"
+          breakLabel="..."
+          breakClassName="page-item"
+          breakLinkClassName="page-link"
+          containerClassName="pagination mt-4"
+          activeClassName="active"
+          renderOnZeroPageCount={null}
+        />
+      </>
+    );
+  }
 
   return (
     <div className="container mt-6 max-w-screen-xl">
@@ -225,16 +287,7 @@ const ProductDetail = ({ history, match }) => {
                   </Message>
                 ) : (
                   reviews.length >=0 ? (
-                    reviews.map((review) => (
-                      <div className="mb-5 mb-md-3 bg-[#f1f5f9] p-3 shadow-sm rounded-lg" key={review._id}>
-                      <strong>Anonymous user</strong>
-                      <Rating value={review.rating} />
-                      <span>{review.createdAt}</span>
-                      <Alert key="info" variant="info" className="mt-3">
-                        {review.review}
-                      </Alert>
-                    </div>
-                    ))
+                    <PaginatedItems  itemsPerPage={1} itemList={reviews}/>
                     
                   ) : (
                     <Message variant="info" className="mt-3">

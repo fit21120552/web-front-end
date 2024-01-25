@@ -242,17 +242,19 @@ const DetailOrder = () => {
                                 </div>
 
                                 <div className="col-lg-3">
-                                    <div className="box shadow0sm bg-light">
-                                        <button className=" col-12 text-white" onClick={(e) => setDeliveryStatus()}>
-                                            { 
-                                                deliverySwitch ? (
-                                                    <span className="bg-success rounded-lg  p-2">DELIVERED</span>
-                                                ) : (
-                                                    <span className="bg-dark rounded-lg p-2">MARK AS DELIVERED</span>
-                                                )
-                                            }
-                                            
-                                        </button>
+                                    <div className="box shadow-sm bg-light">
+                                        <div className="border w-4/5 p-3 rounded-lg" >
+                                            <button className=" col-12 text-white" onClick={(e) => setDeliveryStatus()}>
+                                                { 
+                                                    deliverySwitch ? (
+                                                        <span className="bg-success rounded-lg  p-2">DELIVERED</span>
+                                                    ) : (
+                                                        <span className="bg-dark rounded-lg p-2">MARK AS DELIVERED</span>
+                                                    )
+                                                }
+                                                
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
