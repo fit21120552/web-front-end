@@ -222,8 +222,8 @@ const ProductDetail = ({ history, match }) => {
                               type="text"
                               name="quantity"
                               className="text-center w-[40px] rounded-xl outline-none"
-                              min="1"
-                              max={`${product?.stock}`}
+                              min={1}
+                              max={product?.stock}
                               value={quantity}
                               readOnly
                             ></input>

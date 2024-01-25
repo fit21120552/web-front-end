@@ -15,7 +15,7 @@ import {
 } from "../Constants/OrderConstants";
 
 
-export const orderDetailsReducer = (state = { order: {orderItems: []}}, action) => {
+export const orderDetailsReducer = (state = { order: {orderItems: [], shippingAddress: {}}}, action) => {
     switch (action.type) {
         case ORDER_DETAILS_REQUEST:
             return { ...state, loading: true}

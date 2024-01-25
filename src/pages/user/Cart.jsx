@@ -124,8 +124,8 @@ const Cart = () => {
                         readOnly
                         name="quantity"
                         className="w-[40px] outline-none text-center bg-gray-200 rounded-xl mx-2"
-                        min="1"
-                        max={`${item.stock}`}
+                        min={1}
+                        max={item.stock}
                         value={item.quantity}
                       ></input>
 

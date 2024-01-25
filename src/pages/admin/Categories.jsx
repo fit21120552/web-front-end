@@ -10,6 +10,7 @@ import { deleteCategory, listCategories } from "../../Redux/Actions/CategoryActi
 import Loading from "../LoadingError/Loading";
 import Message from "../LoadingError/Message";
 import { deleteProduct } from "../../Redux/Actions/ProductActions";
+import { ToastContainer } from "react-toastify";
 
 const Categories = () => {
  
@@ -89,6 +90,9 @@ useEffect(() => {
       </>
     );
   }
+  if (errorDelete) {
+    toast.error(errorDelete);
+   }
   function PaginatedItems({ itemsPerPage, itemList }) {
     // console.log("item: ", itemList.length)
      const [itemOffset, setItemOffset] = useState(0);
@@ -101,6 +105,7 @@ useEffect(() => {
        const newOffset = (event.selected * itemsPerPage) % itemList.length;
        setItemOffset(newOffset);
      }; 
+    
      return (
       <>
         
@@ -131,6 +136,7 @@ useEffect(() => {
     }
   return (
     <div className="px-10 flex flex-column items-center">
+    
       <div className="flex flex-row justify-end mt-10 w-full">
         <div className=""></div>
         <button className="bg-[#0CA91B] rounded-lg px-4 py-2 text-white">

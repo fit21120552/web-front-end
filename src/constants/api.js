@@ -41,6 +41,7 @@ export const api = {
   //order
   getOrder: IPaddress + "/admin/order/",
   createOrder: IPaddress + "/order/",
+  getOrderUser: IPaddress + "/user/order/",
   //review
   createReviewOfAProduct: IPaddress + "/api/v1/reviews/",
   getReviewOfAProduct: IPaddress + "/api/v1/product/",
