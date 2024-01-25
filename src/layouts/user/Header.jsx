@@ -70,7 +70,7 @@ const Header = ({ title, setTitle }) => {
               url:
                 "/product?category=" +
                 item.name +
-                "&title=" +
+                "&title[regex]=" +
                 subitem.name +
                 "&page=1",
             })),
@@ -239,16 +239,16 @@ const Header = ({ title, setTitle }) => {
                       const currentUrl = location.pathname;
                       if (currentUrl !== "/product") {
                         if (title !== "") {
-                          navigate("/product?title=" + title);
+                          navigate("/product?page=1&title[regex]=" + title);
                         } else {
                           navigate("/product");
                         }
                       } else {
                         setSearchParams((params) => {
                           if (title !== "") {
-                            params.set("title", title);
+                            params.set("title[regex]", title);
                           } else {
-                            params.delete("title");
+                            params.delete("title[regex]");
                           }
                           return params;
                         });
