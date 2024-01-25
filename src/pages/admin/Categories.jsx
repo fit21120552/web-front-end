@@ -145,7 +145,7 @@ useEffect(() => {
         {
            loading ? (<Loading/>) : error ? (
           
-            <Message variant="danger w-full" >{error}</Message>
+            <Message variant="danger w-full mt-3" >{error}</Message>
            
            ) : (
             <table className="mt-8 min-w-[700px] w-4/5 table">
