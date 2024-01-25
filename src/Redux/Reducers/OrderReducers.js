@@ -1,9 +1,9 @@
 import { ORDER_DELETE_FAIL, ORDER_DELETE_REQUEST, ORDER_DELETE_SUCCESS, ORDER_DETAILS_FAIL, ORDER_DETAILS_REQUEST, ORDER_DETAILS_SUCCESS, ORDER_LIST_FAIL, ORDER_LIST_REQUEST, ORDER_LIST_SUCCESS } from "../Constants/OrderConstants"
 
 
-export const orderDetailsReducer = (state = { order: {}}, action) => {
+export const orderDetailsReducer = (state = { order: {orderItems: []}}, action) => {
     switch (action.type) {
-        case ORDER_DETAILS_REQUEST_DETAILS_REQUEST:
+        case ORDER_DETAILS_REQUEST:
             return { ...state, loading: true}
         case ORDER_DETAILS_SUCCESS:
             return { loading: false, order: action.payload }
