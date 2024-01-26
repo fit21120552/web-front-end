@@ -7,6 +7,7 @@ import { Link, useOutletContext, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { api } from "../../constants/api";
+import ImageView from "../Components/ImageView";
 
 export default function Product() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -190,11 +191,21 @@ export default function Product() {
                     >
                       <div className="border-product">
                         <div className="shopBack">
-                          <img
-                            src={product.thumbnail}
-                            alt={product.name}
-                            className="bg-[#bbf7d0] h-[250px] object-cover"
-                          />
+                        {
+                          product ? (
+                            !product.thumbnail || product.thumbnail.includes('http') ? (
+                                <img
+                                  src={product.thumbnail}
+                                  alt={product.title}
+                                  className="bg-[#bbf7d0] h-[250px] object-cover"
+                                />
+                              ) : (
+                                <ImageView imagePath={product.thumbnail} imageName={product.title} model={'product'} id={product._id} classProp={"bg-[#bbf7d0] h-[250px] object-cover"}/>
+                              )
+                          ) : null
+                          
+                        }
+                          
                         </div>
 
                         <div className="shoptext">

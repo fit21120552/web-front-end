@@ -49,7 +49,8 @@ export const api = {
   createReviewOfAProduct: IPaddress + "/api/v1/reviews/",
   getReviewOfAProduct: IPaddress + "/api/v1/product/",
 
-  
+  // image api
+  getImage: IPaddress + "/image/",
 
   //payment api
   checkout: "https://localhost:3003/pay/tranfer",

@@ -67,7 +67,8 @@ const AddProduct = () => {
         dispatch(listCategories())
         if (product) {
            // toast.success("Product Added!", ToastObjects)
-            updateImageFunction(product._id)
+            //updateImageFunction(product._id)
+
             dispatch({type: PRODUCT_CREATE_RESET})
             setTitle("")
             setPrice(0)
@@ -82,8 +83,9 @@ const AddProduct = () => {
         }
     },[product, dispatch])
 
-    const submitHandler = (e) => async (e) => {
+    const submitHandler = (e) => {
         e.preventDefault()
+       // console.log("oke")
         dispatch(createProduct(title, price, stock, description, category, brand, fileImage))
        
     }
@@ -91,9 +93,9 @@ const AddProduct = () => {
         console.log(event.target.files[0])
         setThumbnail(event.target.value);
         setPreviewImage(URL.createObjectURL(event.target.files[0]));
-        const formData = new FormData()
-        formData.append('thumbnail', event.target.files[0],event.target.files[0].name)
-        setFileImage(formData)
+       // const formData = new FormData()
+        //formData.append('thumbnail', event.target.files[0],event.target.files[0].name)
+        setFileImage(event.target.files[0])
     }; 
       const deleteImage = () => {
         setThumbnail("")
@@ -121,7 +123,7 @@ const AddProduct = () => {
                     {error && <Message variant={"danger"}>{error}</Message>}
                     { loading || loadingCategory && <Loading/>}
                     <div className="form mb-4 text-left input-group">
-                        <span className="text-start font-bold input-group-text w-30" for="typeEmailX-2">Title</span>
+                        <span className="text-start font-bold input-group-text w-30" htmlFor="typeEmailX-2">Title</span>
                         <input type="text"
                                 id="title" 
                                 name="title" 
@@ -131,9 +133,9 @@ const AddProduct = () => {
                                 required />
                     </div>
 
-                    <div class="form mb-4 text-left input-group">
-                        <span className="text-start font-bold input-group-text w-30" for="typeEmailX-2">Price</span>
-                        <input type="text"
+                    <div className="form mb-4 text-left input-group">
+                        <span className="text-start font-bold input-group-text w-30" htmlFor="typeEmailX-2">Price</span>
+                        <input type="number"
                                 id="price" 
                                 name="price" 
                                 className="form-control"
@@ -142,9 +144,9 @@ const AddProduct = () => {
                                 required />
                     </div>
 
-                    <div class="form mb-4 text-left input-group">
+                    <div className="form mb-4 text-left input-group">
                         <span className="text-start font-bold input-group-text w-30" for="typeEmailX-2">Stock</span>
-                        <input type="text"
+                        <input type="number"
                                 id="stock" 
                                 name="stock" 
                                 className="form-control"
@@ -153,7 +155,7 @@ const AddProduct = () => {
                                 required />
                     </div>
 
-                    <div class="form mb-4 text-left input-group">
+                    <div className="form mb-4 text-left input-group">
                         <span className="text-start font-bold input-group-text w-30" for="typeEmailX-2">Description</span>
                         <textarea type="text"
                                 id="description" 
@@ -165,7 +167,7 @@ const AddProduct = () => {
                                 required ></textarea>
                     </div>
                                 
-                    <div class="form mb-4 text-left input-group">
+                    <div className="form mb-4 text-left input-group">
                         <span className="text-start font-bold input-group-text w-30" for="typeEmailX-2">Category</span>
                         <select
                                 id="description" 
@@ -185,7 +187,7 @@ const AddProduct = () => {
                         </select>
                     </div>
 
-                    <div class="form mb-4 text-left input-group">
+                    <div className="form mb-4 text-left input-group">
                         <span className="text-start font-bold input-group-text w-30" for="typeEmailX-2">Brand</span>
                         <input type="text"
                                 id="brand" 
@@ -207,7 +209,7 @@ const AddProduct = () => {
                                 accept="image/*"
                                 value={thumbnail}
                                 onChange={selectFile} 
-                                single
+                            
                                 ></input>
                            
                     </div>

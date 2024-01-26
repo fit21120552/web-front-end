@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteProduct, listProductsAdmin } from "../../Redux/Actions/ProductActions";
 import Loading from "../LoadingError/Loading"
 import Message from "../LoadingError/Message"
+import ImageView from "../Components/ImageView";
 const Products = () => {
   const [modalShow, setModalShow] = React.useState(false);
   const [itemPerPage, setItemPerPage] = useState(6)
@@ -50,7 +51,17 @@ const Products = () => {
               className="border rounded-md flex flex-col max-w-[250px] px-2 pt-2 pb-0 max-h-[250px]"
             >
               <div className="bg-white rounded-lg mx-auto w-2/3 h-1/2 ">
-                <img src={item.thumbnail} alt={item.title} className="w-4/5 h-4/5"/>
+                { 
+                  item ? (
+                    !item.thumbnail || item.thumbnail.includes('http') ? (
+                      <img src={item.thumbnail} alt={item.title} className="w-4/5 h-4/5"/>
+                    ) : (
+                      <ImageView imagePath={item.thumbnail} imageName={item.title} model={'product'} id={item._id} classProp={"w-4/5 h-4/5"}/>
+                    )
+                  ) : null
+                  
+                }
+                
               </div>
               <p>{item.title}</p>
               <div className="flex justify-between">

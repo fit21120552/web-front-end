@@ -136,8 +136,8 @@ export const createProduct = (title, price, stock, description, category, brand,
             headers: {
                 Authorization: `Bearer ${userInfo.token}`,
                 "Access-Control-Allow-Origin": "*",
-            //   "Content-Type": "application/json",
-            "Content-Type": "multipart/form-data",
+               //"Content-Type": "application/json",
+                "Content-Type": "multipart/form-data",
                 sessionId:  userInfo.sessionId,
             },
             withCredentials: true,
@@ -150,9 +150,23 @@ export const createProduct = (title, price, stock, description, category, brand,
              description: description, 
              category: category, 
              thumbnail: thumbnail,
-             sessionId: userInfo.sessionId,
+             //sessionId: userInfo.sessionId,
              brand: brand,
          }
+        
+        const formData = new FormData()
+        if (thumbnail) {
+            formData.append("thumbnail",thumbnail)
+        }
+        formData.append("title",title)
+        formData.append("price",price)
+        formData.append("stock",stock)
+        formData.append("description",description)
+        formData.append("category",category)
+        formData.append("brand",brand)
+       
+        console.log("form data: ",formData)
+
         const { data} = await axios.post(`${api.createProduct}`,
                                             body,
                                             config)

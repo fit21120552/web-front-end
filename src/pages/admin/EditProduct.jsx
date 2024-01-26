@@ -73,7 +73,7 @@ const EditProduct = () => {
             //setThumbnail(temp.thumbnail);
             setOriginalImage(temp.thumbnail)
             setStock(temp.stock);
-            setPreviewImage((temp.thumbnail));
+            //setPreviewImage((temp.thumbnail));
             loadingProduct=false
         } catch (error) {
            console.log(error)

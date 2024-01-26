@@ -11,10 +11,10 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFacebookF } from "@fortawesome/free-brands-svg-icons";
+import { faFacebookF, faProductHunt } from "@fortawesome/free-brands-svg-icons";
 import { logout } from "../../Redux//Actions/UserActions";
 import { useEffect, useRef, useState } from "react";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { api } from "../../constants/api";
 const Header = ({ title, setTitle }) => {
@@ -175,6 +175,11 @@ const Header = ({ title, setTitle }) => {
                     <p className="text-blue-500">STORE</p>
                   </div>
                 </Link>
+                <Link to="/product" className="">
+                    <button className=" bg-[#ef4444] rounded-xl p-2 text-white m-3 ">
+                           <FontAwesomeIcon icon={faShoppingCart}/> 
+                        </button>
+                </Link>
                 <div
                   ref={ref}
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -222,6 +227,8 @@ const Header = ({ title, setTitle }) => {
                   )}
                 </div>
               </div>
+              
+                
               <div className="col-xs-6 col-6 flex items-center">
                 <div className="input-group">
                   <input
