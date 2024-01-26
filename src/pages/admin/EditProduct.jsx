@@ -21,6 +21,7 @@ const EditProduct = () => {
     const [thumbnail, setThumbnail ] = useState(null)
     const [previewImage, setPreviewImage] = useState(null)
     const [stock, setStock] = useState(0)
+    const [brand, setBrand] = useState("")
     const [originalImage, setOriginalImage] = useState("")
     const dispatch = useDispatch()
     const [searchParams, setSearchParams] = useSearchParams()
@@ -68,6 +69,7 @@ const EditProduct = () => {
             setPrice(temp.price);
             setDescription(temp.description);
             setCategory(temp.category);
+            setBrand(temp.brand)
             //setThumbnail(temp.thumbnail);
             setOriginalImage(temp.thumbnail)
             setStock(temp.stock);
@@ -101,7 +103,7 @@ const EditProduct = () => {
         },
         withCredentials: true,
     }
-    const updateProduct = async (id, title, price, stock, description, category, thumbnail)=> {
+    const updateProduct = async (id, title, price, stock, description, category,brand, thumbnail)=> {
         try {
             loadingProduct =true
             const config = {
@@ -123,6 +125,7 @@ const EditProduct = () => {
                 description: description, 
                 category: category, 
                 thumbnail: thumbnail,
+                brand: brand,
             }
             const { data } =  await axios.patch(`${api.editProduct}${id}`,
                                             body,config)
@@ -137,9 +140,9 @@ const EditProduct = () => {
     const submitHandler = (e)  => {
         e.preventDefault()
         if (thumbnail) {
-            updateProduct(id, title, price, stock, description, category, thumbnail)
+            updateProduct(id, title, price, stock, description, category, brand, thumbnail)
         } else {
-            updateProduct(id, title, price, stock, description, category, originalImage)
+            updateProduct(id, title, price, stock, description, category, brand, originalImage)
         }
         
         alert("Updated success!")
@@ -240,6 +243,17 @@ const EditProduct = () => {
                                                 )
                                             )}
                                 </select>
+                            </div>
+
+                            <div class="form mb-4 text-left input-group">
+                                <span className="text-start font-bold input-group-text w-30" for="typeEmailX-2">Brand</span>
+                                <input type="text"
+                                        id="brand" 
+                                        name="brand" 
+                                        className="form-control"
+                                        value={brand}
+                                        onChange={(e) => setBrand(e.target.value)}
+                                        required />
                             </div>
 
                             <div className="form mb-4 text-left ">

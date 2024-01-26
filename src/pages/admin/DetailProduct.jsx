@@ -19,6 +19,7 @@ const DetailProduct = () => {
     const [thumbnail, setThumbnail ] = useState("")
     const [previewImage, setPreviewImage] = useState("")
     const [stock, setStock] = useState(0)
+    const [brand, setBrand] = useState("")
     const dispatch = useDispatch()
     const [searchParams, setSearchParams] = useSearchParams()
     const params = useParams()
@@ -39,6 +40,7 @@ const DetailProduct = () => {
                 setPrice(temp.price);
                 setDescription(temp.description);
                 setCategory(temp.category);
+                setBrand(temp.brand)
                 setThumbnail(temp.thumbnail);
                 setStock(temp.stock);
                 setPreviewImage((temp.thumbnail));
@@ -149,6 +151,18 @@ const DetailProduct = () => {
                                 readOnly>
                                    
                         </input>
+                    </div>
+
+                    <div class="form mb-4 text-left input-group">
+                        <span className="text-start font-bold input-group-text w-30" for="typeEmailX-2">Brand</span>
+                        <input type="text"
+                                id="brand" 
+                                name="brand" 
+                                className="form-control"
+                                value={brand}
+                                onChange={(e) => setBrand(e.target.value)}
+                                readOnly
+                                required />
                     </div>
 
                     <div className="form mb-4 text-left ">
