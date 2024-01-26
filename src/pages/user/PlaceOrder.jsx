@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import Message from "../LoadingError/Message";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { ORDER_CREATE_RESET } from "../../Redux/Constants/OrderConstants";
 import { createOrder } from "../../Redux/Actions/OrderActions";
@@ -16,7 +16,7 @@ const PlaceOrder = () => {
     const orderCreate = useSelector((state) => state.orderCreate)
     const { loading, error, success, order } = orderCreate
     const navigate = useNavigate()
-    
+    const dispatch = useDispatch()
     if (!shippingAddress) {
         navigate("/ship/")
     }

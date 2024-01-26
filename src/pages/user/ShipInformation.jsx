@@ -5,11 +5,12 @@ import { saveShippingAddress } from "../../Redux/Reducers/CartReducers";
 
 const ShipInformation = () => {
     const cart = useSelector((state)=>state.cart)
-    const {shippingAddress } = cart
-    const [address, setAddress] = useState(shippingAddress.address)
-    const [city, setCity] = useState(shippingAddress.city)
-    const [country, setCountry] = useState(shippingAddress.country)
-    const [postalCode, setPostalCode] = useState(shippingAddress.postalCode)
+    const { shippingAddress } = cart
+    console.log("shipping: ",shippingAddress)
+    const [address, setAddress] = useState(shippingAddress?.address)
+    const [city, setCity] = useState(shippingAddress?.city)
+    const [country, setCountry] = useState(shippingAddress?.country)
+    const [postalCode, setPostalCode] = useState(shippingAddress?.postalCode)
     const navigate = useNavigate()
 
     const dispatch = useDispatch()

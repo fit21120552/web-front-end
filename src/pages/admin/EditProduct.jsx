@@ -23,6 +23,7 @@ const EditProduct = () => {
     const [stock, setStock] = useState(0)
     const [brand, setBrand] = useState("")
     const [originalImage, setOriginalImage] = useState("")
+    const [fileImage, setFileImage] = useState(null)
     const dispatch = useDispatch()
     const [searchParams, setSearchParams] = useSearchParams()
     const params = useParams()
@@ -56,9 +57,6 @@ const EditProduct = () => {
         try {
             loadingProduct=true
            // dispatch({ type: PRODUCT_DETAILS_REQUEST}) 
-
-           
-
 
             const { data } = await axios.get(api.getAndCreateProduct+id)
             //console.log("data:" , data.data.data)
@@ -140,7 +138,7 @@ const EditProduct = () => {
     const submitHandler = (e)  => {
         e.preventDefault()
         if (thumbnail) {
-            updateProduct(id, title, price, stock, description, category, brand, thumbnail)
+            updateProduct(id, title, price, stock, description, category, brand, fileImage)
         } else {
             updateProduct(id, title, price, stock, description, category, brand, originalImage)
         }
@@ -152,11 +150,12 @@ const EditProduct = () => {
     const selectFile = (event) => {
         setThumbnail(event.target.value);
         setPreviewImage(URL.createObjectURL(event.target.files[0]));
-       
+        setFileImage(event.target.files[0])
       }; 
       const deleteImage = () => {
         setThumbnail("")
         setPreviewImage(null)
+        setFileImage(null)
       } 
 
    // const categories=["bag","fan","car"]
