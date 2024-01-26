@@ -24,7 +24,10 @@ export default function EditProfile() {
       const { data } = await axios.post(
         api.changePassword + userLogin?.userInfo?._id,
         { password },
-        { sessionId: userInfo.sessionId, ...api.config }
+        {
+          ...api.config,
+          headers: { ...api.config.headers, sessionId: userInfo.sessionId },
+        }
       );
       if (data === "success") {
         toast.info("Cập nhật thành công!");
