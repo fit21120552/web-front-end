@@ -133,6 +133,7 @@ export const deleteUser = (id) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
+        sessionId: userInfo.sessionId,
       },
     };
     const body = {
