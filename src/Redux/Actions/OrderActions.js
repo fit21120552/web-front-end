@@ -16,6 +16,7 @@ export const listOrderDetails = (id) => async (dispatch) => {
                 Authorization: `Bearer ${userInfo.token}`,
                 "Access-Control-Allow-Origin": "*",
                 "Content-Type":"application/json",
+                sessionId: userInfo.sessionId,
             },
             withCredentials: true,
         }
@@ -49,8 +50,9 @@ export const listOrders = () =>  async (dispatch, getState) => {
         const config = {
             headers: {
                 Authorization: `Bearer ${userInfo.token}`,
-                
-            }
+                sessionId: userInfo.sessionId,
+            },
+            withCredentials: true,
         }
 
         const { data } = await axios.get(api.getOrder, config)
@@ -81,7 +83,9 @@ export const deleteOrder =  (id)=>  async (dispatch, getState) => {
                 Authorization: `Bearer ${userInfo.token}`,
                 "Access-Control-Allow-Origin": "*",
                 "Content-Type":"application/json",
-            }
+                sessionId: userInfo.sessionId
+            },
+            withCredentials: true
         }
         const body = {
             sessionId: userInfo.sessionId
@@ -121,7 +125,8 @@ export const createOrder = (order) =>  async (dispatch, getState) => {
         const config = {
             headers: {
                 Authorization: `Bearer ${userInfo.token}`,
-                "Access-Control-Allow-Origin": "*"
+                "Access-Control-Allow-Origin": "*",
+                sessionId: userInfo.sessionId
             },
             withCredentials: true,
         }
@@ -172,8 +177,9 @@ export const listOrderUser = () => async (dispatch, getState) => {
         const config = {
             headers: {
                 Authorization: `Bearer ${userInfo.token}`,
-                
-            }
+                sessionId: userInfo.sessionId
+            },
+            withCredentials: true
         }
 
         const { data } = await axios.get(`${api.getOrder}${userInfo._id}`, config)

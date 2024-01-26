@@ -11,6 +11,7 @@ const DetailOrder = () => {
     const [deliverySwitch, setDeliverySwitch] = useState(false)
     const dispatch = useDispatch()
     const params = useParams()
+    const { id } = params
     const orderDetails = useSelector((state) => state.orderDetails)
     //const { loading, error, order }= orderDetails
     let loading = false

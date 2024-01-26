@@ -27,7 +27,7 @@ const AddProduct = () => {
     const [thumbnail, setThumbnail ] = useState(null)
     const [previewImage, setPreviewImage] = useState(null)
     const [stock, setStock] = useState(0)
-
+    const [brand, setBrand] = useState("")
     const dispatch = useDispatch()
 
     const productCreate = useSelector((state) => state.productCreate)
@@ -46,6 +46,7 @@ const AddProduct = () => {
             setPrice(0)
             setDescription("")
             setCategory("")
+            setBrand("")
             setThumbnail("")
             setStock(0)
             setPreviewImage(null)
@@ -55,7 +56,7 @@ const AddProduct = () => {
 
     const submitHandler = (e) => {
         e.preventDefault()
-        dispatch(createProduct(title, price, stock, description, category, thumbnail))
+        dispatch(createProduct(title, price, stock, description, category,brand, thumbnail))
     }
     const selectFile = (event) => {
         setThumbnail(event.target.value);
@@ -149,6 +150,17 @@ const AddProduct = () => {
                                         )
                                     )}
                         </select>
+                    </div>
+
+                    <div class="form mb-4 text-left input-group">
+                        <span className="text-start font-bold input-group-text w-30" for="typeEmailX-2">Brand</span>
+                        <input type="text"
+                                id="brand" 
+                                name="brand" 
+                                className="form-control"
+                                value={brand}
+                                onChange={(e) => setBrand(e.target.value)}
+                                required />
                     </div>
 
                     <div className="form mb-4 text-left ">

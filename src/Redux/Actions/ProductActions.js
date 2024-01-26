@@ -124,7 +124,7 @@ export const deleteProduct = (id) =>  async (dispatch, getState) => {
 }
 
 //CREATE PRODUCT
-export const createProduct = (title, price, stock, description, category, thumbnail) =>  async (dispatch, getState) => {
+export const createProduct = (title, price, stock, description, category, brand, thumbnail) =>  async (dispatch, getState) => {
     try {
         dispatch({type: PRODUCT_CREATE_REQUEST});
 
@@ -150,7 +150,7 @@ export const createProduct = (title, price, stock, description, category, thumbn
              category: category, 
              thumbnail: thumbnail,
              sessionId: userInfo.sessionId,
-             brand: "fix in product actions in redux"
+             brand: brand,
          }
         const { data} = await axios.post(`${api.createProduct}`,
                                             body,
