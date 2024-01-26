@@ -47,4 +47,7 @@ export const api = {
   getReviewOfAProduct: IPaddress + "/api/v1/product/",
 
   
+
+  //payment api
+  checkout: "https://localhost:3003/pay/tranfer",
 };

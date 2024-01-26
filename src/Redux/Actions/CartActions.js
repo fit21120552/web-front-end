@@ -5,6 +5,7 @@ import {
   CART_ADD_ITEM,
   CART_INCREASE_ITEM,
   CART_DECREASE_ITEM,
+  CLEAR_CART,
 } from "../Constants/CartConstants";
 
 export const addTocart = (id, quantity) => async (dispatch, getState) => {
@@ -47,6 +48,14 @@ export const decreaseQuantity = (id) => (dispatch, getState) => {
   dispatch({
     type: CART_DECREASE_ITEM,
     payload: id,
+  });
+
+  localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
+};
+
+export const clearCart = () => (dispatch, getState) => {
+  dispatch({
+    type: CLEAR_CART,
   });
 
   localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));

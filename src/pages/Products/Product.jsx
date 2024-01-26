@@ -125,11 +125,13 @@ export default function Product() {
           </button>
           <button
             className={` px-3 py-2 ${
-              sort === "sales" ? "bg-blue-500 text-white" : "bg-white"
+              sort === "-ratingsQuantity"
+                ? "bg-blue-500 text-white"
+                : "bg-white"
             }`}
             onClick={() =>
               setSearchParams((params) => {
-                params.set("sort", "sales");
+                params.set("sort", "-ratingsQuantity");
                 params.set("page", 1);
                 return params;
               })

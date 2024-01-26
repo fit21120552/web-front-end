@@ -10,10 +10,14 @@ import {
   removeFromCart,
   increaseQuantity,
   decreaseQuantity,
+  clearCart,
 } from "../../Redux/Actions/CartActions";
 import { useDispatch, useSelector } from "react-redux";
 import { Alert, Button, Col, Row } from "react-bootstrap";
 import Message from "../LoadingError/Message";
+import axios from "axios";
+import { api } from "../../constants/api";
+import { ToastContainer, toast } from "react-toastify";
 
 const Cart = () => {
   const params = useParams();
@@ -46,9 +50,28 @@ const Cart = () => {
     }
   };
 
-  const checkOutHandler = (e) => {
+  const { userInfo } = useSelector((state) => state.userLogin);
+
+  const checkOutHandler = async (e) => {
     e.preventDefault();
-    navigate("/ship");
+    const res = await axios.post(
+      api.checkout,
+      { total },
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          sessionId: userInfo.sessionId,
+        },
+        withCredentials: true,
+      }
+    );
+
+    if (res.data === "success") {
+      dispatch(clearCart());
+      toast.info("Cập nhật thành công!");
+    } else {
+      toast.error(res.data);
+    }
   };
 
   const removeFromCardHandler = (id) => {
@@ -57,6 +80,7 @@ const Cart = () => {
 
   return (
     <div className="container max-w-screen-xl mt-4">
+      <ToastContainer />
       {cartItems.length === 0 ? (
         <>
           <Alert className="text-center mt-3 mx-3" variant="info">
