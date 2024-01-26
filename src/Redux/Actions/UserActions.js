@@ -135,6 +135,7 @@ export const deleteUser = (id) => async (dispatch, getState) => {
         "Content-Type": "application/json",
         sessionId: userInfo.sessionId,
       },
+      withCredentials: true,
     };
     const body = {
         sessionId: userInfo.sessionId

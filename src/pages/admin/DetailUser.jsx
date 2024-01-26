@@ -31,12 +31,13 @@ const DetailUser = () => {
                     Authorization: `Bearer ${userInfo.token}`,
                     "Access-Control-Allow-Origin": "*",
                     "Content-Type":"application/json",
+                    sessionId: userInfo.sessionId,
                 },
                 withCredentials: true,
                 
             }
 
-            const { data } = await axios.post(api.getUser+id, body, config)
+            const { data } = await axios.get(api.getUser+id, config)
             console.log("data:" , data)
             const temp = data
             setUsername(temp.username)

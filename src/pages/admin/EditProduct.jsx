@@ -55,6 +55,10 @@ const EditProduct = () => {
         try {
             loadingProduct=true
            // dispatch({ type: PRODUCT_DETAILS_REQUEST}) 
+
+           
+
+
             const { data } = await axios.get(api.getAndCreateProduct+id)
             //console.log("data:" , data.data.data)
            // dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data.data.data});
@@ -100,13 +104,28 @@ const EditProduct = () => {
     const updateProduct = async (id, title, price, stock, description, category, thumbnail)=> {
         try {
             loadingProduct =true
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${userInfo.token}`,
+                    "Access-Control-Allow-Origin": "*",
+                    "Content-Type":"application/json",
+                    sessionId: userInfo.sessionId,
+                },
+                withCredentials: true,
+            }
+
+            console.log("session: ", userInfo.sessionId)
             const body = {
                 sessionId : userInfo.sessionId,
-                title, price, stock, description, category, thumbnail
+                title: title, 
+                price: price, 
+                stock: stock, 
+                description: description, 
+                category: category, 
+                thumbnail: thumbnail,
             }
             const { data } =  await axios.patch(`${api.editProduct}${id}`,
-                                            body,
-                                            config)
+                                            body,config)
             console.log("data:", data)
             loadingProduct=false
         } catch (error) {
@@ -215,8 +234,8 @@ const EditProduct = () => {
                                          <option value={""}>Select...</option>
                                             {categories.map(
                                                 (x) => (
-                                                    <option key = {x} value = {x}>
-                                                        {x}
+                                                    <option key = {x._id} value = {x.name}>
+                                                        {x.name}
                                                     </option>
                                                 )
                                             )}

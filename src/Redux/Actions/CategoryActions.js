@@ -68,7 +68,7 @@ export const listCategories = () => async (dispatch, getState) => {
 
     const { data } = await axios.get(api.getCategory, config);
 
-    console.log("data: ", data);
+    console.log("data get category: ", data);
     dispatch({ type: CATEGORY_LIST_SUCCESS, payload: data.data.data });
   } catch (error) {
     dispatch({
@@ -96,6 +96,7 @@ export const deleteCategory = (id) => async (dispatch, getState) => {
         "Content-Type": "application/json",
         sessionId: userInfo.sessionId,
       },
+      withCredentials: true,
     };
     const body = {
       sessionId: userInfo.sessionId,
@@ -129,18 +130,22 @@ export const createCategory = (catName) => async (dispatch, getState) => {
     const config = {
       headers: {
         Authorization: `Bearer ${userInfo.sessionId}`,
-        sessionId: userInfo.sessionId,
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
+        sessionId: userInfo.sessionId,
       },
+      withCredentials: true,
     };
+
     const body = {
-      sessionId: userInfo.sessionId,
+      //sessionId: userInfo.sessionId,
       name: catName,
     };
 
+    console.log("api create category: ", api.createCategory)
     const { data } = await axios.post(api.createCategory, body, config);
 
+    console.log("data create category: ",data)
     dispatch({ type: CATEGORY_CREATE_SUCCESS, payload: data });
   } catch (error) {
     const message =

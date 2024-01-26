@@ -57,7 +57,8 @@ export const listProductDetails = (id) => async(dispatch) => {
         const config = {
             headers: {
                 Authorization: `Bearer ${userInfo.sessionId}`
-            }
+            },
+            withCredentials: true,
         }
 
         const { data } = await axios.get(api.getAndCreateProduct, config)
@@ -91,7 +92,7 @@ export const deleteProduct = (id) =>  async (dispatch, getState) => {
                 "Content-Type":"application/json",
                 sessionId: userInfo.sessionId,
             },
-            
+            withCredentials: true,
         }
         
         const body = {
@@ -134,7 +135,9 @@ export const createProduct = (title, price, stock, description, category, thumbn
         const config = {
             headers: {
                 Authorization: `Bearer ${userInfo.token}`,
-                "Access-Control-Allow-Origin": "*"
+                "Access-Control-Allow-Origin": "*",
+                "Content-Type": "application/json",
+                sessionId:  userInfo.sessionId,
             },
             withCredentials: true,
         }
@@ -177,7 +180,7 @@ export const editProduct = (id, title, price, stock, description, category, thum
         dispatch({type: PRODUCT_EDIT_REQUEST });
 
         const { 
-            userLogin: { userInfo}, 
+            userLogin: { userInfo }, 
         } = getState()
 
         const config = {
@@ -185,14 +188,23 @@ export const editProduct = (id, title, price, stock, description, category, thum
                 Authorization: `Bearer ${userInfo.token}`,
                 "Access-Control-Allow-Origin": "*",
                 "Content-Type":"application/json",
+                sessionId: userInfo.sessionId,
             },
             withCredentials: true,
-           
         }
 
-        const { data} = await axios.patch(`${api.editProduct}${id}`,
-                                            {title, price, stock, description, category, thumbnail},
-                                            config)
+        console.log("session: ", userInfo.sessionId)
+        const body = {
+            sessionId: userInfo.sessionId,
+            title: title, 
+            price: price, 
+            stock: stock, 
+            description: description, 
+            category: category, 
+            thumbnail: thumbnail,
+        }
+
+        const { data } = await axios.patch(api.editProduct+id,body, config)
 
        console.log("data: ",data )
         dispatch({type: PRODUCT_EDIT_SUCCESS, payload: data})
