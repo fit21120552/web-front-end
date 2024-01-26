@@ -136,22 +136,19 @@ export const deleteUser = (id) => async (dispatch, getState) => {
       },
     };
     const body = {
-      sessionId: userInfo.sessionId,
-    };
-    // console.log("body: ", body)
+        sessionId: userInfo.sessionId
+    }
 
-    console.log(`del ${api.deleteProduct + id}`);
+     const { data } = await axios.delete(api.deleteUser+id,body, config)
+    console.log("data: ",data )
+    dispatch({type: USER_DELETE_SUCCESS})
+}  catch (error) {
+    const message = error.response && error.response.data.message ? 
+                    error.response.data.message : 
+                    error.message
+    
+    if (message ==="Token failed") {
 
-    const { data } = await axios.delete(api.deleteUser + id, body, config);
-    console.log("data: ", data);
-    dispatch({ type: USER_DELETE_SUCCESS });
-  } catch (error) {
-    const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
-
-    if (message === "Token failed") {
       //  dispatch(logout())
     }
     dispatch({

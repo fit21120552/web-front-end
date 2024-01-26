@@ -18,9 +18,16 @@ export default function Profile() {
         <div className="card-body">
           <div className="flex flex-row gap-4">
             <div className="basis-1/7 min-w-[100px] flex flex-col gap-1 font-semibold text-center ">
-              <div className="bg-[#7dd3fc] py-2 rounded-sm ">
-                <Link to="/edit-profile">Settings</Link>
-              </div>
+              <Link to="/edit-profile">
+                <div className="bg-[#7dd3fc] py-2 rounded-sm ">
+                  Settings
+                </div>
+              </Link>
+              <Link to="/order-list">
+                <div className="bg-[#7dd3fc] py-2 rounded-sm ">
+                  Order List
+                </div>
+              </Link>
               <button
                 className="bg-red-400 rounded-sm py-2 text-white font-semibold"
                 onClick={handleLogout}

@@ -1,12 +1,22 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { savePaymentMethod } from "../../Redux/Reducers/CartReducers";
 
 const ChoosePayment = ()=> {
 
-    const [paymentMethod, setPaymentMethod] =useState("VNPay")
+    const cart = useSelector((state)=>state.cart)
+    const { shippingAddress, paymentMethod } = cart
+    const dispatch = useDispatch()
+    const [paymentMethodOption, setPaymentMethodOption] = useState("VNPay")
     const navigate = useNavigate()
+
+    if (!shippingAddress) {
+        navigate("/ship/")
+    }
     const submitHandler = (e) => {
         e.preventDefault()
+        dispatch(savePaymentMethod({paymentMethod: paymentMethodOption}))
         navigate("/place-order")
     }
     return (
@@ -21,15 +31,17 @@ const ChoosePayment = ()=> {
                                 <input className="form-check-input me-3" 
                                         type="radio" name="group1" 
                                         value={`VNPay`} 
-                                        onChange={(e)=>setPaymentMethod(e.target.value)}
-                                        checked/>
+                                        checked={paymentMethodOption === 'VNPay'}
+                                        onChange={(e)=>setPaymentMethodOption(e.target.value)}
+                                        />
                                 <label className="form-check-label font-semibold text-xl">VNPay</label>
                             </div>
                             <div>
                                 <input className="form-check-input me-3" 
                                         type="radio" name="group1" 
                                         value={`Paypal`}
-                                        onChange={(e)=>setPaymentMethod(e.target.value)}
+                                        checked={paymentMethodOption === 'Paypal'}
+                                        onChange={(e)=>setPaymentMethodOption(e.target.value)}
                                         />
                                 <label className="form-check-label  font-semibold text-xl">Paypal</label>
                             </div>

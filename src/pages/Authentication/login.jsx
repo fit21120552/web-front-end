@@ -49,7 +49,7 @@ const Login = ({ location, history }) => {
 
       <div className="py-4 text-center h-100">
         <div className="text-center rounded-full">
-          {error && <Message variant="danger">{error}</Message>}
+          {error && <Message variant="danger mx-3">{error}</Message>}
           {loading && <Loading></Loading>}
           <div className="flex flex-row justify-center">
             <h5 className=" font-bold">Login</h5>

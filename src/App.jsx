@@ -25,6 +25,8 @@ import DetailCategory from "./pages/admin/DetailCategory";
 import DetailProduct from "./pages/admin/DetailProduct";
 import DetailUser from "./pages/admin/DetailUser";
 import DetailOrder from "./pages/admin/DetailOrder";
+import OrderList from "./pages/user/OrderList";
+import OrderDetail from "./pages/user/OrderDetail";
 
 export default function App() {
   return (
@@ -45,6 +47,8 @@ export default function App() {
           <Route path="/ship/" element={<ShipInformation />} />
           <Route path="/choose-payment" element={<ChoosePayment />} />
           <Route path="/place-order" element={<PlaceOrder />} />
+          <Route path ="/order-list" element={<OrderList/>}/>
+          <Route path="/order/:id" element={<OrderDetail/>}/>
         </Route>
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="/admin" exact element={<Dashboard />} />

@@ -57,9 +57,14 @@ const Users = () => {
                       <FontAwesomeIcon icon={faEye} size="xs" />
                     </button>
                   </Link>
-                  <button className="rounded-xl px-3 bg-[#ef4444]" onClick={() => deleteHandler2(item._id)}>
-                    <FontAwesomeIcon icon={faTrash} size="xs" />
-                  </button>
+                  {
+                    item.role !== "admin" ? (
+                      <button className="rounded-xl px-3 bg-[#ef4444]" onClick={() => deleteHandler2(item._id)}>
+                        <FontAwesomeIcon icon={faTrash} size="xs" />
+                      </button>
+                    ) : null
+                  }
+                 
                 </div>
               </div>
             </div>

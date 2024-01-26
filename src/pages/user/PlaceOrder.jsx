@@ -1,28 +1,88 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Message from "../LoadingError/Message";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { ORDER_CREATE_RESET } from "../../Redux/Constants/OrderConstants";
+import { createOrder } from "../../Redux/Actions/OrderActions";
 
 const PlaceOrder = () => {
-    const cartItems=[]
+    //const cartItems=[]
+
+    const userLogin   = useSelector((state) => state.userLogin)
+    const { userInfo } =  userLogin
+    const cart = useSelector((state) =>  state.cart)
+    const  { cartItems, paymentMethod, shippingAddress } = cart
+    const orderCreate = useSelector((state) => state.orderCreate)
+    const { loading, error, success, order } = orderCreate
+    const navigate = useNavigate()
+    
+    if (!shippingAddress) {
+        navigate("/ship/")
+    }
+    if (!paymentMethod) {
+        navigate("/choose-payment")
+    }
+
+    useEffect(() => {
+        if (success) {
+            dispatch({type: ORDER_CREATE_RESET})
+            navigate(`/order/${order._id}`)
+        }
+    },[dispatch, success, order])
 
     const PlaceOrderHandler = (e) => {
         e.preventDefault()
+        dispatch(createOrder({
+            product: cartItems,
+            user: userInfo._id,
+            price: calculateTotalProductPrice(cartItems),
+            tax: calculateTax(20),
+            ShipCost: 20,
+            address: shippingAddress.address,
+            city: shippingAddress.city,
+            phone: "09839709485",
+            postalCode: shippingAddress.postalCode,
+            country: shippingAddress.country,
+            paymentMethod: paymentMethod.paymentMethod,
+            
+        }))
+    }
+
+    const calculateTotalProductPrice = (items) => {
+        if (items && items.length >= 1) {
+            let total = 0
+            items.map((item) => {
+                total += item.price * item.quantity
+            })
+            return total
+        }
+        return 0
+    }
+
+    const calculateTax = (items) => {
+        return (0.05 * calculateTotalProductPrice(items)).toFixed(1)
+    }
+
+    const calculateGrandTotal = (items) => {
+        const total = calculateTotalProductPrice(items)
+        return (total*1.05).toFixed(1)
     }
     return (
         <div className="container">
-            <div className="row m-4">
-                <div className="col-lg-4 col-sm-4 mb-lg-4 mb-sm-0 alert-primary bg-blue-500 px-3 py-5">
+            <div className="row m-4 ">
+                <div className="col-lg-4 col-sm-4 mb-lg-4 mb-sm-0 alert-primary bg-blue-500 px-3 py-5 ">
                     <div className="row">
                         <div className="col-md-4 center">
                             <div  className="rounded-full bg-[#bae6fd] px-1 py-5 text-center text-2xl">
                                 <i className="fas fa-user"></i>
                             </div>
                         </div>
-                        <div className="col-md-8 center">
+                        <div className="col-md-8 center text-white">
                             <h5>
                                 <strong>Customer</strong>
                             </h5>
-                            <p>User name</p>
-                            <p>User email</p>
+                            <p>{userInfo.username}</p>
+                            <p>{userInfo.email}</p>
 
                         </div>
                     </div>
@@ -36,12 +96,12 @@ const PlaceOrder = () => {
                             </div>
                             
                         </div>
-                        <div className="col-md-8 center">
+                        <div className="col-md-8 center  text-white">
                             <h5>
                                 <strong>Order Info</strong>
                             </h5>
-                            <p>Shipping: Country</p>
-                            <p>Pay method: VNPay</p>
+                            <p>Shipping: {shippingAddress.country}</p>
+                            <p>Pay method: {paymentMethod.paymentMethod}</p>
 
                         </div>
                     </div>
@@ -55,13 +115,14 @@ const PlaceOrder = () => {
                             </div>
                             
                         </div>
-                        <div className="col-md-8 center">
+                        <div className="col-md-8 center  text-white">
                             <h5>
                                 <strong>Deliver to</strong>
                             </h5>
                             <p>
-                                Address: Address + City, postal code
+                                Address: {shippingAddress.address}, {shippingAddress.city}
                             </p>
+                            <p>Postal Code: {shippingAddress.postalCode} </p>
                         </div>
 
                     </div>
@@ -86,7 +147,7 @@ const PlaceOrder = () => {
                                         </div>
 
                                         <div className="col-md-5 col-6 flex flex-row items-center">
-                                            <Link to={"/"}>
+                                            <Link to={`/product/${item._id}`}>
                                                 <h6 className="font-semibold font-mono">{item.title}</h6>
                                             </Link>
                                         </div>
@@ -96,7 +157,7 @@ const PlaceOrder = () => {
                                         </div>
                                         <div className="mt-3 mt-md-0 col-md-2 col-6 flex flex-column justify-center items-end">
                                             <h4>SUBTOTAL</h4>
-                                            <h6 ><strong className="font-mono">${" "}{item.quantity* item.price}</strong></h6>
+                                            <h6 ><strong className="font-mono">${" "}{ Number.parseInt(item.quantity)* item.price}</strong></h6>
                                         </div>
                                     </div>
                                     </>
@@ -115,25 +176,25 @@ const PlaceOrder = () => {
                                 <td>
                                     <strong>Products</strong>
                                 </td>
-                                <td>$123</td>
+                                <td>${calculateTotalProductPrice(cart.cartItems)}</td>
                             </tr>
                             <tr>
                                 <td>
                                     <strong>Shipping</strong>
                                 </td>
-                                <td>$123</td>
+                                <td>$20</td>
                             </tr>
                             <tr>
                                 <td>
                                     <strong>Tax</strong>
                                 </td>
-                                <td>$123</td>
+                                <td>${calculateTax(cart.cartItems)}</td>
                             </tr>
                             <tr>
                                 <td>
                                     <strong>Total</strong>
                                 </td>
-                                <td>$123</td>
+                                <td>${calculateGrandTotal(cart.cartItems)}</td>
                             </tr>
                         </tbody>
                     </table>

@@ -28,7 +28,7 @@ export const api = {
   changePassword: IPaddress + "/user/passwordm/",
 
   // product api
-  getAllProduct: IPaddress + "/api/v1/product",
+  getAllProduct: IPaddress + "/api/v1/product/",
   getAllCategory: IPaddress + "/api/v1/category/",
   getRelatedProduct: IPaddress + "/api/v1/product/related-products/",
   getTodayProducts: IPaddress + "/api/v1/product?stock[gt]=50&limit=4",
@@ -36,10 +36,17 @@ export const api = {
   //user api
   getAllUser: IPaddress + "/admin/",
   getUser: IPaddress + "/admin/user/",
-  deleteUser: IPaddress + "/admin/user/delete",
+  deleteUser: IPaddress + "/admin/user/delete/",
 
   //order
   getOrder: IPaddress + "/admin/order/",
+  createOrder: IPaddress + "/order/",
+  getOrderUser: IPaddress + "/user/order/",
+  //review
+  createReviewOfAProduct: IPaddress + "/api/v1/reviews/",
+  getReviewOfAProduct: IPaddress + "/api/v1/product/",
+
+  
 
   //payment api
   checkout: "https://localhost:3003/pay/tranfer",

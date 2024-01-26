@@ -4,6 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { api } from "../../constants/api";
+import { Link } from "react-router-dom";
 export default function EditProfile() {
   const userLogin = useSelector((state) => state.userLogin);
 
@@ -36,8 +37,12 @@ export default function EditProfile() {
   return (
     <div className="max-w-screen-xl mx-auto mt-4">
       <ToastContainer />
-
-      <form className="row form-container mx-3" onSubmit={submitHandler}>
+      <Link to="/profile" className="p-2 my-3 rounded-lg bg-danger text-white">
+        <button>
+        Return to profile page
+        </button>
+      </Link>
+      <form className="row form-container mx-3 my-2 border bg-white" onSubmit={submitHandler}>
         <div className="col-md-6">
           <div className="form">
             <label htmlFor="account-fn">Username</label>
