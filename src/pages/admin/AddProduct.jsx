@@ -12,6 +12,8 @@ import Message from "../LoadingError/Message"
 import Toast from "../LoadingError/Toast"
 import Loading from "../LoadingError/Loading"
 import { listCategories } from "../../Redux/Actions/CategoryActions";
+import axios from "axios";
+import { api } from "../../constants/api";
 const ToastObjects = {
     pauseOnFoccusLoss: false,
     draggable: false,
@@ -28,6 +30,7 @@ const AddProduct = () => {
     const [previewImage, setPreviewImage] = useState(null)
     const [stock, setStock] = useState(0)
     const [brand, setBrand] = useState("")
+    const [fileImage, setFileImage] = useState(null)
     const dispatch = useDispatch()
 
     const productCreate = useSelector((state) => state.productCreate)
@@ -35,13 +38,37 @@ const AddProduct = () => {
 
     const categoryList = useSelector((state) => state.categoryList)
     const { loadingCategory, errorCategory, categories } = categoryList
+    const  userLogin  = useSelector((state) => state.userLogin)
+    const { userInfo } = userLogin
 
+    const updateImageFunction = async (productId) => {
+        try {
+            
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${userInfo.token}`,
+                    "Access-Control-Allow-Origin": "*",
+                  //  "Content-Type": "application/json",
+                    "Content-Type": "multipart/form-data",
+                    sessionId:  userInfo.sessionId,
+                },
+                withCredentials: true,
+            }
+    
+            const { data} = await axios.post(api.updateImage+productId, fileImage, config)
+    
+            console.log("data  update image: ",data )
+    
+            } catch (error) {
+                console.log("error update image:" , error)
+            }
+    }
     useEffect(() => {
         dispatch(listCategories())
         if (product) {
            // toast.success("Product Added!", ToastObjects)
-            
-           dispatch({type: PRODUCT_CREATE_RESET})
+            updateImageFunction(product._id)
+            dispatch({type: PRODUCT_CREATE_RESET})
             setTitle("")
             setPrice(0)
             setDescription("")
@@ -50,22 +77,28 @@ const AddProduct = () => {
             setThumbnail("")
             setStock(0)
             setPreviewImage(null)
+            setFileImage(null)
             alert("Product Added!")
         }
     },[product, dispatch])
 
-    const submitHandler = (e) => {
+    const submitHandler = (e) => async (e) => {
         e.preventDefault()
-        dispatch(createProduct(title, price, stock, description, category,brand, thumbnail))
+        dispatch(createProduct(title, price, stock, description, category, brand, fileImage))
+       
     }
     const selectFile = (event) => {
+        console.log(event.target.files[0])
         setThumbnail(event.target.value);
         setPreviewImage(URL.createObjectURL(event.target.files[0]));
-       
-      }; 
+        const formData = new FormData()
+        formData.append('thumbnail', event.target.files[0],event.target.files[0].name)
+        setFileImage(formData)
+    }; 
       const deleteImage = () => {
         setThumbnail("")
         setPreviewImage(null)
+        setFileImage(null)
       } 
 
    // const categories=["bag","fan","car"]
@@ -167,7 +200,7 @@ const AddProduct = () => {
                         <label for="prodImg" className="form-label">Product image</label>
                         <input 
                                 className="file form-control" 
-                                type="button" 
+                                type="file" 
                                 id="input-id" 
                                 name="photos" 
                                 data-preview-file-type="image"

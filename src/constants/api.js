@@ -19,6 +19,7 @@ export const api = {
   deleteProduct: IPaddress + "/admin/product/delete/",
   createProduct: IPaddress + "/admin/product/create/",
   editProduct: IPaddress + "/admin/product/update/",
+  updateImage: IPaddress + "/admin/product/update-image/",
 
   //category api
   getCategory: IPaddress + "/api/v1/category/",
@@ -33,6 +34,7 @@ export const api = {
   getAllCategory: IPaddress + "/api/v1/category/",
   getRelatedProduct: IPaddress + "/api/v1/product/related-products/",
   getTodayProducts: IPaddress + "/api/v1/product?stock[gt]=50&limit=4",
+  
 
   //user api
   getAllUser: IPaddress + "/admin/",

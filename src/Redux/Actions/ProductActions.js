@@ -129,14 +129,15 @@ export const createProduct = (title, price, stock, description, category, brand,
         dispatch({type: PRODUCT_CREATE_REQUEST});
 
         const { 
-            userLogin: { userInfo}, 
+            userLogin: { userInfo }, 
         } = getState()
 
         const config = {
             headers: {
                 Authorization: `Bearer ${userInfo.token}`,
                 "Access-Control-Allow-Origin": "*",
-                "Content-Type": "application/json",
+            //   "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
                 sessionId:  userInfo.sessionId,
             },
             withCredentials: true,
