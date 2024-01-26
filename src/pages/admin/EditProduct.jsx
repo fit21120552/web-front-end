@@ -237,7 +237,7 @@ const EditProduct = () => {
                                          <option value={""}>Select...</option>
                                             {categories.map(
                                                 (x) => (
-                                                    <option key = {x._id} value = {x.name}>
+                                                    <option key ={x._id} value = {x.name} selected={x.name===category}>
                                                         {x.name}
                                                     </option>
                                                 )
@@ -257,7 +257,7 @@ const EditProduct = () => {
                             </div>
 
                             <div className="form mb-4 text-left ">
-                                <label for="prodImg" className="form-label">Product image (don't upload if there is no need to change the image)</label>
+                                <label for="prodImg" className="form-label">Product image <b className="italic underline">(don't upload if there is no need to change the image)</b></label>
                                 <input 
                                         className="file form-control" 
                                         type="file" 
