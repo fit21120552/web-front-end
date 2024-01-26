@@ -200,7 +200,7 @@ const Header = ({ title, setTitle }) => {
                             <span className="absolute right-1">&gt;</span>
                           )}
                           {isSubMenuOpen === index && (
-                            <div className="absolute  text-black bg-white shadow-xl top-[-1px] -right-[93px] rounded-sm flex flex-col gap-1">
+                            <div className="absolute  text-black bg-white shadow-xl top-[-1px] left-[110px] rounded-sm flex flex-col gap-1">
                               {item.submenu.map((subitem, subindex) => (
                                 <button
                                   onClick={(e) => {
