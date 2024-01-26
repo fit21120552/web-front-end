@@ -155,7 +155,7 @@ const AddProduct = () => {
                         <label for="prodImg" className="form-label">Product image</label>
                         <input 
                                 className="file form-control" 
-                                type="file" 
+                                type="button" 
                                 id="input-id" 
                                 name="photos" 
                                 data-preview-file-type="image"
@@ -163,7 +163,7 @@ const AddProduct = () => {
                                 value={thumbnail}
                                 onChange={selectFile} 
                                 single
-                                required></input>
+                                ></input>
                            
                     </div>
 

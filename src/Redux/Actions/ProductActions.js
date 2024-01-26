@@ -101,7 +101,7 @@ export const deleteProduct = (id) =>  async (dispatch, getState) => {
 
         console.log(`del ${api.deleteProduct+id}`)
 
-         const { data } = await axios.delete(api.deleteProduct+id, body, config)
+         const { data } = await axios.delete(api.deleteProduct+id, config)
          
          
         console.log("data: ",data )

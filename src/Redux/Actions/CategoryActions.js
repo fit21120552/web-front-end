@@ -92,6 +92,8 @@ export const deleteCategory = (id) => async (dispatch, getState) => {
     const config = {
       headers: {
         Authorization: `Bearer ${userInfo.token}`,
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
         sessionId: userInfo.sessionId,
       },
     };
@@ -100,7 +102,7 @@ export const deleteCategory = (id) => async (dispatch, getState) => {
     };
 
     console.log("delete cat id: ", body,id);
-    const { data } = await axios.delete(api.editCategory + id, body, config);
+    const { data } = await axios.delete(api.editCategory + id, config);
 
     console.log("data del: ", data);
     dispatch({ type: CATEGORY_DELETE_SUCCESS });
@@ -126,7 +128,10 @@ export const createCategory = (catName) => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        Authorization: `Bearer ${userInfo.token}`,
+        Authorization: `Bearer ${userInfo.sessionId}`,
+        sessionId: userInfo.sessionId,
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
       },
     };
     const body = {
@@ -134,7 +139,7 @@ export const createCategory = (catName) => async (dispatch, getState) => {
       name: catName,
     };
 
-    const { data } = await axios.post(api.editCategory, body, config);
+    const { data } = await axios.post(api.createCategory, body, config);
 
     dispatch({ type: CATEGORY_CREATE_SUCCESS, payload: data });
   } catch (error) {

@@ -23,6 +23,7 @@ export const api = {
   //category api
   getCategory: IPaddress + "/api/v1/category/",
   editCategory: IPaddress + "/admin/category/",
+  createCategory: IPaddress + "/admin/category/",
   resetPassword: IPaddress + "/resetpassword/",
   verifyCode: IPaddress + "/verifycode/",
   changePassword: IPaddress + "/user/passwordm/",
