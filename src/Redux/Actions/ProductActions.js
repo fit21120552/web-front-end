@@ -89,7 +89,9 @@ export const deleteProduct = (id) =>  async (dispatch, getState) => {
                 Authorization: `Bearer ${userInfo.sessionId}`,
                 "Access-Control-Allow-Origin": "*",
                 "Content-Type":"application/json",
-            }
+                sessionId: userInfo.sessionId,
+            },
+            
         }
         
         const body = {
@@ -185,6 +187,7 @@ export const editProduct = (id, title, price, stock, description, category, thum
                 "Content-Type":"application/json",
             },
             withCredentials: true,
+           
         }
 
         const { data} = await axios.patch(`${api.editProduct}${id}`,

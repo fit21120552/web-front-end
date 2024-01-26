@@ -92,6 +92,7 @@ export const deleteCategory = (id) => async (dispatch, getState) => {
     const config = {
       headers: {
         Authorization: `Bearer ${userInfo.token}`,
+        sessionId: userInfo.sessionId,
       },
     };
     const body = {
