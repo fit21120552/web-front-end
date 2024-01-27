@@ -48,6 +48,7 @@ export const api = {
   getStatsProduct: IPaddress + "/api/v1/order/statsNumberProduct",
   getStatsOrder: IPaddress + "/api/v1/order/getStatsOrderLaster",
   getStatsToday: IPaddress + "/api/v1/adminPage/statsData",
+  getOneOrder: IPaddress + '/user/orders/getOne/'
 
   //review
   createReviewOfAProduct: IPaddress + "/api/v1/reviews/",

@@ -21,12 +21,6 @@ const PlaceOrder = () => {
   const { loading, error, success, order } = orderCreate;
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  if (!shippingAddress) {
-    navigate("/ship/");
-  }
-  if (!paymentMethod) {
-    navigate("/choose-payment");
-  }
 
   //   useEffect(() => {
   //     if (success) {
