@@ -272,7 +272,9 @@ export const updateUserAvatar = (id, avatar) => async (dispatch, getState) => {
     }
 
     const { data } = await axios.patch(api.updateAvatar+id, body, config)
-
+    if (data) {
+      localStorage.setItem("userInfo",JSON.stringify(data))
+    }
    console.log("data: ",data )
     dispatch({type: USER_UPDATE_AVATAR_SUCCESS, payload: data})
 }  catch (error) {
