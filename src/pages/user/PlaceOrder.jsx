@@ -33,7 +33,7 @@ const PlaceOrder = () => {
     e.preventDefault();
     const orderId = await dispatch(
       createOrder({
-        product: cartItems,
+        product: cartItems.map((item) => item._id),
         user: userInfo._id,
         price: calculateTotalProductPrice(cartItems),
         tax: calculateTax(20),

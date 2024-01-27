@@ -67,6 +67,18 @@ export const loginGoogle = (email) => async (dispatch) => {
     dispatch({ type: USER_LOGIN_REQUEST });
 
     const { data } = await axios.post(api.login, { email }, api.config);
+    console.log(data);
+    const username = data.username;
+    const res = await axios.post(
+      "https://localhost:3003/register",
+      { username },
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+        withCredentials: true,
+      }
+    );
 
     dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
 
@@ -138,19 +150,19 @@ export const deleteUser = (id) => async (dispatch, getState) => {
       withCredentials: true,
     };
     const body = {
-        sessionId: userInfo.sessionId
-    }
+      sessionId: userInfo.sessionId,
+    };
 
-     const { data } = await axios.delete(api.deleteUser+id, config)
-    console.log("data: ",data )
-    dispatch({type: USER_DELETE_SUCCESS})
-}  catch (error) {
-    const message = error.response && error.response.data.message ? 
-                    error.response.data.message : 
-                    error.message
-    
-    if (message ==="Token failed") {
+    const { data } = await axios.delete(api.deleteUser + id, config);
+    console.log("data: ", data);
+    dispatch({ type: USER_DELETE_SUCCESS });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
 
+    if (message === "Token failed") {
       //  dispatch(logout())
     }
     dispatch({
