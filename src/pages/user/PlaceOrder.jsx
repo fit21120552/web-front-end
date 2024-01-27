@@ -58,7 +58,7 @@ const PlaceOrder = () => {
             items.map((item) => {
                 total += item.price * item.quantity
             })
-            return total
+            return total.toFixed(1)
         }
         return 0
     }

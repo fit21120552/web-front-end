@@ -252,15 +252,15 @@ const OrderDetail = () => {
                                     </table>
                                     
                                     {
-                                        cartItems.length === 0 ? null : (
+                                        order.products === 0 ? null : (
 
-                                            !order.paidStatus ? (
+                                            !order.StatusPaid ? (
                                                 <Link to="/purchase" className="text-white bg-primary w-full text-center p-3 rounded-sm" onClick={purchaseHandler}>
                                                     <button type="submit" className="text-center">
                                                         PURCHASE
                                                     </button>
                                                 </Link>
-                                            ) : !order.deliveryStatus ? (
+                                            ) : !order.StatusDelivery ? (
                                                 <Link to="/order" className="text-white bg-primary w-full text-center p-3 rounded-sm" onClick={purchaseHandler}>
                                                     <button type="submit" className="text-center">
                                                         MARK AS DELIVERED

@@ -283,8 +283,10 @@ export const deliverOrder = (id) => async (dispatch, getState) => {
             },
             withCredentials: true,
         }
-
-        const { data} = axios.patch(`${api.updateOrderDeliveryStatus}${id}`)
+        const body = {
+            StatusDelivered: true
+        }
+        const { data} = axios.patch(`${api.updateOrderAdmin}${id}`, body, config)
 
         dispatch({type: ORDER_DELIVERED_SUCCESS, payload: data})
     } catch (error) {

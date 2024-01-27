@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ImageView from "../Components/ImageView";
 import { deliverOrder, listOrderDetails } from "../../Redux/Actions/OrderActions";
 import DateView from "../Components/DateView";
+import { ORDER_DELIVERED_RESET } from "../../Redux/Constants/OrderConstants";
 
 
 const DetailOrder = () => {
@@ -23,11 +24,18 @@ const DetailOrder = () => {
 
     useEffect(() => {
        dispatch(listOrderDetails(id))
+       if (successDelivered) {
+            dispatch({type: ORDER_DELIVERED_RESET})
+            
+       }
     },[dispatch, id, successDelivered])
 
-    const deliveryHandler = () => {
+    const deliveryHandler = (e) => {
         e.preventDefault()
-        dispatch(deliverOrder(id))
+        if (!order.StatusDelivered) {
+            dispatch(deliverOrder(id))
+        }
+       
     }
 
     // let loading = false
