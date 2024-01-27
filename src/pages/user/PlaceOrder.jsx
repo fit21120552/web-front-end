@@ -72,7 +72,7 @@ const PlaceOrder = () => {
           withCredentials: true,
         }
       );
-      if (res1.data === "success") {
+      if (res1.status === "success") {
         dispatch(clearCart());
         navigate(`/order/${orderId}`);
       } else {
