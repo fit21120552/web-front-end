@@ -16,7 +16,7 @@ const PlaceOrder = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   const cart = useSelector((state) => state.cart);
-  const { cartItems, paymentMethod, shippingAddress } = cart;
+  const { cartItems, paymentMethod = "a", shippingAddress } = cart;
   const orderCreate = useSelector((state) => state.orderCreate);
   const { loading, error, success, order } = orderCreate;
   const navigate = useNavigate();
@@ -52,6 +52,7 @@ const PlaceOrder = () => {
         paymentMethod: paymentMethod.paymentMethod,
       })
     );
+    console.log(orderId);
 
     const res = await axios.post(
       api.checkout,
@@ -157,49 +158,45 @@ const PlaceOrder = () => {
           ) : (
             <>
               {cartItems.map((item, index) => (
-                <>
-                  <div className="row" key={index}>
-                    <div className="col-md-3 col-6">
-                      {item ? (
-                        !item.thumbnail || item.thumbnail.includes("http") ? (
-                          <img
-                            src={item.thumbnail}
-                            alt={item.title}
-                            className=""
-                          />
-                        ) : (
-                          <ImageView
-                            imagePath={item.thumbnail}
-                            imageName={item.title}
-                            model={"product"}
-                            id={item._id}
-                            classProp={""}
-                          />
-                        )
-                      ) : null}
-                    </div>
-
-                    <div className="col-md-5 col-6 flex flex-row items-center">
-                      <Link to={`/product/${item._id}`}>
-                        <h6 className="font-semibold font-mono">
-                          {item.title}
-                        </h6>
-                      </Link>
-                    </div>
-                    <div className="mt-3 mt-md-0 col-md-2 col-6 flex flex-column items-center justify-center">
-                      <h4>QUANTITY</h4>
-                      <h6>{item.quantity}</h6>
-                    </div>
-                    <div className="mt-3 mt-md-0 col-md-2 col-6 flex flex-column justify-center items-end">
-                      <h4>SUBTOTAL</h4>
-                      <h6>
-                        <strong className="font-mono">
-                          $ {Number.parseInt(item.quantity) * item.price}
-                        </strong>
-                      </h6>
-                    </div>
+                <div className="row" key={index}>
+                  <div className="col-md-3 col-6">
+                    {item ? (
+                      !item.thumbnail || item.thumbnail.includes("http") ? (
+                        <img
+                          src={item.thumbnail}
+                          alt={item.title}
+                          className=""
+                        />
+                      ) : (
+                        <ImageView
+                          imagePath={item.thumbnail}
+                          imageName={item.title}
+                          model={"product"}
+                          id={item._id}
+                          classProp={""}
+                        />
+                      )
+                    ) : null}
                   </div>
-                </>
+
+                  <div className="col-md-5 col-6 flex flex-row items-center">
+                    <Link to={`/product/${item._id}`}>
+                      <h6 className="font-semibold font-mono">{item.title}</h6>
+                    </Link>
+                  </div>
+                  <div className="mt-3 mt-md-0 col-md-2 col-6 flex flex-column items-center justify-center">
+                    <h4>QUANTITY</h4>
+                    <h6>{item.quantity}</h6>
+                  </div>
+                  <div className="mt-3 mt-md-0 col-md-2 col-6 flex flex-column justify-center items-end">
+                    <h4>SUBTOTAL</h4>
+                    <h6>
+                      <strong className="font-mono">
+                        $ {Number.parseInt(item.quantity) * item.price}
+                      </strong>
+                    </h6>
+                  </div>
+                </div>
               ))}
             </>
           )}
