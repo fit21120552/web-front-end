@@ -19,8 +19,14 @@ const OrderDetail = () => {
   const [order, setOrder] = useState({});
   useEffect(() => {
     async function fetchData() {
-      const res = await axios.get(api.getOneOrder, api.config);
-      console.log(res);
+      const res = await axios.get(api.getOneOrder + params.id, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          sessionId: userInfo.sessionId,
+        },
+        withCredentials: true,
+      });
+      setOrder(res.data.data.data);
     }
 
     fetchData();
@@ -62,7 +68,7 @@ const OrderDetail = () => {
                 </h5>
                 <p>Shipping: {shippingAddress?.country}</p>
                 <p>Pay method: {paymentMethod.paymentMethod}</p>
-                {order.statusPaid ? (
+                {order.StatusPaid ? (
                   <div className="bg-success w-2/3 text-center text-2xl p-2 mt-2">
                     PAID
                   </div>
