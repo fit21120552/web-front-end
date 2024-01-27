@@ -56,7 +56,7 @@ const PlaceOrder = () => {
 
     const res = await axios.post(
       api.checkout,
-      { total: order.price, orderId },
+      { total: calculateTotalProductPrice(cartItems), orderId },
       {
         headers: {
           "Access-Control-Allow-Origin": "*",
