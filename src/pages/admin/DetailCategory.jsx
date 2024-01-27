@@ -37,30 +37,29 @@ const DetailCategory = () => {
     const fetchProduct = async () => {
 
     }
-    useEffect( () => {
-        const fetchCategory = async() => {
-             try {
-                loadingCategory =true
-                 const { data } = await axios.get(api.getCategory+id)
-                 //console.log("data:" , data.data.data)
-                
-                 const temp = data.data.data
-                 //console.log("temp:",temp.title,temp.price, temp)
-                setCategoryName(temp.name)
-                setProductCount(temp.productCount)
-                //TODO
-                //setProductCategory(temp.)
-                loadingCategory=false
-                
-             } catch (error) {
-                console.log(error)
-                errorCategory = error
-             }
-         }
-         fetchCategory()
-            
+
+    const fetchCategory = async() => {
+        try {
+           loadingCategory =true
+            const { data } = await axios.get(api.getCategory+id)
+            console.log("data:" , data.data.data)
            
-       
+            const temp = data.data.data
+            //console.log("temp:",temp.title,temp.price, temp)
+           setCategoryName(temp.name)
+           setProductCount(temp.productCount)
+           //TODO
+           setProductCategory(temp.products)
+           loadingCategory=false
+           
+        } catch (error) {
+           console.log(error)
+           errorCategory = error
+        }
+    }
+
+    useEffect( () => {
+         fetchCategory()          
      },[ dispatch, id])
 
     const submitHandler = (e) => {
@@ -87,50 +86,62 @@ const DetailCategory = () => {
                 ? (<Message variant="danger">{getErrorMessage(errorCategory)}</Message>)
                 : (
                     <form onSubmit={submitHandler}>
-                    <div class="form mb-4 text-left input-group">
-                        <span className="text-start font-bold input-group-text w-30" for="typeEmailX-2">Category name</span>
-                        <input type="text"
-                                id="title" 
-                                name="title" 
-                                className="form-control"
-                                value={categoryName}
-                                onChange={(e) => setCategoryName(e.target.value)}
-                                required 
-                                    readOnly
-                                />
-                    </div>
+                        <div class="form mb-4 text-left input-group">
+                            <span className="text-start font-bold input-group-text w-30" for="typeEmailX-2">Category name</span>
+                            <input type="text"
+                                    id="title" 
+                                    name="title" 
+                                    className="form-control"
+                                    value={categoryName}
+                                    onChange={(e) => setCategoryName(e.target.value)}
+                                    required 
+                                        readOnly
+                                    />
+                        </div>
 
-                    <div class="form mb-4 text-left input-group">
-                        <span className="text-start font-bold input-group-text w-30" for="typeEmailX-2">Products of category</span>
-                        <input type="text"
-                                id="price" 
-                                name="price" 
-                                className="form-control"
-                                value ={productCount}
-                                onChange={(e) => setProductCount(e.target.value)}
-                                readOnly />
-                    </div>
+                        <div class="form mb-4 text-left input-group">
+                            <span className="text-start font-bold input-group-text w-30" for="typeEmailX-2">Products of category</span>
+                            <input type="text"
+                                    id="price" 
+                                    name="price" 
+                                    className="form-control"
+                                    value ={productCount}
+                                    onChange={(e) => setProductCount(e.target.value)}
+                                    readOnly />
+                        </div>
 
-                    <div>
-                        {
-                            productCategory.map((product) => (
-                                <div className="">
-                                    
-                                </div>
-                            ))
-                        }
-                    </div>
+                        <div>
+                            {
+                                productCategory ? (
+                                    <div className="flex flex-column items-start">
+                                        <div className="text-bold text-xl font-bold">List Product:</div>
+                                        <div>
+                                        {
+                                            productCategory.map((product) => (
+                                                <div className="text-primary italic underline">
+                                                    <Link to={`/admin/product/${product._id}`}>
+                                                        {product.title} - {product.price}
+                                                    </Link>
+                                                </div>
+                                            ))
+                                        }
+                                        </div>
+                                    </div>
+                                ) :null
+                                
+                            }
+                        </div>
 
-                    
-                    <div className="flex flex-row justify-center my-2 p-3 text-xl">
-                        <button type="submit" className="">
-                            <p className="bg-[#ca8a04] px-4 py-2 rounded-lg text-white">
-                                <FontAwesomeIcon icon={faPencil} color="white"/>
-                                <span> Edit</span>
-                            </p>
-                        </button>
-                    </div>
-                </form>
+                        
+                        <div className="flex flex-row justify-center my-2 p-3 text-xl">
+                            <button type="submit" className="">
+                                <p className="bg-[#ca8a04] px-4 py-2 rounded-lg text-white">
+                                    <FontAwesomeIcon icon={faPencil} color="white"/>
+                                    <span> Edit</span>
+                                </p>
+                            </button>
+                        </div>
+                    </form>
                 )
             }
                

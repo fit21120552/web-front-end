@@ -160,6 +160,7 @@ export const deleteUser = (id) => async (dispatch, getState) => {
   }
 };
 
+// GET ALL USER
 export const listUser = () => async (dispatch, getState) => {
   try {
     dispatch({ type: USER_LIST_REQUEST });
@@ -193,6 +194,39 @@ export const listUser = () => async (dispatch, getState) => {
   }
 };
 
+// GET ALL CUSTOMER
+export const listUserCustomer = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: USER_LIST_REQUEST });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    const body = {
+      sessionId: userInfo.sessionId,
+    };
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+        sessionId: userInfo.sessionId,
+      },
+      withCredentials: true,
+    };
+    const { data } = await axios.get(`${api.getUser}?role=user`, config);
+
+    console.log("list user:", data);
+    dispatch({ type: USER_LIST_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: USER_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
 //USER DETAILS
 export const listUserDetails = (id) => async (dispatch) => {
   try {

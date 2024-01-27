@@ -20,7 +20,10 @@ export const api = {
   createProduct: IPaddress + "/admin/product/create/",
   editProduct: IPaddress + "/admin/product/update/",
   updateImage: IPaddress + "/admin/product/update-image/",
-
+  getProductByDate: IPaddress +"/api/v1/product?sort=-createdAt",
+  getProductByPrice: IPaddress +"/api/v1/product?sort=price",
+  getProductByView: IPaddress +"/api/v1/product?sort=-ratingsQuantity",
+  
   //category api
   getCategory: IPaddress + "/api/v1/category/",
   editCategory: IPaddress + "/admin/category/",
@@ -35,7 +38,6 @@ export const api = {
   getRelatedProduct: IPaddress + "/api/v1/product/related-products/",
   getTodayProducts: IPaddress + "/api/v1/product?stock[gt]=50&limit=4",
   
-
   //user api
   getAllUser: IPaddress + "/admin/",
   getUser: IPaddress + "/admin/user/",
@@ -43,8 +45,14 @@ export const api = {
 
   //order
   getOrder: IPaddress + "/admin/order/",
-  createOrder: IPaddress + "/order/",
-  getOrderUser: IPaddress + "/user/order/",
+  createOrder: IPaddress + "/user/orders/create/",
+  getAllOrderUser: IPaddress + "/user/orders/getOrder/",
+  deleteOrder: IPaddress + "/user/orders/delete/",
+  updateOrder: IPaddress + "/user/orders/update/",
+  getOneOrder: IPaddress + "/admin/orders/getOne/",
+  getAllOrderAdmin: IPaddress + "/admin/orders/getAll/",
+  getOneOrderUser: IPaddress + "/user/orders/getOne/",
+
   //review
   createReviewOfAProduct: IPaddress + "/api/v1/reviews/",
   getReviewOfAProduct: IPaddress + "/api/v1/product/",

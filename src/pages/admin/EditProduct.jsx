@@ -6,7 +6,7 @@ import FileInput from "./FileInput";
 import ImageUpload from "./FileInput";
 import { useDispatch, useSelector } from "react-redux";
 import { editProduct } from "../../Redux/Actions/ProductActions";
-import { PRODUCT_EDIT_RESET } from "../../Redux/Constants/ProductConstants";
+import { PRODUCT_DETAILS_FAIL, PRODUCT_DETAILS_REQUEST, PRODUCT_DETAILS_SUCCESS, PRODUCT_EDIT_RESET } from "../../Redux/Constants/ProductConstants";
 import axios from "axios";
 import { api } from "../../constants/api";
 import Loading from "../LoadingError/Loading";
@@ -33,6 +33,8 @@ const EditProduct = () => {
     const { 
         userInfo
    } = useSelector((state) => state.userLogin)
+   const productDetails = useSelector((state) => state.productDetails)
+   const { loading: loadingProductDetail, error: errorProductDetail} = productDetails
     // useEffect(() => {
     //     if (success) {
     //         dispatch({type: PRODUCT_EDIT_RESET})
@@ -56,7 +58,7 @@ const EditProduct = () => {
     const fetchProduct = async() => {
         try {
             loadingProduct=true
-           // dispatch({ type: PRODUCT_DETAILS_REQUEST}) 
+           dispatch({ type: PRODUCT_DETAILS_REQUEST}) 
 
             const { data } = await axios.get(api.getAndCreateProduct+id)
             //console.log("data:" , data.data.data)
@@ -73,9 +75,11 @@ const EditProduct = () => {
             setStock(temp.stock);
             //setPreviewImage((temp.thumbnail));
             loadingProduct=false
+            dispatch({type: PRODUCT_DETAILS_SUCCESS, payload: temp})
         } catch (error) {
            console.log(error)
            errorProduct=error
+           dispatch({type: PRODUCT_DETAILS_FAIL, payload: error})
         }
     }
 
@@ -176,8 +180,10 @@ const EditProduct = () => {
             </div>
             <div className="rounded-lg border-2 border-solid bg-white p-3 m-4">
                 {
-                    loadingProduct || loadingCategory ? (<Loading/>) : errorProduct 
-                    ? (<Message variant={'danger'}>{getErrorMessage(errorProduct)}</Message>)
+                    loadingProductDetail || loadingProduct || loadingCategory ? (<Loading/>) : errorProduct 
+                    ? (<Message variant={'danger'}>{getErrorMessage(errorProduct)}</Message>) : error
+                    ? (<Message variant={'danger'}>{getErrorMessage(error)}</Message>) : errorProductDetail
+                    ? (<Message variant={'danger'}>{getErrorMessage(errorProduct)}</Message>) 
                     : (
                         <form onSubmit={submitHandler}>
                             <div class="form mb-4 text-left input-group">

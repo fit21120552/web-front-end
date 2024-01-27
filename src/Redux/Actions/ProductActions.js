@@ -76,6 +76,58 @@ export const listProductDetails = (id) => async(dispatch) => {
     }
 }
 
+export const listProductsAdminSort = (type) =>  async (dispatch, getState) => {
+    try {
+        dispatch({type: PRODUCT_LIST_REQUEST});
+
+        const { userLogin: { userInfo }, } = getState()
+
+       // console.log("userInfo: ", userInfo)
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userInfo.sessionId}`,
+                sessionId: userInfo.sessionId
+            },
+            withCredentials: true,
+        }
+        let temp=null;
+        switch (type) {
+            case 2:
+                console.log('oke data 2')
+                const { data: data2 } = await axios.get(api.getProductByDate, config)
+                temp =data2
+                break
+            case 3:
+                console.log('oke data 3')
+                const { data: data3 } = await axios.get(api.getProductByPrice, config)
+                temp =data3
+                break
+            case 4: 
+                console.log('oke data 4')
+                const { data: data4 } = await axios.get(api.getProductByView, config)
+                temp =data4
+                break
+            default: 
+            console.log('oke data default')
+                const { data } = await axios.get(api.getAndCreateProduct, config)
+                temp =data
+                break
+        }
+        
+
+         console.log("data: ",temp )
+        dispatch({type: PRODUCT_LIST_SUCCESS, payload: temp.data.data })
+    }  catch (error) {
+        dispatch({
+            type: PRODUCT_LIST_FAIL,
+            payload:
+                error.response && error.response.data.message ? 
+                    error.response.data.message : 
+                    error.message,
+        })
+    }
+}
+
 //DELETE PRODUCT
 export const deleteProduct = (id) =>  async (dispatch, getState) => {
     try {

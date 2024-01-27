@@ -30,9 +30,17 @@ export default function Signup({ location, history }) {
       setServerError(registerState);
     }
   }, [registerState, navigate]);
+
+  const emailPattern = /^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,}){1,3}$/;
+  const usernamePattern = /^[a-zA-Z0-9_]{6,20}$/
   const submitHandler = (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
+
+    if (!emailPattern.test(email)){
+      setNoti("Invalid email!");
+    } else if (!usernamePattern.test(username)) {
+      setNoti("Username should has at least 6 character, include letters, digits, and underscore")
+    } else if (password !== confirmPassword) {
       setNoti("Mật khẩu không khớp");
     } else if (password.length < 8) {
       setNoti("Mật khẩu tối thiểu 8 ký tự");

@@ -7,14 +7,14 @@ import Loading from "../LoadingError/Loading";
 import { Link } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import Message from "../LoadingError/Message";
-
+import DateView from "../Components/DateView"
 const Orders = () => {
   const [modalShow, setModalShow] = React.useState(false);
   const [itemPerPage, setItemPerPage] = useState(10)
   const dispatch = useDispatch()
 
   const orderList = useSelector((state) => state.orderList)
-  //const { loading, error, orders } = orderList
+  const { loading, error, orders } = orderList
 
   const orderDelete = useSelector((state) => state.orderDelete)
   const { error: errorDelete, success: successDelete } = orderDelete
@@ -30,40 +30,40 @@ const Orders = () => {
     }
   }
     
-  let loading = false
-  let error = null
-  let orders = [
-    {
-      "_id": "65a9d7b4ad47b243bc49b0071",
-      "username":"Tien 123",
-      "email":"taobilag@gmail.com",
-      "total":"1200",
-      "paidStatus" :"Paid",
-      "deliveryStatus":"Not Delivery",
-      "dateOrder":"12/07/2024",
+  // let loading = false
+  // let error = null
+  // let orders = [
+  //   {
+  //     "_id": "65a9d7b4ad47b243bc49b0071",
+  //     "username":"Tien 123",
+  //     "email":"taobilag@gmail.com",
+  //     "total":"1200",
+  //     "paidStatus" :"Paid",
+  //     "deliveryStatus":"Not Delivery",
+  //     "dateOrder":"12/07/2024",
 
-    }, 
-    {
-      "_id": "65a9d7b4ad47b243bc49b0072",
-      "username":"Tien 123",
-      "email":"taobilag@gmail.com",
-      "total":"1201",
-      "paidStatus" :"Not Paid",
-      "deliveryStatus":"Not Delivery",
-      "dateOrder":"12/07/2024",
+  //   }, 
+  //   {
+  //     "_id": "65a9d7b4ad47b243bc49b0072",
+  //     "username":"Tien 123",
+  //     "email":"taobilag@gmail.com",
+  //     "total":"1201",
+  //     "paidStatus" :"Not Paid",
+  //     "deliveryStatus":"Not Delivery",
+  //     "dateOrder":"12/07/2024",
       
-    },
-    {
-      "_id": "65a9d7b4ad47b243bc49b0072",
-      "username":"Tien 123",
-      "email":"taobilag@gmail.com",
-      "total":"1201",
-      "paidStatus" :"Paid",
-      "deliveryStatus":"Delivery",
-      "dateOrder":"12/07/2024",
+  //   },
+  //   {
+  //     "_id": "65a9d7b4ad47b243bc49b0072",
+  //     "username":"Tien 123",
+  //     "email":"taobilag@gmail.com",
+  //     "total":"1201",
+  //     "paidStatus" :"Paid",
+  //     "deliveryStatus":"Delivery",
+  //     "dateOrder":"12/07/2024",
       
-    }
-  ]
+  //   }
+  // ]
   function Items({ currentItems }) {
     return (
       <>
@@ -75,34 +75,36 @@ const Orders = () => {
                 {item._id}
               </Link>
             </td>
-            <td className="py-2 font-semibold">{item.username}</td>
-            <td className="py-2 text-center">{item.email}</td>
-            <td className="py-2">${item.total}</td>
+            <td className="py-2 font-semibold">{item.user.username}</td>
+            <td className="py-2 text-center">{item.user.email}</td>
+            <td className="py-2">${item.ShipCost + item.price + item.tax}</td>
             <td className="py-2  text-center">
             {
-                item.paidStatus ==="Paid" ? (
+                item.StatusPaid  ? (
                   <span className="alert-success text-success rounded-xl inline-block px-3 text-sm font-semibold min-w-[120px]">                
-                    {item.paidStatus}
+                    PAID
                   </span>
                 ) : (
-                  <span className="alert-danger text-danger rounded-xl inline-block px-3 text-sm font-semibold min-w-[120px]">
-             
-                    {item.paidStatus}
+                  <span className="alert-danger text-danger rounded-xl inline-block px-3 text-sm font-semibold min-w-[120px]">           
+                    NOT PAID
                   </span>
                 )
+               
             }
               
             </td>
-            <td className="py-2 text-center">{item.dateOrder}</td>
+            <td className="py-2 text-center">
+              <DateView date={item.createdAt}/>
+            </td>
             <td className="py-2  text-center">
             {
-              item.deliveryStatus === "Delivery" ? (
+              item.StatusDelivered  ? (
                 <span className="alert-success text-success inline-block rounded-xl px-3 text-sm font-semibold min-w-[120px]">
-                  {item.deliveryStatus}
+                  DELIVERED
                 </span>
               ) : (
                 <span className="alert-danger text-danger inline-block rounded-xl px-3 text-sm font-semibold min-w-[120px]">
-                  {item.deliveryStatus}
+                  NOT DELIVERED
                 </span>
               )
             }
@@ -112,9 +114,14 @@ const Orders = () => {
               <Link className="py-2 text-center" to={`/admin/order/${item._id}`}>
                 <FontAwesomeIcon icon={faEye} color="#00E096" />
               </Link>
-              <button className="rounded-xl px-3" onClick={(e) =>deleteHandler2(item._id)}>
-                <FontAwesomeIcon icon={faTrash} color="#ef4444" />
-              </button>
+              {
+                (item.StatusPaid && item.StatusDelivered) || (!item.StatusPaid && !item.StatusDelivered) ? (
+                  <button className="rounded-xl px-3" onClick={(e) =>deleteHandler2(item._id)}>
+                    <FontAwesomeIcon icon={faTrash} color="#ef4444" />
+                  </button>
+                ) : null
+              }
+             
             </td>
           </tr>
           ))}

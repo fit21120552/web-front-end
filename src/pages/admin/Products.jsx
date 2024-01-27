@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import VerticallyCenteredModal from "../LoadingError/Modal";
 import { Alert, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteProduct, listProductsAdmin } from "../../Redux/Actions/ProductActions";
+import { deleteProduct, listProductsAdmin, listProductsAdminSort } from "../../Redux/Actions/ProductActions";
 import Loading from "../LoadingError/Loading"
 import Message from "../LoadingError/Message"
 import ImageView from "../Components/ImageView";
@@ -15,6 +15,7 @@ const Products = () => {
   const [modalShow, setModalShow] = React.useState(false);
   const [itemPerPage, setItemPerPage] = useState(6)
   const dispatch = useDispatch()
+ 
 
   const productList = useSelector((state) => state.productList)
 
@@ -22,9 +23,27 @@ const Products = () => {
 
   const productDelete = useSelector((state) => state.productDelete)
   let { error: errorDelete, success: successDelete } = productDelete
+  const [filter, setFilter] = useState(1)
   useEffect(() => {
-    dispatch(listProductsAdmin())
-  },[dispatch, successDelete])
+    switch (filter) {
+        case 1: 
+        dispatch(listProductsAdmin())
+        break;
+      
+        case 3: 
+       
+        dispatch(listProductsAdminSort(3))
+        break;
+        case 4: 
+        dispatch(listProductsAdminSort(4))
+        break;
+        default: 
+      
+        dispatch(listProductsAdmin())
+        break;
+    }
+    
+  },[dispatch, successDelete, filter])
 
   const deleteHandler = (id) => {
       alert(`deleted ${id}`)
@@ -165,11 +184,11 @@ const Products = () => {
           />
         </div>
         <div className="flex gap-4">
-          <select name="" id="" className="rounded-lg bg-[#e1e0e0] px-4">
-            <option value="">All category</option>
-            <option value="">Latest added</option>
-            <option value="">Cheap first</option>
-            <option value="">Most viewed</option>
+          <select name="" id="" className="rounded-lg bg-[#e1e0e0] px-4" onChange={(e) => { setFilter(Number.parseInt(e.target.value))}}>
+            <option value={1}>All category</option>
+          
+            <option value={3}>Cheap first</option>
+            <option value={4}>Most viewed</option>
           </select>
           <select name="" id="" className="rounded-lg bg-[#e1e0e0] px-4" onChange={(e) => setItemPerPage(e.target.value)}>
             <option value={3}>Show 3</option>

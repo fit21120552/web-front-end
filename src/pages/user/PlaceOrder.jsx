@@ -26,7 +26,10 @@ const PlaceOrder = () => {
 
     useEffect(() => {
         if (success) {
-            dispatch({type: ORDER_CREATE_RESET})
+            dispatch({type: ORDER_CREATE_RESET}) 
+            
+        }
+        if (order) {
             navigate(`/order/${order._id}`)
         }
     },[dispatch, success, order])
@@ -34,10 +37,10 @@ const PlaceOrder = () => {
     const PlaceOrderHandler = (e) => {
         e.preventDefault()
         dispatch(createOrder({
-            product: cartItems,
+            products: cartItems,
             user: userInfo._id,
             price: calculateTotalProductPrice(cartItems),
-            tax: calculateTax(20),
+            tax: calculateTax(cartItems),
             ShipCost: 20,
             address: shippingAddress.address,
             city: shippingAddress.city,
