@@ -2,12 +2,13 @@ import { faEye, faSearch, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteOrder, listOrders } from "../../Redux/Actions/OrderActions";
+import { deleteOrder, listOrders, listOrdersSort } from "../../Redux/Actions/OrderActions";
 import Loading from "../LoadingError/Loading";
 import { Link } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import Message from "../LoadingError/Message";
 import DateView from "../Components/DateView"
+import { set } from "react-hook-form";
 const Orders = () => {
   const [modalShow, setModalShow] = React.useState(false);
   const [itemPerPage, setItemPerPage] = useState(10)
@@ -18,10 +19,33 @@ const Orders = () => {
 
   const orderDelete = useSelector((state) => state.orderDelete)
   const { error: errorDelete, success: successDelete } = orderDelete
+  const [filter, setFilter] = useState(1)
 
   useEffect(() => {
-    dispatch(listOrders())
-  },[dispatch, successDelete])
+    
+    switch (filter) {
+      case 1: 
+      dispatch(listOrders())
+      break;
+    
+      case 2: 
+      dispatch(listOrdersSort(2))
+      break
+      case 3: 
+     
+      dispatch(listOrdersSort(3))
+      break;
+      case 4: 
+      dispatch(listOrdersSort(4))
+      break;
+      case 5: 
+      dispatch(listOrdersSort(5))
+      break;
+      default: 
+      dispatch(listOrders())
+      break;
+  }
+  },[dispatch, successDelete, filter])
 
   const deleteHandler2 = (id) => {
     if (window.confirm(`Are you sure to delete this order ${id}?`)) {
@@ -184,12 +208,12 @@ const Orders = () => {
           />
         </div>
         <div className="flex gap-4">
-          <select name="" id="" className="rounded-lg bg-[#e1e0e0] px-4">
-            <option value="">All status</option>
-            <option value="">Paid</option>
-            <option value="">Not paid</option>
-            <option value="">Delivered</option>
-            <option value="">Not delivered</option>
+          <select name="" id="" className="rounded-lg bg-[#e1e0e0] px-4" onChange={(e)=> setFilter(Number.parseInt(e.target.value))}>
+            <option value={1}>All status</option>
+            <option value={2}>Paid</option>
+            <option value={3}>Not paid</option>
+            <option value={4}>Delivered</option>
+            <option value={5}>Not delivered</option>
           </select>
           <select name="" id="" className="rounded-lg bg-[#e1e0e0] px-4">
             <option value={5}>Show 5</option>

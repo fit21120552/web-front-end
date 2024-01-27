@@ -23,7 +23,7 @@ export const api = {
   getProductByDate: IPaddress +"/api/v1/product?sort=-createdAt",
   getProductByPrice: IPaddress +"/api/v1/product?sort=price",
   getProductByView: IPaddress +"/api/v1/product?sort=-ratingsQuantity",
-  
+
   //category api
   getCategory: IPaddress + "/api/v1/category/",
   editCategory: IPaddress + "/admin/category/",
@@ -52,6 +52,10 @@ export const api = {
   getOneOrder: IPaddress + "/admin/orders/getOne/",
   getAllOrderAdmin: IPaddress + "/admin/orders/getAll/",
   getOneOrderUser: IPaddress + "/user/orders/getOne/",
+  getAllOrderAdminNotPaid: IPaddress + "/admin/orders/getAll?StatusPaid=false",
+  getAllOrderAdminPaid: IPaddress + "/admin/orders/getAll?StatusPaid=true",
+  getAllOrderAdminNotDelivered: IPaddress + "/admin/orders/getAll?StatusDelivered=false",
+  getAllOrderAdminDelivered: IPaddress + "/admin/orders/getAll?StatusDelivered=true",
 
   //review
   createReviewOfAProduct: IPaddress + "/api/v1/reviews/",
