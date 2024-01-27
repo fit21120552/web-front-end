@@ -28,12 +28,12 @@ const PlaceOrder = () => {
     navigate("/choose-payment");
   }
 
-  useEffect(() => {
-    if (success) {
-      dispatch({ type: ORDER_CREATE_RESET });
-      navigate(`/order/${order._id}`);
-    }
-  }, [dispatch, success, order]);
+  //   useEffect(() => {
+  //     if (success) {
+  //       dispatch({ type: ORDER_CREATE_RESET });
+  //       navigate(`/order/${order._id}`);
+  //     }
+  //   }, [dispatch, success, order]);
 
   const PlaceOrderHandler = async (e) => {
     e.preventDefault();
