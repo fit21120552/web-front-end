@@ -68,10 +68,9 @@ export const loginGoogle = (email) => async (dispatch) => {
 
     const { data } = await axios.post(api.login, { email }, api.config);
 
-    const username = data.username;
     const res = await axios.post(
       "https://localhost:3003/register",
-      { username, sessionId: data.sessionId },
+      { username: data.userM.username, sessionId: data.sessionId },
       {
         headers: {
           "Access-Control-Allow-Origin": "*",
