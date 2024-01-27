@@ -45,7 +45,7 @@ const AddCategory = () => {
       </div>
       <div className="rounded-lg border-2 border-solid bg-white p-3 m-4">
         <form onSubmit={submitHandler}>
-          <div class="form mb-4 text-left input-group">
+          <div className="form mb-4 text-left input-group">
             <span
               className="text-start font-bold input-group-text w-30"
               for="typeEmailX-2"

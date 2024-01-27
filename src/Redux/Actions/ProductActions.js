@@ -56,8 +56,9 @@ export const listProductDetails = (id) => async(dispatch) => {
        // console.log("userInfo: ", userInfo)
         const config = {
             headers: {
-                Authorization: `Bearer ${userInfo.token}`
-            }
+                Authorization: `Bearer ${userInfo.sessionId}`
+            },
+            withCredentials: true,
         }
 
         const { data } = await axios.get(api.getAndCreateProduct, config)
@@ -86,10 +87,12 @@ export const deleteProduct = (id) =>  async (dispatch, getState) => {
 
         const config = {
             headers: {
-                Authorization: `Bearer ${userInfo.token}`,
+                Authorization: `Bearer ${userInfo.sessionId}`,
                 "Access-Control-Allow-Origin": "*",
                 "Content-Type":"application/json",
-            }
+                sessionId: userInfo.sessionId,
+            },
+            withCredentials: true,
         }
         
         const body = {
@@ -97,9 +100,9 @@ export const deleteProduct = (id) =>  async (dispatch, getState) => {
         }
        // console.log("body: ", body)
 
-       // console.log(`del ${api.deleteProduct+id}`)
+        console.log(`del ${api.deleteProduct+id}`)
 
-         const { data } = await axios.delete(api.deleteProduct+id,body, config)
+         const { data } = await axios.delete(api.deleteProduct+id, config)
          
          
         console.log("data: ",data )
@@ -121,18 +124,21 @@ export const deleteProduct = (id) =>  async (dispatch, getState) => {
 }
 
 //CREATE PRODUCT
-export const createProduct = (title, price, stock, description, category, thumbnail) =>  async (dispatch, getState) => {
+export const createProduct = (title, price, stock, description, category, brand, thumbnail) =>  async (dispatch, getState) => {
     try {
         dispatch({type: PRODUCT_CREATE_REQUEST});
 
         const { 
-            userLogin: { userInfo}, 
+            userLogin: { userInfo }, 
         } = getState()
 
         const config = {
             headers: {
                 Authorization: `Bearer ${userInfo.token}`,
-                "Access-Control-Allow-Origin": "*"
+                "Access-Control-Allow-Origin": "*",
+               //"Content-Type": "application/json",
+                "Content-Type": "multipart/form-data",
+                sessionId:  userInfo.sessionId,
             },
             withCredentials: true,
         }
@@ -144,9 +150,23 @@ export const createProduct = (title, price, stock, description, category, thumbn
              description: description, 
              category: category, 
              thumbnail: thumbnail,
-             sessionId: userInfo.sessionId,
-             brand: "fix in product actions in redux"
+             //sessionId: userInfo.sessionId,
+             brand: brand,
          }
+        
+        const formData = new FormData()
+        if (thumbnail) {
+            formData.append("thumbnail",thumbnail)
+        }
+        formData.append("title",title)
+        formData.append("price",price)
+        formData.append("stock",stock)
+        formData.append("description",description)
+        formData.append("category",category)
+        formData.append("brand",brand)
+       
+        console.log("form data: ",formData)
+
         const { data} = await axios.post(`${api.createProduct}`,
                                             body,
                                             config)
@@ -175,7 +195,7 @@ export const editProduct = (id, title, price, stock, description, category, thum
         dispatch({type: PRODUCT_EDIT_REQUEST });
 
         const { 
-            userLogin: { userInfo}, 
+            userLogin: { userInfo }, 
         } = getState()
 
         const config = {
@@ -183,13 +203,23 @@ export const editProduct = (id, title, price, stock, description, category, thum
                 Authorization: `Bearer ${userInfo.token}`,
                 "Access-Control-Allow-Origin": "*",
                 "Content-Type":"application/json",
+                sessionId: userInfo.sessionId,
             },
             withCredentials: true,
         }
 
-        const { data} = await axios.patch(`${api.editProduct}${id}`,
-                                            {title, price, stock, description, category, thumbnail},
-                                            config)
+        console.log("session: ", userInfo.sessionId)
+        const body = {
+            sessionId: userInfo.sessionId,
+            title: title, 
+            price: price, 
+            stock: stock, 
+            description: description, 
+            category: category, 
+            thumbnail: thumbnail,
+        }
+
+        const { data } = await axios.patch(api.editProduct+id,body, config)
 
        console.log("data: ",data )
         dispatch({type: PRODUCT_EDIT_SUCCESS, payload: data})

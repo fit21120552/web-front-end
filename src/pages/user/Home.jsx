@@ -10,6 +10,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import axios from "axios";
+import ImageView from "../Components/ImageView";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -105,12 +106,26 @@ export default function Home() {
                       <div className="border-product">
                         <Link to={`/product/${product._id}`}>
                           <div className="shopBack">
-                            <img
-                              src={product.thumbnail}
-                              alt={product.name}
-                              height="100px"
-                              className="bg-[#bbf7d0]  h-[250px] object-cover"
-                            />
+                          
+                            {
+                              product ? (
+                                !product.thumbnail || product.thumbnail.includes('http') ? (
+                                  <img
+                                    src={product?.thumbnail}
+                                    alt={product?.title}
+                                    height="100px"
+                                    className="bg-[#bbf7d0] h-[250px] object-cover"
+                                  />
+                                ) : (
+                                  <ImageView  height="100px" imagePath={product.thumbnail} 
+                                              imageName={product.title} model={'product'} 
+                                              id={product._id} 
+                                              classProp={"bg-[#bbf7d0] h-[250px] object-cover"}/>                         
+                                )
+                              ) : null
+                            
+                            }
+                            
                           </div>
                         </Link>
 

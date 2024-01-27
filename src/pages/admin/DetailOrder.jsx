@@ -5,12 +5,14 @@ import Loading from "../LoadingError/Loading";
 import { useState } from "react";
 import Message from "../LoadingError/Message";
 import { useDispatch, useSelector } from "react-redux";
+import ImageView from "../Components/ImageView";
 
 
 const DetailOrder = () => {
     const [deliverySwitch, setDeliverySwitch] = useState(false)
     const dispatch = useDispatch()
     const params = useParams()
+    const { id } = params
     const orderDetails = useSelector((state) => state.orderDetails)
     //const { loading, error, order }= orderDetails
     let loading = false
@@ -176,7 +178,18 @@ const DetailOrder = () => {
                                                     order.items.map((item ) => (
                                                         <tr>
                                                             <td className="flex flex-row justify-begin">
-                                                                <img src="logo.png" alt={item.title} className="max-h-[50px] max-w-[50px]"/>
+                                                                {
+                                                                    item ? (
+                                                                        !item.thumbnail || item.thumbnail.includes('http') ? (
+                                                                            <img src={item.thumbnail} alt={item.title} className="max-h-[50px] max-w-[50px]"/>
+                                                                        ) : (
+                                                                            <ImageView imagePath={item.thumbnail} imageName={item.title} model={'product'} id={item._id} classProp={"w-4/5 h-4/5"}/>
+                                                                        )
+                                                                    ) : null
+                                                                   
+                                                                }
+                                                    
+                                                                
                                                                 <div>{item.title}</div>
                                                             </td>
                                                             <td className="">{item.price}</td>

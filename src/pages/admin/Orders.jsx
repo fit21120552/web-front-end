@@ -70,6 +70,11 @@ const Orders = () => {
         {currentItems &&
           currentItems.map((item, index) => (
             <tr className=" mb-4 border-t" key={item._id}>
+            <td className="py-2 font-semibold text-primary italic underline">
+              <Link to={`/admin/order/${item._id}`}>
+                {item._id}
+              </Link>
+            </td>
             <td className="py-2 font-semibold">{item.username}</td>
             <td className="py-2 text-center">{item.email}</td>
             <td className="py-2">${item.total}</td>
@@ -191,6 +196,7 @@ const Orders = () => {
         : (
           <table className="mt-8 w-full">
             <tr className="mb-4 text-center">
+              <th className="font-normal text-left text-[#96A5B8]">ID</th>
               <th className="font-normal text-left text-[#96A5B8]">Name</th>
               <th className="font-normal text-[#96A5B8]">Email</th>
               <th className="font-normal text-left text-[#96A5B8]">Total</th>

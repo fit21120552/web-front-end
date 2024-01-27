@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux"
 import { Link, useNavigate } from "react-router-dom"
 import Message from "../LoadingError/Message"
+import ImageView from "../Components/ImageView"
 
 const OrderDetail = () => {
     const userLogin   = useSelector((state) => state.userLogin)
@@ -110,7 +111,17 @@ const OrderDetail = () => {
                                         <>
                                         <div className="row" key={index}>
                                             <div className="col-md-3 col-6">
-                                                <img src={item.thumbnail} alt={item.title}/>
+                                                 {
+                                                    item ? (
+                                                        !item.thumbnail || item.thumbnail.includes('http') ? (
+                                                            <img src={item.thumbnail} alt={item.title} className=""/>
+                                                        ) : (
+                                                            <ImageView imagePath={item.thumbnail} imageName={item.title} model={'product'} id={item._id} classProp={""}/>
+                                                        )
+                                                    ) : null
+                                                  
+                                                }
+                                               
                                             </div>
 
                                             <div className="col-md-5 col-6 flex flex-row items-center">

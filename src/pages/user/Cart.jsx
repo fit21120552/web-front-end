@@ -18,6 +18,7 @@ import Message from "../LoadingError/Message";
 import axios from "axios";
 import { api } from "../../constants/api";
 import { ToastContainer, toast } from "react-toastify";
+import ImageView from "../Components/ImageView";
 
 const Cart = () => {
   const params = useParams();
@@ -54,24 +55,25 @@ const Cart = () => {
 
   const checkOutHandler = async (e) => {
     e.preventDefault();
-    const res = await axios.post(
-      api.checkout,
-      { total },
-      {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          sessionId: userInfo.sessionId,
-        },
-        withCredentials: true,
-      }
-    );
+    navigate('/ship')
+    // const res = await axios.post(
+    //   api.checkout,
+    //   { total },
+    //   {
+    //     headers: {
+    //       "Access-Control-Allow-Origin": "*",
+    //       sessionId: userInfo.sessionId,
+    //     },
+    //     withCredentials: true,
+    //   }
+    // );
 
-    if (res.data === "success") {
-      dispatch(clearCart());
-      toast.info("Cập nhật thành công!");
-    } else {
-      toast.error(res.data);
-    }
+    // if (res.data === "success") {
+    //   dispatch(clearCart());
+    //   toast.info("Cập nhật thành công!");
+    // } else {
+    //   toast.error(res.data);
+    // }
   };
 
   const removeFromCardHandler = (id) => {
@@ -119,11 +121,17 @@ const Cart = () => {
                     to={`/product/${item._id}`}
                     className="cart-image flex gap-2 flex-1"
                   >
-                    <img
-                      src={item.thumbnail}
-                      alt={item.title}
-                      className="w-[100px] h-[100px]"
-                    />
+                  {
+                    item ? (
+                      !item.thumbnail || item.thumbnail.includes('http') ? (
+                        <img src={item.thumbnail} alt={item.title} className="w-[100px] h-[100px]"/>
+                      ) : (
+                        <ImageView imagePath={item.thumbnail} imageName={item.title} model={'product'} id={item._id} classProp={"w-[100px] h-[100px]"}/>
+                      )
+                    ) : null
+                    
+                  }
+                  
                     <div
                       to={`/product/${item._id}`}
                       className="font-mono font-bold mt-2 flex items-center"

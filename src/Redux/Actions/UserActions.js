@@ -130,16 +130,18 @@ export const deleteUser = (id) => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        Authorization: `Bearer ${userInfo.token}`,
+        Authorization: `Bearer ${userInfo.sessionId}`,
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
+        sessionId: userInfo.sessionId,
       },
+      withCredentials: true,
     };
     const body = {
         sessionId: userInfo.sessionId
     }
 
-     const { data } = await axios.delete(api.deleteUser+id,body, config)
+     const { data } = await axios.delete(api.deleteUser+id, config)
     console.log("data: ",data )
     dispatch({type: USER_DELETE_SUCCESS})
 }  catch (error) {
@@ -172,10 +174,11 @@ export const listUser = () => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
+        sessionId: userInfo.sessionId,
       },
       withCredentials: true,
     };
-    const { data } = await axios.post(api.getAllUser, body, config);
+    const { data } = await axios.get(api.getAllUser, config);
 
     console.log("list user:", data);
     dispatch({ type: USER_LIST_SUCCESS, payload: data });

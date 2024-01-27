@@ -18,6 +18,7 @@ import { createReview, listReviewProduct } from "../../Redux/Actions/ReviewActio
 import { REVIEW_CREATE_RESET } from "../../Redux/Constants/ReviewConstants";
 import { toast } from "react-toastify";
 import ReactPaginate from "react-paginate";
+import ImageView from "../Components/ImageView";
 const ProductDetail = ({ history, match }) => {
   const [quantity, setQuantity] = useState(1);
   const [rating, setRating] = useState(5)
@@ -171,11 +172,20 @@ const ProductDetail = ({ history, match }) => {
           <Row className="">
             <Col lg={6} md={12} className="">
               <div className="single-image flex justify-center ">
-                <img
-                  src={product?.thumbnail}
-                  alt={product?.title}
-                  className="bg-[#bbf7d0] border p-2 rounded-sm"
-                />
+             
+             { product ? (
+                !product.thumbnail || product.thumbnail.includes('http') ? (
+                  <img
+                    src={product?.thumbnail}
+                    alt={product?.title}
+                    className="bg-[#bbf7d0] h-[250px] object-cover"
+                  />
+                ) : (
+                  <ImageView imagePath={product.thumbnail} imageName={product.title} model={'product'} id={product._id} classProp={"bg-[#bbf7d0] h-[250px] object-cover"}/>                         
+                )
+              ) : null
+            }
+                
               </div>
             </Col>
 
@@ -257,12 +267,21 @@ const ProductDetail = ({ history, match }) => {
                 key={product?._id}
               >
                 <Link to={`/product/${product?._id}`} className=" w-fit">
-                  <img
-                    src={product?.thumbnail}
-                    alt={product?.name}
-                    className="bg-[#bbf7d0]  h-[150px] object-cover"
-                  />
-
+                {
+                  product ? (
+                    !product.thumbnail || product.thumbnail.includes('http') ? (<img
+                      src={product?.thumbnail}
+                      alt={product?.title}
+                      className="bg-[#bbf7d0]  h-[150px] object-cover"
+                      />
+                    ) : (
+                      <ImageView imagePath={product.thumbnail} imageName={product.title} model={'product'} id={product._id} classProp={"bg-[#bbf7d0]  h-[150px] object-cover"}/>                         
+                    )
+                  ) : null
+                 
+                 
+                }
+                 
                   <div className="w-fit">
                     <p className="font-serif">{product?.title}</p>
                     <Rating

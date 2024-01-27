@@ -9,6 +9,7 @@ import { editProduct, listProductDetails } from "../../Redux/Actions/ProductActi
 import { PRODUCT_DETAILS_FAIL, PRODUCT_EDIT_RESET } from "../../Redux/Constants/ProductConstants";
 import axios from "axios";
 import { api } from "../../constants/api";
+import ImageView from "../Components/ImageView";
 const DetailProduct = () => {
 
     window.scrollTo(0,0)
@@ -19,6 +20,7 @@ const DetailProduct = () => {
     const [thumbnail, setThumbnail ] = useState("")
     const [previewImage, setPreviewImage] = useState("")
     const [stock, setStock] = useState(0)
+    const [brand, setBrand] = useState("")
     const dispatch = useDispatch()
     const [searchParams, setSearchParams] = useSearchParams()
     const params = useParams()
@@ -39,6 +41,7 @@ const DetailProduct = () => {
                 setPrice(temp.price);
                 setDescription(temp.description);
                 setCategory(temp.category);
+                setBrand(temp.brand)
                 setThumbnail(temp.thumbnail);
                 setStock(temp.stock);
                 setPreviewImage((temp.thumbnail));
@@ -73,11 +76,17 @@ const DetailProduct = () => {
     const categories=["bag","fan","car"]
     return (
         <div className="flex flex-column">
-            <div >
+            <div className="flex flex-row justify-between">
                 
                 <Link to="/admin/products" className="">
                     <button className=" bg-[#ef4444] rounded-xl p-2 text-white m-3 ">
                         Return product list
+                        </button>
+                </Link>
+                
+                <Link to="/admin/products" className="">
+                    <button className=" bg-[#ef4444] rounded-xl p-2 text-white m-3 ">
+                        Delete this product
                         </button>
                 </Link>
                 
@@ -151,6 +160,18 @@ const DetailProduct = () => {
                         </input>
                     </div>
 
+                    <div class="form mb-4 text-left input-group">
+                        <span className="text-start font-bold input-group-text w-30" for="typeEmailX-2">Brand</span>
+                        <input type="text"
+                                id="brand" 
+                                name="brand" 
+                                className="form-control"
+                                value={brand}
+                                onChange={(e) => setBrand(e.target.value)}
+                                readOnly
+                                required />
+                    </div>
+
                     <div className="form mb-4 text-left ">
                         <label for="prodImg" className="form-label font-bold">Product image</label>
                         <input 
@@ -166,14 +187,24 @@ const DetailProduct = () => {
                                 required></input>
                            
                     </div>
-
-                    {previewImage && (
-                                    <div>
-                                       
-                                    <img className="preview" src={previewImage} alt="" />
-                                    </div>
-                                )}  
-
+                    {
+                        previewImage ? (
+                            <>
+                                {
+                                    previewImage.includes('http') ? (
+                                        <div>
+                                            <img className="preview" src={previewImage} alt="" />
+                                       </div>
+                                    ) : (
+                                        <div>
+                                            <ImageView imagePath={thumbnail} imageName={title} model={'product'} id={id} classProp={""}/>
+                                        </div>
+                                    )
+                                }
+                            </>
+                        ) : null
+                    }
+                    
                     <div className="flex flex-row justify-center my-2 p-3 text-xl">
                         <Link to={`/admin/product/edit/${id}`}>
                         <button type="submit" className="" >

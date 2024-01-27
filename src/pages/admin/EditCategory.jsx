@@ -44,10 +44,12 @@ const EditCategory = () => {
                     Authorization: `Bearer ${userInfo.token}`,
                     "Access-Control-Allow-Origin": "*",
                     "Content-Type":"application/json",
-                }
+                    sessionId : userInfo.sessionId,
+                },
+                withCredentials: true,
             }
             const body ={
-                sessionId : userInfo.sessionId,
+               // sessionId : userInfo.sessionId,
                 name: name,
             }
             const { data } = await axios.patch(api.editCategory+catId,body,config)

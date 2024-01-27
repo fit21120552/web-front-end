@@ -21,7 +21,9 @@ const EditProduct = () => {
     const [thumbnail, setThumbnail ] = useState(null)
     const [previewImage, setPreviewImage] = useState(null)
     const [stock, setStock] = useState(0)
+    const [brand, setBrand] = useState("")
     const [originalImage, setOriginalImage] = useState("")
+    const [fileImage, setFileImage] = useState(null)
     const dispatch = useDispatch()
     const [searchParams, setSearchParams] = useSearchParams()
     const params = useParams()
@@ -55,6 +57,7 @@ const EditProduct = () => {
         try {
             loadingProduct=true
            // dispatch({ type: PRODUCT_DETAILS_REQUEST}) 
+
             const { data } = await axios.get(api.getAndCreateProduct+id)
             //console.log("data:" , data.data.data)
            // dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data.data.data});
@@ -64,10 +67,11 @@ const EditProduct = () => {
             setPrice(temp.price);
             setDescription(temp.description);
             setCategory(temp.category);
+            setBrand(temp.brand)
             //setThumbnail(temp.thumbnail);
             setOriginalImage(temp.thumbnail)
             setStock(temp.stock);
-            setPreviewImage((temp.thumbnail));
+            //setPreviewImage((temp.thumbnail));
             loadingProduct=false
         } catch (error) {
            console.log(error)
@@ -97,16 +101,32 @@ const EditProduct = () => {
         },
         withCredentials: true,
     }
-    const updateProduct = async (id, title, price, stock, description, category, thumbnail)=> {
+    const updateProduct = async (id, title, price, stock, description, category,brand, thumbnail)=> {
         try {
             loadingProduct =true
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${userInfo.token}`,
+                    "Access-Control-Allow-Origin": "*",
+                    "Content-Type":"application/json",
+                    sessionId: userInfo.sessionId,
+                },
+                withCredentials: true,
+            }
+
+            console.log("session: ", userInfo.sessionId)
             const body = {
                 sessionId : userInfo.sessionId,
-                title, price, stock, description, category, thumbnail
+                title: title, 
+                price: price, 
+                stock: stock, 
+                description: description, 
+                category: category, 
+                thumbnail: thumbnail,
+                brand: brand,
             }
             const { data } =  await axios.patch(`${api.editProduct}${id}`,
-                                            body,
-                                            config)
+                                            body,config)
             console.log("data:", data)
             loadingProduct=false
         } catch (error) {
@@ -118,9 +138,9 @@ const EditProduct = () => {
     const submitHandler = (e)  => {
         e.preventDefault()
         if (thumbnail) {
-            updateProduct(id, title, price, stock, description, category, thumbnail)
+            updateProduct(id, title, price, stock, description, category, brand, fileImage)
         } else {
-            updateProduct(id, title, price, stock, description, category, originalImage)
+            updateProduct(id, title, price, stock, description, category, brand, originalImage)
         }
         
         alert("Updated success!")
@@ -130,11 +150,12 @@ const EditProduct = () => {
     const selectFile = (event) => {
         setThumbnail(event.target.value);
         setPreviewImage(URL.createObjectURL(event.target.files[0]));
-       
+        setFileImage(event.target.files[0])
       }; 
       const deleteImage = () => {
         setThumbnail("")
         setPreviewImage(null)
+        setFileImage(null)
       } 
 
    // const categories=["bag","fan","car"]
@@ -215,16 +236,27 @@ const EditProduct = () => {
                                          <option value={""}>Select...</option>
                                             {categories.map(
                                                 (x) => (
-                                                    <option key = {x} value = {x}>
-                                                        {x}
+                                                    <option key ={x._id} value = {x.name} selected={x.name===category}>
+                                                        {x.name}
                                                     </option>
                                                 )
                                             )}
                                 </select>
                             </div>
 
+                            <div class="form mb-4 text-left input-group">
+                                <span className="text-start font-bold input-group-text w-30" for="typeEmailX-2">Brand</span>
+                                <input type="text"
+                                        id="brand" 
+                                        name="brand" 
+                                        className="form-control"
+                                        value={brand}
+                                        onChange={(e) => setBrand(e.target.value)}
+                                        required />
+                            </div>
+
                             <div className="form mb-4 text-left ">
-                                <label for="prodImg" className="form-label">Product image (don't upload if there is no need to change the image)</label>
+                                <label for="prodImg" className="form-label">Product image <b className="italic underline">(don't upload if there is no need to change the image)</b></label>
                                 <input 
                                         className="file form-control" 
                                         type="file" 
