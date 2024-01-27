@@ -1,7 +1,10 @@
 import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Message from "../LoadingError/Message";
 import ImageView from "../Components/ImageView";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { api } from "../../constants/api";
 
 const OrderDetail = () => {
   const userLogin = useSelector((state) => state.userLogin);
@@ -11,13 +14,17 @@ const OrderDetail = () => {
   const orderCreate = useSelector((state) => state.orderCreate);
   //const { loading, error, success, order } = orderCreate
   const navigate = useNavigate();
-  const order = {
-    _id: "23498rhq92345u8q2359",
-    price: 100,
-    total: 120,
-    paidStatus: true,
-    deliveryStatus: true,
-  };
+  const params = useParams();
+
+  const [order, setOrder] = useState({});
+  useEffect(() => {
+    async function fetchData() {
+      const res = await axios.get(api.getOneOrder, api.config);
+      console.log(res);
+    }
+
+    fetchData();
+  }, [params.id]);
   const purchaseHandler = (e) => {
     e.preventDefault();
   };
@@ -53,9 +60,9 @@ const OrderDetail = () => {
                 <h5>
                   <strong>Order Info</strong>
                 </h5>
-                <p>Shipping: {shippingAddress.country}</p>
+                <p>Shipping: {shippingAddress?.country}</p>
                 <p>Pay method: {paymentMethod.paymentMethod}</p>
-                {order.paidStatus ? (
+                {order.statusPaid ? (
                   <div className="bg-success w-2/3 text-center text-2xl p-2 mt-2">
                     PAID
                   </div>
@@ -80,9 +87,9 @@ const OrderDetail = () => {
                   <strong>Deliver to</strong>
                 </h5>
                 <p>
-                  Address: {shippingAddress.address}, {shippingAddress.city}
+                  Address: {shippingAddress?.address}, {shippingAddress?.city}
                 </p>
-                <p>Postal Code: {shippingAddress.postalCode} </p>
+                <p>Postal Code: {shippingAddress?.postalCode} </p>
                 {order.deliveryStatus ? (
                   <div className="bg-success w-2/3 text-center text-2xl p-2 mt-2">
                     DELIVERED

@@ -62,8 +62,18 @@ const PlaceOrder = () => {
 
     if (res.data === "success") {
       dispatch(clearCart());
-      toast.info("Cập nhật thành công!");
-      navigate(`/order/${order._id}`);
+      const res = await axios.patch(
+        api.update,
+        { statusPaid: true },
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            sessionId: userInfo.sessionId,
+          },
+          withCredentials: true,
+        }
+      );
+      navigate(`/order/${orderId}`);
     } else {
       toast.error(res.data);
     }
@@ -120,7 +130,7 @@ const PlaceOrder = () => {
               <h5>
                 <strong>Order Info</strong>
               </h5>
-              <p>Shipping: {shippingAddress.country}</p>
+              <p>Shipping: {shippingAddress?.country}</p>
               <p>Pay method: {paymentMethod.paymentMethod}</p>
             </div>
           </div>
@@ -138,9 +148,9 @@ const PlaceOrder = () => {
                 <strong>Deliver to</strong>
               </h5>
               <p>
-                Address: {shippingAddress.address}, {shippingAddress.city}
+                Address: {shippingAddress?.address}, {shippingAddress?.city}
               </p>
-              <p>Postal Code: {shippingAddress.postalCode} </p>
+              <p>Postal Code: {shippingAddress?.postalCode} </p>
             </div>
           </div>
         </div>
