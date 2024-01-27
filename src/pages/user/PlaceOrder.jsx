@@ -69,6 +69,7 @@ const PlaceOrder = () => {
     if (res.data === "success") {
       dispatch(clearCart());
       toast.info("Cập nhật thành công!");
+      navigate(`/order/${order._id}`);
     } else {
       toast.error(res.data);
     }
