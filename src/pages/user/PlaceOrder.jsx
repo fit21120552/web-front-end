@@ -63,7 +63,7 @@ const PlaceOrder = () => {
     if (res.data === "success") {
       dispatch(clearCart());
       const res1 = await axios.patch(
-        api.updateOrder,
+        api.updateOrder + orderId,
         { StatusPaid: true },
         {
           headers: {
