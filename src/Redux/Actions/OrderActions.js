@@ -150,8 +150,6 @@ export const createOrder = (order) => async (dispatch, getState) => {
 
     dispatch({ type: ORDER_CREATE_SUCCESS, payload: data });
 
-    localStorage.removeItem("cartItems");
-    console.log(data.data.data._id);
     return data.data.data._id;
   } catch (error) {
     const message =
