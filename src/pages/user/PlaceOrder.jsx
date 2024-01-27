@@ -64,7 +64,7 @@ const PlaceOrder = () => {
       dispatch(clearCart());
       const res = await axios.patch(
         api.update,
-        { statusPaid: true },
+        { StatusPaid: true },
         {
           headers: {
             "Access-Control-Allow-Origin": "*",
