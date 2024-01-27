@@ -175,11 +175,7 @@ const Header = ({ title, setTitle }) => {
                     <p className="text-blue-500">STORE</p>
                   </div>
                 </Link>
-                <Link to="/product" className="">
-                    <button className=" bg-[#ef4444] rounded-xl p-2 text-white m-3 ">
-                           <FontAwesomeIcon icon={faShoppingCart}/> 
-                        </button>
-                </Link>
+
                 <div
                   ref={ref}
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -227,8 +223,7 @@ const Header = ({ title, setTitle }) => {
                   )}
                 </div>
               </div>
-              
-                
+
               <div className="col-xs-6 col-6 flex items-center">
                 <div className="input-group">
                   <input

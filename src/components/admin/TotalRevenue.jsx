@@ -1,5 +1,6 @@
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -9,7 +10,9 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
+import { api } from "../../constants/api";
 
 ChartJS.register(
   CategoryScale,
@@ -43,23 +46,34 @@ const labels = [
   "Sunday",
 ];
 
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: "Online Sales",
-      data: [100, 50, 100, 1000, 200, 900, 500],
-      backgroundColor: "rgba(255, 99, 132, 0.5)",
-    },
-    {
-      label: "Offline Sales",
-      data: [100, 50, 100, 1000, 200, 900, 500],
-      backgroundColor: "rgba(53, 162, 235, 0.5)",
-    },
-  ],
-};
-
 const TotalRevenue = () => {
+  const [chartData, setChartData] = useState([]);
+  useEffect(() => {
+    async function fetchData() {
+      const rs = await axios.get(api.getChartData, api.config);
+      if (rs.data.status === "success") {
+        setChartData(rs.data.data.stats);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: "Total Price",
+
+        data: chartData.map((item) => {
+          if (item === 0) return 0;
+          return item.totalPrice;
+        }),
+        backgroundColor: "rgba(53, 162, 235, 0.5)",
+      },
+    ],
+  };
+
   return (
     <div className="px-6 pt-4 pb-10 bg-white rounded-xl max-w-[1100px]">
       <div className="flex justify-between">

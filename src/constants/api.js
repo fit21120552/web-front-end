@@ -34,7 +34,6 @@ export const api = {
   getAllCategory: IPaddress + "/api/v1/category/",
   getRelatedProduct: IPaddress + "/api/v1/product/related-products/",
   getTodayProducts: IPaddress + "/api/v1/product?stock[gt]=50&limit=4",
-  
 
   //user api
   getAllUser: IPaddress + "/admin/",
@@ -43,8 +42,13 @@ export const api = {
 
   //order
   getOrder: IPaddress + "/admin/order/",
-  createOrder: IPaddress + "/order/",
+  createOrder: IPaddress + "/user/orders/create",
   getOrderUser: IPaddress + "/user/order/",
+  getChartData: IPaddress + "/api/v1/order/getStatsRevenueByDayOfWeek",
+  getStatsProduct: IPaddress + "/api/v1/order/statsNumberProduct",
+  getStatsOrder: IPaddress + "/api/v1/order/getStatsOrderLaster",
+  getStatsToday: IPaddress + "/api/v1/adminPage/statsData",
+
   //review
   createReviewOfAProduct: IPaddress + "/api/v1/reviews/",
   getReviewOfAProduct: IPaddress + "/api/v1/product/",
