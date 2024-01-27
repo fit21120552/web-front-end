@@ -17,6 +17,9 @@ import {
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
   USER_DETAILS_FAIL,
+  USER_UPDATE_AVATAR_REQUEST,
+  USER_UPDATE_AVATAR_SUCCESS,
+  USER_UPDATE_AVATAR_FAIL,
 } from "../Constants/UserConstants";
 
 import { CLEAR_CART } from "../Constants/CartConstants";
@@ -244,3 +247,46 @@ export const listUserDetails = (id) => async (dispatch) => {
     });
   }
 };
+
+export const updateUserAvatar = (id, avatar) => async (dispatch, getState) => {
+  try {
+    dispatch({type: USER_UPDATE_AVATAR_REQUEST });
+
+    const { 
+        userLogin: { userInfo }, 
+    } = getState()
+
+    const config = {
+        headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "multipart/form-data",
+            sessionId: userInfo.sessionId,
+        },
+        withCredentials: true,
+    }
+
+    console.log("session: ", userInfo.sessionId)
+    const body = {
+       avatar: avatar,
+    }
+
+    const { data } = await axios.patch(api.updateAvatar+id, body, config)
+
+   console.log("data: ",data )
+    dispatch({type: USER_UPDATE_AVATAR_SUCCESS, payload: data})
+}  catch (error) {
+    const message = error.response && error.response.data.message ? 
+                    error.response.data.message : 
+                    error.message
+    
+    if (message ==="Token failed") {
+      //  dispatch(logout())
+    }
+    dispatch({
+        type: USER_UPDATE_AVATAR_FAIL,
+        payload: message
+            
+    })
+}
+}

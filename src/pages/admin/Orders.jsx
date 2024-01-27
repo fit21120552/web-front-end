@@ -99,8 +99,8 @@ const Orders = () => {
                 {item._id}
               </Link>
             </td>
-            <td className="py-2 font-semibold">{item.user.username}</td>
-            <td className="py-2 text-center text-primary italic"><Link to={`mailto:${item.user.email}`}>{item.user.email}</Link></td>
+            <td className="py-2 font-semibold">{item.user && item.user.username}</td>
+            <td className="py-2 text-center text-primary italic"><Link to={`mailto:${item.user && item.user.email}`}>{ item.user && item.user.email}</Link></td>
             <td className="py-2">${item.ShipCost + item.price + item.tax}</td>
             <td className="py-2  text-center">
             {

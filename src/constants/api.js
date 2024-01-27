@@ -42,6 +42,7 @@ export const api = {
   getAllUser: IPaddress + "/admin/",
   getUser: IPaddress + "/admin/user/",
   deleteUser: IPaddress + "/admin/user/",
+  updateAvatar: IPaddress +"/user/update-avatar/",
 
   //order
   getOrder: IPaddress + "/admin/order/",

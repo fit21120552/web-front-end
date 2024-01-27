@@ -48,6 +48,11 @@ const OrderList = () => {
                     Settings
                   </div>
                 </Link>
+                <Link to="/change-avatar">
+                <div className="bg-[#7dd3fc] py-2 rounded-sm ">
+                  Change avatar
+                </div>
+              </Link>
                 <Link to="/order-list">
                   <div className="bg-[#7dd3fc] py-2 rounded-sm ">
                     Order List

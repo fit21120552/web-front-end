@@ -27,6 +27,7 @@ import DetailUser from "./pages/admin/DetailUser";
 import DetailOrder from "./pages/admin/DetailOrder";
 import OrderList from "./pages/user/OrderList";
 import OrderDetail from "./pages/user/OrderDetail";
+import ChangeAvatar from "./pages/user/ChangeAvatar";
 
 export default function App() {
   return (
@@ -37,6 +38,7 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/edit-profile" element={<EditProfile />} />
+          <Route path="/change-avatar" element={<ChangeAvatar/>}/>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/resetpassword" element={<ResetPassword />} />
