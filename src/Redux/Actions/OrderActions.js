@@ -15,6 +15,8 @@ import {
   ORDER_LIST_SUCCESS,
 } from "../Constants/OrderConstants";
 import { CART_CLEAR_ITEMS } from "../Constants/CartConstants";
+import { clearCart } from "./CartActions";
+import { toast } from "react-toastify";
 
 export const listOrderDetails = (id) => async (dispatch) => {
   try {
@@ -144,31 +146,13 @@ export const createOrder = (order) => async (dispatch, getState) => {
     };
 
     const { data } = await axios.post(`${api.createOrder}`, order, config);
-    // const res = await axios.post(
-    //   api.checkout,
-    //   { total:order.price, orderId: data. },
-    //   {
-    //     headers: {
-    //       "Access-Control-Allow-Origin": "*",
-    //       sessionId: userInfo.sessionId,
-    //     },
-    //     withCredentials: true,
-    //   }
-    // );
 
-    // if (res.data === "success") {
-    //   dispatch(clearCart());
-    //   toast.info("Cập nhật thành công!");
-    // } else {
-    //   toast.error(res.data);
-    // }
-
-    console.log("data: ", data);
     dispatch({ type: ORDER_CREATE_SUCCESS, payload: data });
 
     dispatch({ type: CART_CLEAR_ITEMS });
 
     localStorage.removeItem("cartItems");
+    return data.data.data._id;
   } catch (error) {
     const message =
       error.response && error.response.data.message
