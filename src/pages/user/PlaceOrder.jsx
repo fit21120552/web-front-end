@@ -61,7 +61,6 @@ const PlaceOrder = () => {
     );
 
     if (res.data === "success") {
-      dispatch(clearCart());
       const res1 = await axios.patch(
         api.updateOrder + orderId,
         { StatusPaid: true },
@@ -73,7 +72,12 @@ const PlaceOrder = () => {
           withCredentials: true,
         }
       );
-      navigate(`/order/${orderId}`);
+      if (res1.data === "success") {
+        dispatch(clearCart());
+        navigate(`/order/${orderId}`);
+      } else {
+        toast.error(res1.data);
+      }
     } else {
       toast.error(res.data);
     }
