@@ -60,7 +60,7 @@ export const api = {
   //review
   createReviewOfAProduct: IPaddress + "/api/v1/reviews/",
   getReviewOfAProduct: IPaddress + "/api/v1/product/",
-
+  link: IPaddress,
   // image api
   getImage: IPaddress + "/image/",
 

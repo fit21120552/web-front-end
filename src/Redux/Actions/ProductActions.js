@@ -56,7 +56,10 @@ export const listProductDetails = (id) => async(dispatch) => {
        // console.log("userInfo: ", userInfo)
         const config = {
             headers: {
-                Authorization: `Bearer ${userInfo.sessionId}`
+                Authorization: `Bearer ${userInfo.sessionId}`,
+                "Access-Control-Allow-Origin": "*",
+                "Content-Type":"application/json",
+                sessionId: userInfo.sessionId,
             },
             withCredentials: true,
         }

@@ -45,6 +45,8 @@ const ProductDetail = ({ history, match }) => {
   useEffect(() => {
     const fetchProduct = async () => {
       const res1 = await axios.get(api.getAndCreateProduct + params.id);
+
+      console.log("data: ",res1.data)
       if (res1.data.status === "success") setProduct(res1.data.data.data);
 
       const res2 = await axios.get(api.getRelatedProduct + params.id);
@@ -105,7 +107,14 @@ const ProductDetail = ({ history, match }) => {
         {currentItems &&
           currentItems.map((review, index) => (
             <div className="mb-5 mb-md-3 bg-[#f1f5f9] p-3 shadow-sm rounded-lg" key={review._id}>
-                      <strong>Anonymous user</strong>
+                      <strong>{
+                        review.user && review.user.username ? (
+                          review.user.username
+                        ) : (
+                          <>Anonymous customer</>
+                        )
+                      }
+                      </strong>
                       <Rating value={review.rating} />
                       <span>{review.createdAt}</span>
                       <Alert key="info" variant="info" className="mt-3">
@@ -213,7 +222,7 @@ const ProductDetail = ({ history, match }) => {
                     <div className="flex justify-between items-center border p-3">
                       <h6 className="">Reviews</h6>
                       <Rating
-                        value={product?.rating}
+                        value={product?.ratingsAverage}
                         text={`${product?.ratingsQuantity} reviews`}
                       />
                     </div>
@@ -285,7 +294,7 @@ const ProductDetail = ({ history, match }) => {
                   <div className="w-fit">
                     <p className="font-serif">{product?.title}</p>
                     <Rating
-                      value={product?.rating}
+                      value={product?.ratingsAverage}
                       text={`${product?.ratingsQuantity} reviews`}
                     ></Rating>
                     <h3 className="text-2xl font-bold">${product?.price}</h3>
