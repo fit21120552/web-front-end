@@ -108,7 +108,8 @@ const EditProduct = () => {
                 headers: {
                     Authorization: `Bearer ${userInfo.token}`,
                     "Access-Control-Allow-Origin": "*",
-                    "Content-Type":"application/json",
+                    //"Content-Type":"application/json",
+                    "Content-Type": "multipart/form-data",
                     sessionId: userInfo.sessionId,
                 },
                 withCredentials: true,
@@ -116,7 +117,6 @@ const EditProduct = () => {
 
             console.log("session: ", userInfo.sessionId)
             const body = {
-                sessionId : userInfo.sessionId,
                 title: title, 
                 price: price, 
                 stock: stock, 
@@ -125,6 +125,7 @@ const EditProduct = () => {
                 thumbnail: thumbnail,
                 brand: brand,
             }
+            console.log("thumbnail update: ",body)
             const { data } =  await axios.patch(`${api.editProduct}${id}`,
                                             body,config)
             console.log("data:", data)
@@ -234,7 +235,7 @@ const EditProduct = () => {
                                         onChange={(e) => setCategory(e.target.value)}
                                         required >
                                          <option value={""}>Select...</option>
-                                            {categories.map(
+                                            {categories && categories.map(
                                                 (x) => (
                                                     <option key ={x._id} value = {x.name} selected={x.name===category}>
                                                         {x.name}
