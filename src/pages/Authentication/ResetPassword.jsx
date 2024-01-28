@@ -20,6 +20,7 @@ const ResetPassword = () => {
   const [noti, setNoti] = useState("");
   const [verifyCode, setVerifyCode] = useState("");
   const [sessionId, setSessionId] = useState("");
+  const [isFirstForm, setIsFirstForm] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -43,8 +44,12 @@ const ResetPassword = () => {
       api.config
     );
     setLoading(false);
-    setError(data.msg);
-    setSessionId(data.sessionId);
+    if (typeof data === "object") {
+      setSessionId(data.sessionId);
+      setIsFirstForm(true);
+    } else {
+      setError(data);
+    }
   };
   const handleReset = async (e) => {
     e.preventDefault();
@@ -81,7 +86,7 @@ const ResetPassword = () => {
             <h5 className=" font-bold">Reset Password</h5>
           </div>
 
-          {error ? (
+          {isFirstForm ? (
             <form className="row form-container mx-3" onSubmit={handleReset}>
               <div className="form mb-4 text-left">
                 <label className="text-start font-bold" htmlFor="password">
