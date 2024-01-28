@@ -1,21 +1,25 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Message from "../LoadingError/Message";
-import { listOrderUser } from "../../Redux/Actions/OrderActions";
+import { deleteOrder, deleteOrderUser, listOrderUser } from "../../Redux/Actions/OrderActions";
 import { useEffect, useState } from "react";
 import { logout } from "./../../Redux/Actions/UserActions";
 import Loading from "../LoadingError/Loading"
 import DateView from "../Components/DateView"
 import ReactPaginate from "react-paginate";
+import { faEye, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const OrderList = () => {
     const dispatch = useDispatch();
     const userLogin = useSelector((state) => state.userLogin);
     const orderList = useSelector((state) => state.orderList);
     const { loading, error, orders  } = orderList
+    const orderDelete = useSelector((state) => state.orderDelete)
+    const { error: errorDelete, success: successDelete } = orderDelete
     const [show, setShow] = useState(10)
     useEffect(() => {
       dispatch(listOrderUser())
-    },[dispatch])
+    },[dispatch,successDelete])
 
     const handleLogout = () => {
       dispatch(logout());
@@ -38,6 +42,13 @@ const OrderList = () => {
     //     }
     // ]
     //const orders=null
+
+    const deleteHandler2 = (id) => {
+      if (window.confirm(`Are you sure to delete this order ${id}?`)) {
+        dispatch(deleteOrderUser(id))
+       // alert(`deleted ${id}`)
+      }
+    }
 
     function Items({ currentItems }) {
   
@@ -73,6 +84,19 @@ const OrderList = () => {
                       </td>
                       <td><DateView date={order.createdAt}></DateView></td>
                       <td>${order.price + order.tax + order.ShipCost}</td>
+                      <td> 
+                        <Link className="py-2 text-center" to={`/order/${order._id}`}>
+                          <FontAwesomeIcon icon={faEye} color="#00E096" />
+                        </Link>
+                        {
+                          (order.StatusPaid && order.StatusDelivered) || (!order.StatusPaid && !order.StatusDelivered) ? (
+                            <button className="rounded-xl px-3" onClick={(e) =>deleteHandler2(order._id)}>
+                              <FontAwesomeIcon icon={faTrash} color="#ef4444" />
+                            </button>
+                          ) : null
+                        }
+                        
+                      </td>
                   </tr>
             ))}
         </>
@@ -159,7 +183,7 @@ const OrderList = () => {
                     </div>) : (
                     <div className="basis-6/7 flex flex-column gap-4 w-full">
                           <div className="flex flex-row justify-end">
-                              <select className="rounded-lg bg-[#e1e0e0] px-4" onChange={(e)=> setShow(Number.parseInt(e.target.value))}>
+                              <select className="rounded-lg bg-[#e1e0e0] px-4 py-2" onChange={(e)=> setShow(Number.parseInt(e.target.value))}>
                                  <option value={5}>Show 5</option>
                                  <option value={10} selected>Show 10</option>
                               </select>
@@ -173,6 +197,7 @@ const OrderList = () => {
                                           <th>Status</th>
                                           <th>Date</th>
                                           <th>Total</th>
+                                          <th>Action</th>
                                       </tr>
                                       <PaginatedItems  itemsPerPage={show} itemList={orders} />
                                      

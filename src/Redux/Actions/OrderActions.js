@@ -215,6 +215,48 @@ export const deleteOrder = (id) => async (dispatch, getState) => {
   }
 };
 
+export const deleteOrderUser = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: ORDER_DELETE_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+        sessionId: userInfo.sessionId,
+      },
+      withCredentials: true,
+    };
+    const body = {
+      sessionId: userInfo.sessionId,
+    };
+
+    // console.log("delete cat id: ", id)
+    const { data } = await axios.delete(api.deleteOrder + id, config);
+
+    console.log("data del: ", data);
+    dispatch({ type: ORDER_DELETE_SUCCESS });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+
+    if (message === "Token failed") {
+      //  dispatch(logout())
+    }
+    dispatch({
+      type: ORDER_DELETE_FAIL,
+      payload: message,
+    });
+  }
+};
+
 export const createOrder = (order) => async (dispatch, getState) => {
   try {
     dispatch({ type: ORDER_CREATE_REQUEST });
