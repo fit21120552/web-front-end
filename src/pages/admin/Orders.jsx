@@ -215,7 +215,7 @@ const Orders = () => {
             <option value={4}>Delivered</option>
             <option value={5}>Not delivered</option>
           </select>
-          <select name="" id="" className="rounded-lg bg-[#e1e0e0] px-4">
+          <select name="" id="" className="rounded-lg bg-[#e1e0e0] px-4" onChange={(e)=> setItemPerPage(Number.parseInt(e.target.value))}>
             <option value={5}>Show 5</option>
             <option value={10} selected>Show 10</option>
           </select>

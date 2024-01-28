@@ -145,12 +145,7 @@ function PaginatedItems({ itemsPerPage, itemList }) {
   return (
     <div className="px-10">
       <div className="flex justify-between mt-3">
-      <div></div>
-        <Link to="/admin/user/add">
-            <button className="bg-[#0CA91B] rounded-lg px-4 py-2 text-white">
-              Create new admin account<span className="text-lg">+</span>
-            </button>
-          </Link>
+      
       </div>
       <div className="mt-2 flex justify-between ">
         <div className="bg-[#e1e0e0] flex gap-3 items-center rounded-lg px-4 py-2">
@@ -162,12 +157,12 @@ function PaginatedItems({ itemsPerPage, itemList }) {
           />
         </div>
         <div className="flex gap-4">
-          <select name="" id="" className="rounded-lg bg-[#e1e0e0] px-4" onChange={(e) => setFilter(e.target.value)}>
+          <select name="" id="" className="rounded-lg bg-[#e1e0e0] px-4" onChange={(e) => setFilter(Number.parseInt(e.target.value))}>
             <option value={1}>All User</option>
             <option value={2}>Customer</option>
             <option value={3}>Admin</option>
           </select>
-          <select name="" id="" className="rounded-lg bg-[#e1e0e0] px-4" onChange={(e) => setItemPerPage(e.target.value)}>
+          <select name="" id="" className="rounded-lg bg-[#e1e0e0] px-4" onChange={(e) => setItemPerPage(Number.parseInt(e.target.value))}>
             <option value={3}>Show 3</option>
             <option value={6} selected>Show 6</option>
           </select>
