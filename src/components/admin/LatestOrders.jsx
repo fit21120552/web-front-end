@@ -3,12 +3,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { api } from "../../constants/api";
+import { Link } from "react-router-dom";
 
 const LatestOrders = () => {
   const [data, setData] = useState([]);
   useEffect(() => {
     async function fetchData() {
       const rs = await axios.get(api.getStatsOrder, api.config);
+      console.log("data stats: ", rs.data)
       if (rs.data.status === "success") {
         setData(rs.data.data.stats);
       }
@@ -36,21 +38,28 @@ const LatestOrders = () => {
           </tr>
         </thead>
         <tbody>
-          {data.map((element, index) => (
+          { data && data.map((element, index) => (
             <tr className="mb-4 border-t" key={index}>
               <td className="py-2 font-semibold">
                 {element.userDetails?.username}
               </td>
-              <td>{element.userDetails?.email}</td>
+              <td className="italic text-primary">
+                <Link to={`mailto:${element.userDetails?.email}`}>{element.userDetails?.email}</Link>
+              </td>
               <td>{element.price}</td>
               <td>
-                <span className="bg-[#DCFCE7] rounded-xl py-1 px-3 text-sm font-semibold">
-                  Paid
-                </span>
+             
+                    <span className="bg-[#DCFCE7] rounded-xl py-1 px-3 text-sm font-semibold">
+                      Paid
+                    </span>
+                 
+               
               </td>
               <td>{element.createdAt.split("T")[0]}</td>
               <td>
-                <FontAwesomeIcon icon={faEye} color="#00E096" />
+                <Link to={`/admin/order/${element?._id}`}>
+                  <FontAwesomeIcon icon={faEye} color="#00E096" />
+                </Link>
               </td>
             </tr>
           ))}

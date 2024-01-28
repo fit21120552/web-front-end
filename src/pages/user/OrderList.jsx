@@ -68,7 +68,10 @@ const OrderList = () => {
               {
                   loading ? (<div className="basis-6/7 text-center w-full"><Loading/></div>) : error 
                   ? (<div className="basis-6/7 text-center w-full">
-                      <Message variant={'danger mt-3'}>{error}</Message>
+                      <Message variant={'danger my-3'}>{error}</Message>
+                      <Link to={'/product'} className="bg-primary mt-3 rounded-lg p-3">
+                          Shopping now
+                      </Link>
                     </div>) : (
                     <div className="basis-6/7 flex gap-4 w-full">
                           {
@@ -76,6 +79,7 @@ const OrderList = () => {
                                   <table className="w-full basis-1/1 table table-bordered">
                                       <tr>
                                           <th>ID</th>
+                                          <th>Payment</th>
                                           <th>Status</th>
                                           <th>Date</th>
                                           <th>Total</th>
@@ -94,6 +98,16 @@ const OrderList = () => {
                                                               <span className="bg-danger text-white min-w-[10px]">Not Paid</span>
                                                           ) : (
                                                               <span className="bg-success text-white min-w-[10px]">Paid</span>
+                                                          )
+                                                      }
+                                                      
+                                                  </td>
+                                                  <td className="p-3">
+                                                      {
+                                                          !order.StatusDelivered ? (
+                                                              <span className="bg-danger text-white min-w-[10px]">Not Delivered</span>
+                                                          ) : (
+                                                              <span className="bg-success text-white min-w-[10px]">Delivered</span>
                                                           )
                                                       }
                                                       
