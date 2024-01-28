@@ -302,7 +302,7 @@ const OrderDetail = () => {
                   </Link>
 
                   <Link
-                    to="https://localhost:3003/pay/login" target="_blank"
+                    to="https://localhost:3003/login" target="_blank"
                     className="text-white bg-primary w-full text-center p-3 rounded-sm mt-3"
                    
                   >
