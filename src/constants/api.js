@@ -1,4 +1,4 @@
-const IPaddress = "http://127.0.0.1:3000";
+const IPaddress = "https://localhost:3000";
 
 export const api = {
   config: {
@@ -43,7 +43,8 @@ export const api = {
   getUser: IPaddress + "/admin/user/",
   deleteUser: IPaddress + "/admin/user/",
   updateAvatar: IPaddress +"/user/update-avatar/",
-
+  getAdminUser: IPaddress + "/admin/getAll?role=admin",
+  getCustomerUser: IPaddress + "/admin/getAll?role=user",
   //order
   getOrder: IPaddress + "/admin/order/",
   createOrder: IPaddress + "/user/orders/create/",

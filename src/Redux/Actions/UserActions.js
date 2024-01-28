@@ -211,7 +211,7 @@ export const listUser = () => async (dispatch, getState) => {
 };
 
 // GET ALL CUSTOMER
-export const listUserCustomer = () => async (dispatch, getState) => {
+export const listUserCustomer = (type) => async (dispatch, getState) => {
   try {
     dispatch({ type: USER_LIST_REQUEST });
     const {
@@ -229,10 +229,24 @@ export const listUserCustomer = () => async (dispatch, getState) => {
       },
       withCredentials: true,
     };
-    const { data } = await axios.get(`${api.getUser}?role=user`, config);
-
-    console.log("list user:", data);
-    dispatch({ type: USER_LIST_SUCCESS, payload: data });
+    let temp;
+    switch (type) {
+       case 2: 
+       const { data: data2 } = await axios.get(api.getCustomerUser, config);
+       temp = data2
+       break
+       case 3: 
+       const { data: data3 } = await axios.get(api.getAdminUser, config);
+       temp = data3
+       break
+      default:
+        const { data } = await axios.get(api.getAllUser, config)
+        temp = data
+        break
+    }
+    
+    console.log("list user:", temp);
+    dispatch({ type: USER_LIST_SUCCESS, payload: temp.data.data });
   } catch (error) {
     dispatch({
       type: USER_LIST_FAIL,

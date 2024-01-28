@@ -29,10 +29,10 @@ const Users = () => {
         dispatch(listUser())
         break;
       case 2: 
-        dispatch(listUserCustomer())
+        dispatch(listUserCustomer(2))
         break;
       case 3: 
-        dispatch(listUser())
+        dispatch(listUserCustomer(3))
         break;
       default: 
         dispatch(listUser())

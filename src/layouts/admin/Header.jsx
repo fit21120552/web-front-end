@@ -44,7 +44,7 @@ const Header = () => {
           className="font-semibold px-2 text-white"
           onClick={() => handleLogout()}
         >
-          Đăng xuất
+          Log Out
         </button>
       </div>
     </div>

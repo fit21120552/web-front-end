@@ -42,12 +42,12 @@ const Cart = () => {
 
   const increaseProductQuantity = (product) => {
     if (product.quantity + 1 <= product.stock) {
-      dispatch(increaseQuantity(productId));
+      dispatch(increaseQuantity(product._id));
     }
   };
   const decreaseProductQuantity = (product) => {
     if (product.quantity - 1 >= 1) {
-      dispatch(decreaseQuantity(productId));
+      dispatch(decreaseQuantity(product._id));
     }
   };
 
