@@ -68,7 +68,10 @@ const OrderList = () => {
               {
                   loading ? (<div className="basis-6/7 text-center w-full"><Loading/></div>) : error 
                   ? (<div className="basis-6/7 text-center w-full">
-                      <Message variant={'danger mt-3'}>{error}</Message>
+                      <Message variant={'danger my-3'}>{error}</Message>
+                      <Link to={'/product'} className="bg-primary mt-3 rounded-lg p-3">
+                          Shopping now
+                      </Link>
                     </div>) : (
                     <div className="basis-6/7 flex gap-4 w-full">
                           {

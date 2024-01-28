@@ -265,7 +265,7 @@ export const updateUserAvatar = (id, avatar) => async (dispatch, getState) => {
   try {
     dispatch({ type: USER_UPDATE_AVATAR_REQUEST });
 
-    const {
+    let {
       userLogin: { userInfo },
     } = getState();
 
@@ -285,8 +285,9 @@ export const updateUserAvatar = (id, avatar) => async (dispatch, getState) => {
     };
 
     const { data } = await axios.patch(api.updateAvatar + id, body, config);
-    if (data) {
-      localStorage.setItem("userInfo", JSON.stringify(data));
+    if (data && data.avatar) {
+      //localStorage.setItem("userInfo", JSON.stringify(data));
+      userInfo.avatar = data.avatar
     }
     console.log("data: ", data);
     dispatch({ type: USER_UPDATE_AVATAR_SUCCESS, payload: data });

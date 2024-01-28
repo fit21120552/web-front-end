@@ -176,6 +176,12 @@ const Header = ({ title, setTitle }) => {
                   </div>
                 </Link>
 
+                <Link to="/product" className="">
+                    <button className=" bg-blue-400 rounded-xl p-2 text-white m-3 ">
+                           <FontAwesomeIcon icon={faShoppingCart}/> 
+                        </button>
+                </Link>
+
                 <div
                   ref={ref}
                   onClick={() => setIsMenuOpen(!isMenuOpen)}

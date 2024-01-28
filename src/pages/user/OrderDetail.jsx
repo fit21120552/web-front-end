@@ -299,23 +299,23 @@ const OrderDetail = () => {
                       PURCHASE
                     </button>
                   </Link>
-                ) : !order.StatusDelivery ? (
+                ) : !order.StatusDelivered ? (
                   <Link
-                    to="/order"
+                    to=""
                     className="text-white bg-primary w-full text-center p-3 rounded-sm"
-                    onClick={purchaseHandler}
+                    onClick={e => e.preventDefault()} aria-disabled disabled
                   >
-                    <button type="submit" className="text-center">
-                      MARK AS DELIVERED
+                    <button type="submit" className="text-center" disabled>
+                      ON SHIPPING
                     </button>
                   </Link>
                 ) : (
                   <Link
-                    to={`/order/${order._id}`}
+                    to={``}
                     className="text-white bg-primary w-full text-center p-3 rounded-sm"
-                    onClick={purchaseHandler}
+                    onClick={e => e.preventDefault()}  aria-disabled disabled
                   >
-                    <button type="submit" className="text-center">
+                    <button type="submit" className="text-center" disabled>
                       DELIVERED
                     </button>
                   </Link>
