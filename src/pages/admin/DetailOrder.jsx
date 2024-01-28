@@ -141,7 +141,11 @@ const DetailOrder = () => {
                                                         <strong>Customer</strong>
                                                     </h5>
                                                     <p>{order?.user?.username}</p>
-                                                    <p><u className="italic">{order?.user?.email}</u></p>
+                                                    <p><u className="italic">
+                                                        <Link to={`mailto:${order?.user?.email}`}>
+                                                            {order?.user?.email}
+                                                        </Link>
+                                                    </u></p>
                                                 </div>
                                             </div>
                                         </div>

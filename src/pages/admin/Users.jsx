@@ -69,7 +69,12 @@ const Users = () => {
               </div>
               <p className="font-semibold text-lg">{item.username}</p>
               <p className="font-serif text-sm text-white">{item.role}</p>
-              <p className="text-sm italic text-[#3b82f6]"><u>{item.email}</u></p>
+              <p className="text-sm italic text-[#3b82f6]">
+                <u>
+                  <Link to={`mailto:${item.email}`}>
+                    {item.email}</Link>
+                </u>
+              </p>
                 
               <div className="flex justify-between">
                 

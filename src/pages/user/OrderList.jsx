@@ -79,6 +79,7 @@ const OrderList = () => {
                                   <table className="w-full basis-1/1 table table-bordered">
                                       <tr>
                                           <th>ID</th>
+                                          <th>Payment</th>
                                           <th>Status</th>
                                           <th>Date</th>
                                           <th>Total</th>
@@ -97,6 +98,16 @@ const OrderList = () => {
                                                               <span className="bg-danger text-white min-w-[10px]">Not Paid</span>
                                                           ) : (
                                                               <span className="bg-success text-white min-w-[10px]">Paid</span>
+                                                          )
+                                                      }
+                                                      
+                                                  </td>
+                                                  <td className="p-3">
+                                                      {
+                                                          !order.StatusDelivered ? (
+                                                              <span className="bg-danger text-white min-w-[10px]">Not Delivered</span>
+                                                          ) : (
+                                                              <span className="bg-success text-white min-w-[10px]">Delivered</span>
                                                           )
                                                       }
                                                       

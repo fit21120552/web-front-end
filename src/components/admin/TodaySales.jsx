@@ -23,7 +23,7 @@ const TodaySales = () => {
     }
 
     fetchData();
-  }, [data]);
+  }, []);
   return (
     <div className="px-6 pt-4 pb-10 bg-white rounded-xl max-w-[800px]">
       <div className="flex justify-between">
