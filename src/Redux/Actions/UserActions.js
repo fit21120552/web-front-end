@@ -70,7 +70,6 @@ export const loginGoogle = (email) => async (dispatch) => {
     dispatch({ type: USER_LOGIN_REQUEST });
 
     const { data } = await axios.post(api.login, { email }, api.config);
-
     const res = await axios.post(
       "https://localhost:3003/register",
       { username: data.userM.username, sessionId: data.sessionId },
@@ -264,45 +263,45 @@ export const listUserDetails = (id) => async (dispatch) => {
 
 export const updateUserAvatar = (id, avatar) => async (dispatch, getState) => {
   try {
-    dispatch({type: USER_UPDATE_AVATAR_REQUEST });
+    dispatch({ type: USER_UPDATE_AVATAR_REQUEST });
 
-    const { 
-        userLogin: { userInfo }, 
-    } = getState()
+    const {
+      userLogin: { userInfo },
+    } = getState();
 
     const config = {
-        headers: {
-            Authorization: `Bearer ${userInfo.token}`,
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "multipart/form-data",
-            sessionId: userInfo.sessionId,
-        },
-        withCredentials: true,
-    }
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "multipart/form-data",
+        sessionId: userInfo.sessionId,
+      },
+      withCredentials: true,
+    };
 
-    console.log("session: ", userInfo.sessionId)
+    console.log("session: ", userInfo.sessionId);
     const body = {
-       avatar: avatar,
-    }
+      avatar: avatar,
+    };
 
-    const { data } = await axios.patch(api.updateAvatar+id, body, config)
+    const { data } = await axios.patch(api.updateAvatar + id, body, config);
     if (data) {
-      localStorage.setItem("userInfo",JSON.stringify(data))
+      localStorage.setItem("userInfo", JSON.stringify(data));
     }
-   console.log("data: ",data )
-    dispatch({type: USER_UPDATE_AVATAR_SUCCESS, payload: data})
-}  catch (error) {
-    const message = error.response && error.response.data.message ? 
-                    error.response.data.message : 
-                    error.message
-    
-    if (message ==="Token failed") {
+    console.log("data: ", data);
+    dispatch({ type: USER_UPDATE_AVATAR_SUCCESS, payload: data });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+
+    if (message === "Token failed") {
       //  dispatch(logout())
     }
     dispatch({
-        type: USER_UPDATE_AVATAR_FAIL,
-        payload: message
-            
-    })
-}
-}
+      type: USER_UPDATE_AVATAR_FAIL,
+      payload: message,
+    });
+  }
+};
