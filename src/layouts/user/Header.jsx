@@ -175,11 +175,7 @@ const Header = ({ title, setTitle }) => {
                     <p className="text-blue-500">STORE</p>
                   </div>
                 </Link>
-                <Link to="/product" className="">
-                    <button className=" bg-[#ef4444] rounded-xl p-2 text-white m-3 ">
-                           <FontAwesomeIcon icon={faShoppingCart}/> 
-                        </button>
-                </Link>
+
                 <div
                   ref={ref}
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -205,7 +201,7 @@ const Header = ({ title, setTitle }) => {
                             <span className="absolute right-1">&gt;</span>
                           )}
                           {isSubMenuOpen === index && (
-                            <div className="absolute  text-black bg-white shadow-xl top-[-1px] -right-[93px] rounded-sm flex flex-col gap-1">
+                            <div className="absolute  text-black bg-white shadow-xl top-[-1px] left-[110px] rounded-sm flex flex-col gap-1">
                               {item.submenu.map((subitem, subindex) => (
                                 <button
                                   onClick={(e) => {
@@ -227,8 +223,7 @@ const Header = ({ title, setTitle }) => {
                   )}
                 </div>
               </div>
-              
-                
+
               <div className="col-xs-6 col-6 flex items-center">
                 <div className="input-group">
                   <input

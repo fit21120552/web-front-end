@@ -58,7 +58,7 @@ export default function Product() {
   const category = searchParams.get("category") || "";
   const sort = searchParams.get("sort") || "";
 
-  const titleParam = searchParams.get("title") || "";
+  const titleParam = searchParams.get("title[regex]") || "";
   useEffect(() => {
     setTitle(titleParam);
   }, [titleParam, searchParams, setTitle]);

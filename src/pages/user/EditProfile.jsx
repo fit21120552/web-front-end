@@ -23,8 +23,11 @@ export default function EditProfile() {
     } else {
       const { data } = await axios.post(
         api.changePassword + userLogin?.userInfo?._id,
-        { password, sessionId: userInfo.sessionId },
-        api.config
+        { password },
+        {
+          ...api.config,
+          headers: { ...api.config.headers, sessionId: userInfo.sessionId },
+        }
       );
       if (data === "success") {
         toast.info("Cập nhật thành công!");
@@ -38,11 +41,12 @@ export default function EditProfile() {
     <div className="max-w-screen-xl mx-auto mt-4">
       <ToastContainer />
       <Link to="/profile" className="p-2 my-3 rounded-lg bg-danger text-white">
-        <button>
-        Return to profile page
-        </button>
+        <button>Return to profile page</button>
       </Link>
-      <form className="row form-container mx-3 my-2 border bg-white" onSubmit={submitHandler}>
+      <form
+        className="row form-container mx-3 my-2 border bg-white"
+        onSubmit={submitHandler}
+      >
         <div className="col-md-6">
           <div className="form">
             <label htmlFor="account-fn">Username</label>

@@ -71,7 +71,21 @@ export const loginGoogle = (email) => async (dispatch) => {
 
     const { data } = await axios.post(api.login, { email }, api.config);
 
-    dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
+    const res = await axios.post(
+      "https://localhost:3003/register",
+      { username: data.userM.username, sessionId: data.sessionId },
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+        withCredentials: true,
+      }
+    );
+
+    dispatch({
+      type: USER_LOGIN_SUCCESS,
+      payload: { ...data, user: data.userM },
+    });
 
     localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
@@ -141,19 +155,19 @@ export const deleteUser = (id) => async (dispatch, getState) => {
       withCredentials: true,
     };
     const body = {
-        sessionId: userInfo.sessionId
-    }
+      sessionId: userInfo.sessionId,
+    };
 
-     const { data } = await axios.delete(api.deleteUser+id, config)
-    console.log("data: ",data )
-    dispatch({type: USER_DELETE_SUCCESS})
-}  catch (error) {
-    const message = error.response && error.response.data.message ? 
-                    error.response.data.message : 
-                    error.message
-    
-    if (message ==="Token failed") {
+    const { data } = await axios.delete(api.deleteUser + id, config);
+    console.log("data: ", data);
+    dispatch({ type: USER_DELETE_SUCCESS });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
 
+    if (message === "Token failed") {
       //  dispatch(logout())
     }
     dispatch({
