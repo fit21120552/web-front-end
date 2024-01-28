@@ -10,7 +10,7 @@ const LatestOrders = () => {
   useEffect(() => {
     async function fetchData() {
       const rs = await axios.get(api.getStatsOrder, api.config);
-      console.log("data stats: ", rs.data)
+      console.log("latest orders : ", rs.data)
       if (rs.data.status === "success") {
         setData(rs.data.data.stats);
       }

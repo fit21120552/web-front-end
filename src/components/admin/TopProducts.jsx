@@ -9,6 +9,7 @@ const TopProducts = () => {
   useEffect(() => {
     async function fetchData() {
       const rs = await axios.get(api.getStatsProduct, api.config);
+      console.log('top products: ',rs)
       if (rs.data.status === "success") {
         setData(rs.data.data.stats);
       }

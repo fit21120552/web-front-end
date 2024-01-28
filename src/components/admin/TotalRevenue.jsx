@@ -51,6 +51,7 @@ const TotalRevenue = () => {
   useEffect(() => {
     async function fetchData() {
       const rs = await axios.get(api.getChartData, api.config);
+      console.log("total revenue: ",rs)
       if (rs.data.status === "success") {
         setChartData(rs.data.data.stats);
       }
