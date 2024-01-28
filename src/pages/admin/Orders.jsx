@@ -2,26 +2,50 @@ import { faEye, faSearch, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteOrder, listOrders } from "../../Redux/Actions/OrderActions";
+import { deleteOrder, listOrders, listOrdersSort } from "../../Redux/Actions/OrderActions";
 import Loading from "../LoadingError/Loading";
 import { Link } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import Message from "../LoadingError/Message";
-
+import DateView from "../Components/DateView"
+import { set } from "react-hook-form";
 const Orders = () => {
   const [modalShow, setModalShow] = React.useState(false);
   const [itemPerPage, setItemPerPage] = useState(10)
   const dispatch = useDispatch()
 
   const orderList = useSelector((state) => state.orderList)
-  //const { loading, error, orders } = orderList
+  const { loading, error, orders } = orderList
 
   const orderDelete = useSelector((state) => state.orderDelete)
   const { error: errorDelete, success: successDelete } = orderDelete
+  const [filter, setFilter] = useState(1)
 
   useEffect(() => {
-    dispatch(listOrders())
-  },[dispatch, successDelete])
+    
+    switch (filter) {
+      case 1: 
+      dispatch(listOrders())
+      break;
+    
+      case 2: 
+      dispatch(listOrdersSort(2))
+      break
+      case 3: 
+     
+      dispatch(listOrdersSort(3))
+      break;
+      case 4: 
+      dispatch(listOrdersSort(4))
+      break;
+      case 5: 
+      dispatch(listOrdersSort(5))
+      break;
+      default: 
+      dispatch(listOrders())
+      break;
+  }
+  },[dispatch, successDelete, filter])
 
   const deleteHandler2 = (id) => {
     if (window.confirm(`Are you sure to delete this order ${id}?`)) {
@@ -30,40 +54,40 @@ const Orders = () => {
     }
   }
     
-  let loading = false
-  let error = null
-  let orders = [
-    {
-      "_id": "65a9d7b4ad47b243bc49b0071",
-      "username":"Tien 123",
-      "email":"taobilag@gmail.com",
-      "total":"1200",
-      "paidStatus" :"Paid",
-      "deliveryStatus":"Not Delivery",
-      "dateOrder":"12/07/2024",
+  // let loading = false
+  // let error = null
+  // let orders = [
+  //   {
+  //     "_id": "65a9d7b4ad47b243bc49b0071",
+  //     "username":"Tien 123",
+  //     "email":"taobilag@gmail.com",
+  //     "total":"1200",
+  //     "paidStatus" :"Paid",
+  //     "deliveryStatus":"Not Delivery",
+  //     "dateOrder":"12/07/2024",
 
-    }, 
-    {
-      "_id": "65a9d7b4ad47b243bc49b0072",
-      "username":"Tien 123",
-      "email":"taobilag@gmail.com",
-      "total":"1201",
-      "paidStatus" :"Not Paid",
-      "deliveryStatus":"Not Delivery",
-      "dateOrder":"12/07/2024",
+  //   }, 
+  //   {
+  //     "_id": "65a9d7b4ad47b243bc49b0072",
+  //     "username":"Tien 123",
+  //     "email":"taobilag@gmail.com",
+  //     "total":"1201",
+  //     "paidStatus" :"Not Paid",
+  //     "deliveryStatus":"Not Delivery",
+  //     "dateOrder":"12/07/2024",
       
-    },
-    {
-      "_id": "65a9d7b4ad47b243bc49b0072",
-      "username":"Tien 123",
-      "email":"taobilag@gmail.com",
-      "total":"1201",
-      "paidStatus" :"Paid",
-      "deliveryStatus":"Delivery",
-      "dateOrder":"12/07/2024",
+  //   },
+  //   {
+  //     "_id": "65a9d7b4ad47b243bc49b0072",
+  //     "username":"Tien 123",
+  //     "email":"taobilag@gmail.com",
+  //     "total":"1201",
+  //     "paidStatus" :"Paid",
+  //     "deliveryStatus":"Delivery",
+  //     "dateOrder":"12/07/2024",
       
-    }
-  ]
+  //   }
+  // ]
   function Items({ currentItems }) {
     return (
       <>
@@ -75,34 +99,36 @@ const Orders = () => {
                 {item._id}
               </Link>
             </td>
-            <td className="py-2 font-semibold">{item.username}</td>
-            <td className="py-2 text-center">{item.email}</td>
-            <td className="py-2">${item.total}</td>
+            <td className="py-2 font-semibold">{item.user && item.user.username}</td>
+            <td className="py-2 text-center text-primary italic"><Link to={`mailto:${item.user && item.user.email}`}>{ item.user && item.user.email}</Link></td>
+            <td className="py-2">${item.ShipCost + item.price + item.tax}</td>
             <td className="py-2  text-center">
             {
-                item.paidStatus ==="Paid" ? (
+                item.StatusPaid  ? (
                   <span className="alert-success text-success rounded-xl inline-block px-3 text-sm font-semibold min-w-[120px]">                
-                    {item.paidStatus}
+                    PAID
                   </span>
                 ) : (
-                  <span className="alert-danger text-danger rounded-xl inline-block px-3 text-sm font-semibold min-w-[120px]">
-             
-                    {item.paidStatus}
+                  <span className="alert-danger text-danger rounded-xl inline-block px-3 text-sm font-semibold min-w-[120px]">           
+                    NOT PAID
                   </span>
                 )
+               
             }
               
             </td>
-            <td className="py-2 text-center">{item.dateOrder}</td>
+            <td className="py-2 text-center">
+              <DateView date={item.createdAt}/>
+            </td>
             <td className="py-2  text-center">
             {
-              item.deliveryStatus === "Delivery" ? (
+              item.StatusDelivered  ? (
                 <span className="alert-success text-success inline-block rounded-xl px-3 text-sm font-semibold min-w-[120px]">
-                  {item.deliveryStatus}
+                  DELIVERED
                 </span>
               ) : (
                 <span className="alert-danger text-danger inline-block rounded-xl px-3 text-sm font-semibold min-w-[120px]">
-                  {item.deliveryStatus}
+                  NOT DELIVERED
                 </span>
               )
             }
@@ -112,9 +138,14 @@ const Orders = () => {
               <Link className="py-2 text-center" to={`/admin/order/${item._id}`}>
                 <FontAwesomeIcon icon={faEye} color="#00E096" />
               </Link>
-              <button className="rounded-xl px-3" onClick={(e) =>deleteHandler2(item._id)}>
-                <FontAwesomeIcon icon={faTrash} color="#ef4444" />
-              </button>
+              {
+                (item.StatusPaid && item.StatusDelivered) || (!item.StatusPaid && !item.StatusDelivered) ? (
+                  <button className="rounded-xl px-3" onClick={(e) =>deleteHandler2(item._id)}>
+                    <FontAwesomeIcon icon={faTrash} color="#ef4444" />
+                  </button>
+                ) : null
+              }
+             
             </td>
           </tr>
           ))}
@@ -177,12 +208,12 @@ const Orders = () => {
           />
         </div>
         <div className="flex gap-4">
-          <select name="" id="" className="rounded-lg bg-[#e1e0e0] px-4">
-            <option value="">All status</option>
-            <option value="">Paid</option>
-            <option value="">Not paid</option>
-            <option value="">Delivered</option>
-            <option value="">Not delivered</option>
+          <select name="" id="" className="rounded-lg bg-[#e1e0e0] px-4" onChange={(e)=> setFilter(Number.parseInt(e.target.value))}>
+            <option value={1}>All status</option>
+            <option value={2}>Paid</option>
+            <option value={3}>Not paid</option>
+            <option value={4}>Delivered</option>
+            <option value={5}>Not delivered</option>
           </select>
           <select name="" id="" className="rounded-lg bg-[#e1e0e0] px-4">
             <option value={5}>Show 5</option>

@@ -8,23 +8,37 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteUser, listUser } from "../../Redux/Actions/UserActions";
+import { deleteUser, listUser, listUserCustomer } from "../../Redux/Actions/UserActions";
 import { Link } from "react-router-dom";
 import Loading from "../LoadingError/Loading";
 import Message from "../LoadingError/Message";
 
 const Users = () => {
   const [itemPerPage, setItemPerPage] = useState(6)
-
+  const [filter, setFilter] = useState(1)
   const dispatch = useDispatch()
   const userList = useSelector((state) => state.userList)
   const { loading, error, users } = userList
-
+  
   const userDelete = useSelector((state) => state.userDelete)
   const { error: errorDelete, success: successDelete } = userDelete
   useEffect(() => {
-    dispatch(listUser())
-  }, [dispatch, successDelete])
+    switch (filter) {
+       case 1:
+        dispatch(listUser())
+        break;
+      case 2: 
+        dispatch(listUserCustomer())
+        break;
+      case 3: 
+        dispatch(listUser())
+        break;
+      default: 
+        dispatch(listUser())
+        break;
+    }
+    
+  }, [dispatch, successDelete, filter])
 
   const deleteHandler2 = (id) => {
     if (window.confirm(`Are you sure to delete this user ${id}?`)) {
@@ -135,10 +149,10 @@ function PaginatedItems({ itemsPerPage, itemList }) {
           />
         </div>
         <div className="flex gap-4">
-          <select name="" id="" className="rounded-lg bg-[#e1e0e0] px-4">
-            <option value="">All Status</option>
-            <option value="">Active Only</option>
-            <option value="">Disabled</option>
+          <select name="" id="" className="rounded-lg bg-[#e1e0e0] px-4" onChange={(e) => setFilter(e.target.value)}>
+            <option value={1}>All User</option>
+            <option value={2}>Customer</option>
+            <option value={3}>Admin</option>
           </select>
           <select name="" id="" className="rounded-lg bg-[#e1e0e0] px-4" onChange={(e) => setItemPerPage(e.target.value)}>
             <option value={3}>Show 3</option>

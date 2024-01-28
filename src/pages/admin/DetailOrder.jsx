@@ -2,10 +2,13 @@ import { faCalendar, faPrint } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useParams } from "react-router-dom";
 import Loading from "../LoadingError/Loading";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Message from "../LoadingError/Message";
 import { useDispatch, useSelector } from "react-redux";
 import ImageView from "../Components/ImageView";
+import { deliverOrder, listOrderDetails } from "../../Redux/Actions/OrderActions";
+import DateView from "../Components/DateView";
+import { ORDER_DELIVERED_RESET } from "../../Redux/Constants/OrderConstants";
 
 
 const DetailOrder = () => {
@@ -14,34 +17,54 @@ const DetailOrder = () => {
     const params = useParams()
     const { id } = params
     const orderDetails = useSelector((state) => state.orderDetails)
-    //const { loading, error, order }= orderDetails
-    let loading = false
-    let error = null
-    const order = {
-        _id: "1234",
-        date:"12/03/2024",
-        items:[
-            {
-                price: 100,
-                quantity:3,
-                title: "hiter",
-                
-            },
-            {
-                price: 100,
-                quantity:3,
-                title: "hiter",
-                
-            }
-        ],
+    const { loading, error, order } =  orderDetails
 
+    const orderDeliver = useSelector((state) => state.orderDeliver)
+    const { loading: loadingDelivered, error: errorDelivered, success: successDelivered }= orderDeliver
+
+    useEffect(() => {
+       dispatch(listOrderDetails(id))
+       if (successDelivered) {
+            dispatch({type: ORDER_DELIVERED_RESET})
+            
+       }
+    },[dispatch, id, successDelivered])
+
+    const deliveryHandler = (e) => {
+        e.preventDefault()
+        if (!order.StatusDelivered) {
+            dispatch(deliverOrder(id))
+        }
+       
     }
-    const item = {
-        price: 100,
-        quantity:3,
-        title: "hiter",
+
+    // let loading = false
+    // let error = null
+    // const order = {
+    //     _id: "1234",
+    //     date:"12/03/2024",
+    //     items:[
+    //         {
+    //             price: 100,
+    //             quantity:3,
+    //             title: "hiter",
+                
+    //         },
+    //         {
+    //             price: 100,
+    //             quantity:3,
+    //             title: "hiter",
+                
+    //         }
+    //     ],
+
+    // }
+    // const item = {
+    //     price: 100,
+    //     quantity:3,
+    //     title: "hiter",
         
-    }
+    // }
     const calculateSubtotal = (order) => {
         if (order && order.items && order.items.length>0)
         {
@@ -71,14 +94,15 @@ const DetailOrder = () => {
 
                 loading ? (<Loading/>) : error ? (
                     <Message variant="danger w-full" >{error}</Message>
-                ) : (
-                    <div className="card m-2">
+                ) : (               
+                        order && (
+                            <div className="card m-2">
                         <header className="card-header p-3 header-green bg-[#818cf8]">
                             <div className="row flex flex-row items-center">
                                 <div className="col-lg-6 col-md-6">
                                     <span className="">
                                         <FontAwesomeIcon icon={faCalendar} className="mx-2"/>
-                                        <b className="text-white">{order.date}</b>
+                                        <b className="text-white"><DateView  date={order?.createdAt}/></b>
                                     </span>
                                     <br/>
                                     <small className="text-white mx-3">
@@ -101,178 +125,205 @@ const DetailOrder = () => {
                                 </div>
                             </div>
                         </header>
-                        
-                        <div className="card-body">
-                            <div className="row m-4 ">
-                                <div className="col-lg-4 col-sm-4 mb-lg-4 mb-sm-0 alert-primary  px-3 py-5">
-                                    <div className="row">
-                                        <div className="col-md-4 center">
-                                            <div  className="rounded-full bg-[#bae6fd] px-1 py-5 text-center text-2xl">
-                                                <i className="fas fa-user"></i>
+                        {
+                            order && (
+                                <div className="card-body">
+                                    <div className="row m-4 ">
+                                        <div className="col-lg-4 col-sm-4 mb-lg-4 mb-sm-0 alert-primary  px-3 py-5">
+                                            <div className="row">
+                                                <div className="col-md-4 center">
+                                                    <div  className="rounded-full bg-[#bae6fd] px-1 py-5 text-center text-2xl">
+                                                        <i className="fas fa-user"></i>
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-8 center">
+                                                    <h5>
+                                                        <strong>Customer</strong>
+                                                    </h5>
+                                                    <p>{order?.user?.username}</p>
+                                                    <p><u className="italic">{order?.user?.email}</u></p>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div className="col-md-8 center">
-                                            <h5>
-                                                <strong>Customer</strong>
-                                            </h5>
-                                            <p>User name</p>
-                                            <p><u className="italic">User email</u></p>
 
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="col-lg-4 col-sm-4 mb-lg-4 mb-5 mb-sm-0 alert-primary   px-3  py-5">
-                                    <div className="row">
-                                        <div className="col-md-4 center">
-                                            <div  className="rounded-full bg-[#bae6fd] px-1 py-5 text-center text-2xl">
-                                                <i className="fas fa-truck-moving"></i>
-                                            </div>
-                                            
-                                        </div>
-                                        <div className="col-md-8 center">
-                                            <h5>
-                                                <strong>Order Info</strong>
-                                            </h5>
-                                            <p>Shipping: Country</p>
-                                            <p>Pay method: VNPay</p>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="col-lg-4 col-sm-4 mb-lg-4 mb-5 mb-sm-0 alert-primary px-3  py-5">
-                                    <div className="row">
-                                        <div className="col-md-4 center">
-                                            <div  className="rounded-full bg-[#bae6fd] px-1 py-5 text-center text-2xl">
-                                                <i className="fas fa-map-marker-alt"></i>
-                                            </div>
-                                            
-                                        </div>
-                                        <div className="col-md-8 center">
-                                            <h5>
-                                                <strong>Deliver to</strong>
-                                            </h5>
-                                            <p>
-                                                Address: Address + City, postal code
-                                            </p>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="row">
-                                <div className="col-lg-9">
-                                    <div className="table-responsive">
-                                        <table className="w-full table ">
-                                            <tr>
-                                                <th className="font-normal text-left text-[#96A5B8]">Product</th>
-                                                <th className="font-normal text-[#96A5B8]">Unit Price</th>
-                                                <th className="font-normal text-[#96A5B8]">Quantity</th>
-                                                <th className="font-normal text-[#96A5B8]">Subtotal</th>
-                                           </tr>
-                                           {
-                                            
-                                                order.items.length > 0 ? (
-                                                    order.items.map((item ) => (
-                                                        <tr>
-                                                            <td className="flex flex-row justify-begin">
-                                                                {
-                                                                    item ? (
-                                                                        !item.thumbnail || item.thumbnail.includes('http') ? (
-                                                                            <img src={item.thumbnail} alt={item.title} className="max-h-[50px] max-w-[50px]"/>
-                                                                        ) : (
-                                                                            <ImageView imagePath={item.thumbnail} imageName={item.title} model={'product'} id={item._id} classProp={"w-4/5 h-4/5"}/>
-                                                                        )
-                                                                    ) : null
-                                                                   
-                                                                }
+                                        <div className="col-lg-4 col-sm-4 mb-lg-4 mb-5 mb-sm-0 alert-primary   px-3  py-5">
+                                            <div className="row">
+                                                <div className="col-md-4 center">
+                                                    <div  className="rounded-full bg-[#bae6fd] px-1 py-5 text-center text-2xl">
+                                                        <i className="fas fa-truck-moving"></i>
+                                                    </div>
                                                     
-                                                                
-                                                                <div>{item.title}</div>
-                                                            </td>
-                                                            <td className="">{item.price}</td>
-                                                            <td className="">{item.quantity}</td>
-                                                            <td className="">{item.price * item.quantity}</td>
-                                                        </tr>
-                                                    )
+                                                </div>
+                                                <div className="col-md-8 center">
+                                                    <h5>
+                                                        <strong>Order Info</strong>
+                                                    </h5>
+                                                    <p>Shipping: {order?.country}</p>
+                                                    <p>Pay method: {order?.paymentMethod}</p>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="col-lg-4 col-sm-4 mb-lg-4 mb-5 mb-sm-0 alert-primary px-3  py-5">
+                                            <div className="row">
+                                                <div className="col-md-4 center">
+                                                    <div  className="rounded-full bg-[#bae6fd] px-1 py-5 text-center text-2xl">
+                                                        <i className="fas fa-map-marker-alt"></i>
+                                                    </div>
                                                     
-                                               
-                                                    )
-                                                ) : (
+                                                </div>
+                                                <div className="col-md-8 center">
+                                                    <h5>
+                                                        <strong>Deliver to</strong>
+                                                    </h5>
+                                                    <p>
+                                                        Address: {order.address}, {` ${order.city}`}
+                                                    </p>
+                                                    <p>Postal Code:{" "}{order.postalCode}</p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="row">
+                                        <div className="col-lg-9">
+                                            <div className="table-responsive">
+                                                <table className="w-full table ">
                                                     <tr>
-                                                        <td colSpan={12}>
-                                                            <Message variant={"primary flex justify-center"}>Empty order</Message>
+                                                        <th className="font-normal text-left text-[#96A5B8]">Product</th>
+                                                        <th className="font-normal text-[#96A5B8]">Unit Price</th>
+                                                        <th className="font-normal text-[#96A5B8]">Quantity</th>
+                                                        <th className="font-normal text-[#96A5B8]">Subtotal</th>
+                                                </tr>
+                                                {
+                                                    
+                                                        order.products && order.products.length > 0 ? (
+                                                            order.products.map((item ) => (
+                                                                <tr>
+                                                                    <td className="flex flex-row justify-begin">
+                                                                        {
+                                                                            item ? (
+                                                                                !item.thumbnail || item.thumbnail.includes('http') ? (
+                                                                                    <img src={item.thumbnail} alt={item.title} className="max-h-[70px] max-w-[70px]"/>
+                                                                                ) : (
+                                                                                    <ImageView imagePath={item.thumbnail} imageName={item.title} model={'product'} id={item._id} classProp={"max-h-[70px] max-w-[70px]"}/>
+                                                                                )
+                                                                            ) : null
+                                                                        
+                                                                        }
+                                                            
+                                                                        
+                                                                        <div>{item.title}</div>
+                                                                    </td>
+                                                                    <td className="">{item.price}</td>
+                                                                    <td className="">{item.quantity}</td>
+                                                                    <td className="">{item.price * item.quantity}</td>
+                                                                </tr>
+                                                            )
+                                                            
+                                                    
+                                                            )
+                                                        ) : (
+                                                            <tr>
+                                                                <td colSpan={12}>
+                                                                    <Message variant={"primary flex justify-center"}>Empty order</Message>
+                                                                </td>
+                                                            </tr>
+                                                            
+                                                        )
+                                                }
+                                                    <tr >
+                                                        <td colSpan={12} className="flex flex-row justify-end">
+                                                            <table className="table table-bordered bg-[#f1f5f9] ">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <strong>Subtotal</strong>
+                                                                        </td>
+                                                                        <td>${order.price ? order.price : 0}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <strong>Shipping cost</strong>
+                                                                        </td>
+                                                                        <td>${order.ShipCost ? order.ShipCost : 0}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <strong>Grand total</strong>
+                                                                        </td>
+                                                                        <td>${order.ShipCost && order.price && order.tax
+                                                                                ? order.ShipCost + order.price + order.tax : 0}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <strong>Status</strong>
+                                                                        </td>
+                                                                        <td>
+                                                                        {
+                                                                            order && (
+                                                                                order.StatusPaid ? (
+                                                                                    <span className="alert-success text-success p-2 rounded-lg">
+                                                                                        Payment done
+                                                                                    </span>
+                                                                                ) : (
+                                                                                    <span className="alert-danger text-danger p-2 rounded-lg">
+                                                                                        Not Paid
+                                                                                    </span>
+                                                                                )
+                                                                            )
+                                                                        }                                                                          
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
                                                         </td>
                                                     </tr>
-                                                    
-                                                )
-                                           }
-                                           <tr >
-                                                            <td colSpan={12} className="flex flex-row justify-end">
-                                                                <table className="table table-bordered bg-[#f1f5f9] ">
-                                                                    <tbody>
-                                                                        <tr>
-                                                                            <td>
-                                                                                <strong>Subtotal</strong>
-                                                                            </td>
-                                                                            <td>${calculateSubtotal(order)}</td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>
-                                                                                <strong>Shipping cost</strong>
-                                                                            </td>
-                                                                            <td>$20</td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>
-                                                                                <strong>Grand total</strong>
-                                                                            </td>
-                                                                            <td>${calculateGrandTotal(order)}</td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>
-                                                                                <strong>Status</strong>
-                                                                            </td>
-                                                                            <td>
-                                                                                <span className="alert-success text-success p-2 rounded-lg">
-                                                                                    Payment done
-                                                                                </span>
-                                                                                <span className="alert-danger text-danger p-2 rounded-lg">
-                                                                                    Not Paid
-                                                                                </span>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </td>
-                                                    </tr>
-                                          
-                                          
-                                        </table>
-                                    </div>
-                                </div>
-
-                                <div className="col-lg-3">
-                                    <div className="box shadow-sm bg-light">
-                                        <div className="border w-4/5 p-3 rounded-lg" >
-                                            <button className=" col-12 text-white" onClick={(e) => setDeliveryStatus()}>
-                                                { 
-                                                    deliverySwitch ? (
-                                                        <span className="bg-success rounded-lg  p-2">DELIVERED</span>
-                                                    ) : (
-                                                        <span className="bg-dark rounded-lg p-2">MARK AS DELIVERED</span>
-                                                    )
-                                                }
                                                 
-                                            </button>
+                                                
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        <div className="col-lg-3">
+                                            <div className="box ">
+                                                <div className="border w-4/5 p-3 shadow-sm rounded-lg bg-light" >
+                                                   { 
+                                                        loadingDelivered ? <Loading/> : errorDelivered
+                                                        ? (<Message variant={'danger'}>{errorDelivered}</Message>)
+                                                        : (
+                                                            <button className=" col-12 text-white" onClick={(e) => deliveryHandler(e)} disabled={!order.StatusPaid} style={ !order.StatusPaid ? {opacity: '0.5'} : {opacity:'1'}}>
+                                                            {
+                                                                order && order.StatusDelivered  ? (
+                                                                    <span className="bg-success rounded-lg  p-2">DELIVERED</span>
+                                                                ) : (
+                                                                    <>
+                                                                    
+                                                                        
+                                                                        <span className="bg-dark rounded-lg p-2">MARK AS DELIVERED</span>
+                                                                    </>
+                                                                
+                                                                )
+                                                            } 
+                                                            </button>
+                                                        )
+
+                                                    }
+                                                       
+                                                   
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            )
+                        }
+                       
                     </div>
+                        )
+                   
                 )
             }
           

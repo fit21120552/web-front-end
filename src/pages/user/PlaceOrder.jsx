@@ -13,6 +13,43 @@ import { clearCart } from "../../Redux/Actions/CartActions";
 const PlaceOrder = () => {
   //const cartItems=[]
 
+
+    useEffect(() => {
+        if (success) {
+            dispatch({type: ORDER_CREATE_RESET}) 
+            
+        }
+        if (order) {
+            navigate(`/order/${order._id}`)
+        }
+    },[dispatch, success, order])
+
+    const PlaceOrderHandler = (e) => {
+        e.preventDefault()
+        dispatch(createOrder({
+            products: cartItems,
+            user: userInfo._id,
+            price: calculateTotalProductPrice(cartItems),
+            tax: calculateTax(cartItems),
+            ShipCost: 20,
+            address: shippingAddress.address,
+            city: shippingAddress.city,
+            phone: "09839709485",
+            postalCode: shippingAddress.postalCode,
+            country: shippingAddress.country,
+            paymentMethod: paymentMethod.paymentMethod,
+            
+        }))
+    }
+
+    const calculateTotalProductPrice = (items) => {
+        if (items && items.length >= 1) {
+            let total = 0
+            items.map((item) => {
+                total += item.price * item.quantity
+            })
+            return total.toFixed(1)
+
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   const cart = useSelector((state) => state.cart);
@@ -70,6 +107,7 @@ const PlaceOrder = () => {
             sessionId: userInfo.sessionId,
           },
           withCredentials: true,
+
         }
       );
       if (res1.data.status === "success") {

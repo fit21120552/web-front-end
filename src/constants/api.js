@@ -20,6 +20,9 @@ export const api = {
   createProduct: IPaddress + "/admin/product/create/",
   editProduct: IPaddress + "/admin/product/update/",
   updateImage: IPaddress + "/admin/product/update-image/",
+  getProductByDate: IPaddress +"/api/v1/product?sort=-createdAt",
+  getProductByPrice: IPaddress +"/api/v1/product?sort=price",
+  getProductByView: IPaddress +"/api/v1/product?sort=-ratingsQuantity",
 
   //category api
   getCategory: IPaddress + "/api/v1/category/",
@@ -39,9 +42,22 @@ export const api = {
   getAllUser: IPaddress + "/admin/",
   getUser: IPaddress + "/admin/user/",
   deleteUser: IPaddress + "/admin/user/",
+  updateAvatar: IPaddress +"/user/update-avatar/",
 
   //order
   getOrder: IPaddress + "/admin/order/",
+  createOrder: IPaddress + "/user/orders/create/",
+  getAllOrderUser: IPaddress + "/user/orders/getOrder/",
+  deleteOrder: IPaddress + "/user/orders/delete/",
+  updateOrder: IPaddress + "/user/orders/update/",
+  updateOrderAdmin: IPaddress + "/admin/orders/update/",
+  getOneOrder: IPaddress + "/admin/orders/getOne/",
+  getAllOrderAdmin: IPaddress + "/admin/orders/getAll/",
+  getOneOrderUser: IPaddress + "/user/orders/getOne/",
+  getAllOrderAdminNotPaid: IPaddress + "/admin/orders/getAll?StatusPaid=false",
+  getAllOrderAdminPaid: IPaddress + "/admin/orders/getAll?StatusPaid=true",
+  getAllOrderAdminNotDelivered: IPaddress + "/admin/orders/getAll?StatusDelivered=false",
+  getAllOrderAdminDelivered: IPaddress + "/admin/orders/getAll?StatusDelivered=true",
   createOrder: IPaddress + "/user/orders/create",
   getOrderUser: IPaddress + "/user/order/",
   getChartData: IPaddress + "/api/v1/order/getStatsRevenueByDayOfWeek",
@@ -50,11 +66,11 @@ export const api = {
   getStatsToday: IPaddress + "/api/v1/adminPage/statsData",
   getOneOrder: IPaddress + "/user/orders/getOne/",
   updateOrder: IPaddress + "/user/orders/update/",
-
+  
   //review
   createReviewOfAProduct: IPaddress + "/api/v1/reviews/",
   getReviewOfAProduct: IPaddress + "/api/v1/product/",
-
+  link: IPaddress,
   // image api
   getImage: IPaddress + "/image/",
 

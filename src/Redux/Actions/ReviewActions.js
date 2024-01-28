@@ -38,6 +38,16 @@ export const createReview = (productId, rating, review) => async (dispatch, getS
             userLogin: { userInfo }, 
         } = getState()
 
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userInfo.sessionId}`,
+                "Access-Control-Allow-Origin": "*",
+                "Content-Type":"application/json",
+                sessionId: userInfo.sessionId
+            },
+            withCredentials: true,
+        }
+
         const body =  {
             user: userInfo._id,
             rating: rating,
@@ -45,7 +55,8 @@ export const createReview = (productId, rating, review) => async (dispatch, getS
             product: productId,
         }
 
-        const { data } = await axios.post(`${api.createReviewOfAProduct}`, body)
+        const { data } = await axios.post(`${api.link}/user/${productId}/review`, body, config)
+
 
         dispatch({type: REVIEW_CREATE_SUCCESS, payload: data })
 

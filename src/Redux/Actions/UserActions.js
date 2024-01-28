@@ -17,6 +17,9 @@ import {
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
   USER_DETAILS_FAIL,
+  USER_UPDATE_AVATAR_REQUEST,
+  USER_UPDATE_AVATAR_SUCCESS,
+  USER_UPDATE_AVATAR_FAIL,
 } from "../Constants/UserConstants";
 
 import { CLEAR_CART } from "../Constants/CartConstants";
@@ -174,6 +177,7 @@ export const deleteUser = (id) => async (dispatch, getState) => {
   }
 };
 
+// GET ALL USER
 export const listUser = () => async (dispatch, getState) => {
   try {
     dispatch({ type: USER_LIST_REQUEST });
@@ -207,6 +211,39 @@ export const listUser = () => async (dispatch, getState) => {
   }
 };
 
+// GET ALL CUSTOMER
+export const listUserCustomer = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: USER_LIST_REQUEST });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    const body = {
+      sessionId: userInfo.sessionId,
+    };
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+        sessionId: userInfo.sessionId,
+      },
+      withCredentials: true,
+    };
+    const { data } = await axios.get(`${api.getUser}?role=user`, config);
+
+    console.log("list user:", data);
+    dispatch({ type: USER_LIST_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: USER_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
 //USER DETAILS
 export const listUserDetails = (id) => async (dispatch) => {
   try {
@@ -224,3 +261,48 @@ export const listUserDetails = (id) => async (dispatch) => {
     });
   }
 };
+
+export const updateUserAvatar = (id, avatar) => async (dispatch, getState) => {
+  try {
+    dispatch({type: USER_UPDATE_AVATAR_REQUEST });
+
+    const { 
+        userLogin: { userInfo }, 
+    } = getState()
+
+    const config = {
+        headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "multipart/form-data",
+            sessionId: userInfo.sessionId,
+        },
+        withCredentials: true,
+    }
+
+    console.log("session: ", userInfo.sessionId)
+    const body = {
+       avatar: avatar,
+    }
+
+    const { data } = await axios.patch(api.updateAvatar+id, body, config)
+    if (data) {
+      localStorage.setItem("userInfo",JSON.stringify(data))
+    }
+   console.log("data: ",data )
+    dispatch({type: USER_UPDATE_AVATAR_SUCCESS, payload: data})
+}  catch (error) {
+    const message = error.response && error.response.data.message ? 
+                    error.response.data.message : 
+                    error.message
+    
+    if (message ==="Token failed") {
+      //  dispatch(logout())
+    }
+    dispatch({
+        type: USER_UPDATE_AVATAR_FAIL,
+        payload: message
+            
+    })
+}
+}

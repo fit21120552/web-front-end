@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "./../../Redux/Actions/UserActions";
 import { Link } from "react-router-dom";
-
+import ImageView from "../Components/ImageView"
 export default function Profile() {
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
@@ -23,6 +23,11 @@ export default function Profile() {
                   Settings
                 </div>
               </Link>
+              <Link to="/change-avatar">
+                <div className="bg-[#7dd3fc] py-2 rounded-sm ">
+                  Change avatar
+                </div>
+              </Link>
               <Link to="/order-list">
                 <div className="bg-[#7dd3fc] py-2 rounded-sm ">
                   Order List
@@ -35,9 +40,15 @@ export default function Profile() {
                 Logout
               </button>
             </div>
-            <div className="basis-6/7 flex gap-4">
+            <p className="font-bold">Avatar</p>
+            <div className="basis-2/7 flex">
+           
+                <ImageView imagePath={userInfo?.avatar} imageName={userInfo?.username} model={'user'} id={userInfo?._id} classProp={"max-w-[100px] max-h-[100px] rounded-full"}/>
+             
+            </div>
+            <div className="basis-4/7 flex gap-4">
               <div className="form">
-                <label htmlFor="account-fn">Username</label>
+                <label htmlFor="account-fn" className="font-bold">Username</label>
                 <input
                   className="form-control"
                   type="text"
@@ -47,7 +58,7 @@ export default function Profile() {
                 ></input>
               </div>
               <div className="form">
-                <label htmlFor="account-email">Email address</label>
+                <label htmlFor="account-email" className="font-bold">Email address</label>
                 <input
                   type="email"
                   className="form-control"
