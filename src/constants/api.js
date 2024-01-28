@@ -58,13 +58,13 @@ export const api = {
   getAllOrderAdminPaid: IPaddress + "/admin/orders/getAll?StatusPaid=true",
   getAllOrderAdminNotDelivered: IPaddress + "/admin/orders/getAll?StatusDelivered=false",
   getAllOrderAdminDelivered: IPaddress + "/admin/orders/getAll?StatusDelivered=true",
-  createOrder: IPaddress + "/user/orders/create",
+
   getOrderUser: IPaddress + "/user/order/",
   getChartData: IPaddress + "/api/v1/order/getStatsRevenueByDayOfWeek",
   getStatsProduct: IPaddress + "/api/v1/order/statsNumberProduct",
   getStatsOrder: IPaddress + "/api/v1/order/getStatsOrderLaster",
   getStatsToday: IPaddress + "/api/v1/adminPage/statsData",
-  getOneOrder: IPaddress + "/user/orders/getOne/",
+ 
   updateOrder: IPaddress + "/user/orders/update/",
   
   //review

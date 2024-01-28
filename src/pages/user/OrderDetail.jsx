@@ -290,6 +290,7 @@ const OrderDetail = () => {
                 </table>
 
                 {order.products === 0 ? null : !order.StatusPaid ? (
+                  <>
                   <Link
                     to="/purchase"
                     className="text-white bg-primary w-full text-center p-3 rounded-sm"
@@ -299,23 +300,34 @@ const OrderDetail = () => {
                       PURCHASE
                     </button>
                   </Link>
-                ) : !order.StatusDelivery ? (
+
                   <Link
-                    to="/order"
-                    className="text-white bg-primary w-full text-center p-3 rounded-sm"
-                    onClick={purchaseHandler}
+                    to="https://localhost:3003/pay/login" target="_blank"
+                    className="text-white bg-primary w-full text-center p-3 rounded-sm mt-3"
+                   
                   >
                     <button type="submit" className="text-center">
-                      MARK AS DELIVERED
+                      PAYMENT SERVER
+                    </button>
+                  </Link>
+                  </>
+                ) : !order.StatusDelivered ? (
+                  <Link
+                    to=""
+                    className="text-white bg-primary w-full text-center p-3 rounded-sm"
+                    onClick={e => e.preventDefault()} aria-disabled disabled
+                  >
+                    <button type="submit" className="text-center" disabled>
+                      ON SHIPPING
                     </button>
                   </Link>
                 ) : (
                   <Link
-                    to={`/order/${order._id}`}
+                    to={``}
                     className="text-white bg-primary w-full text-center p-3 rounded-sm"
-                    onClick={purchaseHandler}
+                    onClick={e => e.preventDefault()}  aria-disabled disabled
                   >
-                    <button type="submit" className="text-center">
+                    <button type="submit" className="text-center" disabled>
                       DELIVERED
                     </button>
                   </Link>

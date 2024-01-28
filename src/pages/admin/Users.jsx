@@ -12,6 +12,7 @@ import { deleteUser, listUser, listUserCustomer } from "../../Redux/Actions/User
 import { Link } from "react-router-dom";
 import Loading from "../LoadingError/Loading";
 import Message from "../LoadingError/Message";
+import ImageView from "../Components/ImageView"
 
 const Users = () => {
   const [itemPerPage, setItemPerPage] = useState(6)
@@ -57,11 +58,23 @@ const Users = () => {
               className="border rounded-md flex flex-col items-center max-w-[250px] p-2 max-h-[250px] bg-[#a3a3a3]"
             >
               <div className="bg-white rounded-lg w-32 h-32 mx-auto mx-auto w-2/3 h-1/2 ">
-                <img src={item?.avatar} alt={item.username} className="w-4/5 h-4/5"/>
+                {
+                  !item.avatar || item.avatar.includes('http') ? (
+                    <img src={item?.avatar} alt={item.username} className="w-4/5 h-4/5"/>
+                  ) : (
+                     <ImageView imagePath={item.avatar} imageName={item.username} model={'user'} id={item._id} classProp={"w-4/5 h-4/5"}/>
+                  )
+                }
+                
               </div>
               <p className="font-semibold text-lg">{item.username}</p>
               <p className="font-serif text-sm text-white">{item.role}</p>
-              <p className="text-sm italic text-[#3b82f6]"><u>{item.email}</u></p>
+              <p className="text-sm italic text-[#3b82f6]">
+                <u>
+                  <Link to={`mailto:${item.email}`}>
+                    {item.email}</Link>
+                </u>
+              </p>
                 
               <div className="flex justify-between">
                 
