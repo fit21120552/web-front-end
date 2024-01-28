@@ -92,7 +92,7 @@ const OrderDetail = () => {
       );
       if (res1.data.status === "success") {
         dispatch(clearCart());
-        navigate(`/order/${id}`);
+        window.location.reload();
       } else {
         toast.error(res1.data);
       }
