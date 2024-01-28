@@ -10,6 +10,7 @@ import {
 } from "./../../Redux/Actions/UserActions";
 import Message from "../LoadingError/Message";
 import Loading from "../LoadingError/Loading";
+import { api } from "../../constants/api";
 
 const Login = ({ location, history }) => {
   window.scrollTo(0, 0);
@@ -99,7 +100,7 @@ const Login = ({ location, history }) => {
             <div className="mb-1">
               <button className="flex items-center justify-center border-2 rounded-md border-[#10b981] px-2 py-1 mx-auto ">
                 <i className="fab text-[#ef4444] fa-google me-2"></i>
-                <a href="http://localhost:3000/auth/google" className="">
+                <a href={`${api.loginWithGoogle}`} className="">
                   Login with google
                 </a>
               </button>

@@ -6,6 +6,7 @@ import { register } from "../../Redux/Actions/UserActions";
 import Loading from "../LoadingError/Loading";
 import Message from "../LoadingError/Message";
 import { Link, redirect, useLocation, useNavigate } from "react-router-dom";
+import { api } from "../../constants/api";
 
 export default function Signup({ location, history }) {
   const [username, setUsername] = useState("");
@@ -133,7 +134,7 @@ export default function Signup({ location, history }) {
             <button className="flex items-center justify-center border-2 rounded-md border-[#10b981] px-2 py-1 mx-auto">
               <i className="fab text-[#ef4444] fa-google me-2"></i>
 
-              <a href="http://localhost:3000/auth/google" className="">
+              <a href={`${api.loginWithGoogle}`} className="">
                 Login with google
               </a>
             </button>

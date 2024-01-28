@@ -86,7 +86,11 @@ export const loginGoogle = (email) => async (dispatch) => {
       payload: { ...data, user: data.userM },
     });
 
-    localStorage.setItem("userInfo", JSON.stringify(data));
+    //localStorage.setItem("userInfo", JSON.stringify(data?.userM));
+    localStorage.setItem("userInfo", JSON.stringify({
+      ...data?.userM,
+      sessionId: data.sessionId,
+    }));
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAIL,
