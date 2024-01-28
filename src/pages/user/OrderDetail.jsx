@@ -291,15 +291,16 @@ const OrderDetail = () => {
 
                 {order.products === 0 ? null : !order.StatusPaid ? (
                   <>
-                  <Link
-                    to="/purchase"
-                    className="text-white bg-primary w-full text-center p-3 rounded-sm"
-                    onClick={purchaseHandler}
-                  >
-                    <button type="submit" className="text-center">
-                      PURCHASE
-                    </button>
-                  </Link>
+                    <Link
+                      to="/purchase"
+                      className="text-white bg-primary w-full text-center p-3 rounded-sm"
+                      onClick={purchaseHandler}
+                    >
+                      <button type="submit" className="text-center">
+                        PURCHASE
+                      </button>
+                    </Link>
+
 
                   <Link
                     to="https://localhost:3003/login" target="_blank"
@@ -310,12 +311,18 @@ const OrderDetail = () => {
                       PAYMENT SERVER
                     </button>
                   </Link>
+                 
+                 
+
+
                   </>
                 ) : !order.StatusDelivered ? (
                   <Link
                     to=""
                     className="text-white bg-primary w-full text-center p-3 rounded-sm"
-                    onClick={e => e.preventDefault()} aria-disabled disabled
+                    onClick={(e) => e.preventDefault()}
+                    aria-disabled
+                    disabled
                   >
                     <button type="submit" className="text-center" disabled>
                       ON SHIPPING
@@ -325,7 +332,9 @@ const OrderDetail = () => {
                   <Link
                     to={``}
                     className="text-white bg-primary w-full text-center p-3 rounded-sm"
-                    onClick={e => e.preventDefault()}  aria-disabled disabled
+                    onClick={(e) => e.preventDefault()}
+                    aria-disabled
+                    disabled
                   >
                     <button type="submit" className="text-center" disabled>
                       DELIVERED

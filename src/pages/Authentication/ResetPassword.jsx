@@ -80,7 +80,9 @@ const ResetPassword = () => {
 
       <div className="py-4 text-center h-100">
         <div className="text-center rounded-full">
-          {error && <Message variant="warning">{error}</Message>}
+          {error && !isFirstForm && (
+            <Message variant="warning">{error}</Message>
+          )}
           {loading && <Loading></Loading>}
           <div className="flex flex-row justify-center">
             <h5 className=" font-bold">Reset Password</h5>
