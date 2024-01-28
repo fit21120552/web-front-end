@@ -204,26 +204,26 @@ const OrderDetail = () => {
             <div className="row flex justify-between m-3">
               <div className="col-lg-8">
                 {order &&
-                  (!order.products || order.products.length === 0 ? (
+                  (!order.statsProductPrice || order.statsProductPrice.length === 0 ? (
                     <Message variant={"info mt-5"}>Your cart is empty</Message>
                   ) : (
                     <>
-                      {order.products.map((item, index) => (
+                      {order.statsProductPrice.map((item, index) => (
                         <>
-                          <div className="row" key={index}>
+                          <div className="row mt-2" key={index}>
                             <div className="col-md-3 col-6">
                               {item ? (
-                                !item.thumbnail ||
-                                item.thumbnail.includes("http") ? (
+                                !item.imageProduct ||
+                                item.imageProduct.includes("http") ? (
                                   <img
-                                    src={item.thumbnail}
-                                    alt={item.title}
+                                    src={item.imageProduct}
+                                    alt={item.nameProduct}
                                     className=""
                                   />
                                 ) : (
                                   <ImageView
-                                    imagePath={item.thumbnail}
-                                    imageName={item.title}
+                                    imagePath={item.imageProduct}
+                                    imageName={item.nameProduct}
                                     model={"product"}
                                     id={item._id}
                                     classProp={""}
@@ -235,20 +235,20 @@ const OrderDetail = () => {
                             <div className="col-md-5 col-6 flex flex-row items-center">
                               <Link to={`/product/${item._id}`}>
                                 <h6 className="font-semibold font-mono">
-                                  {item.title}
+                                  {item.nameProduct}
                                 </h6>
                               </Link>
                             </div>
                             <div className="mt-3 mt-md-0 col-md-2 col-6 flex flex-column items-center justify-center">
                               <h4>QUANTITY</h4>
-                              <h6>{item.quantity}</h6>
+                              <h6>{item.quantityProduct}</h6>
                             </div>
                             <div className="mt-3 mt-md-0 col-md-2 col-6 flex flex-column justify-center items-end">
                               <h4>SUBTOTAL</h4>
                               <h6>
                                 <strong className="font-mono">
                                   ${" "}
-                                  {Number.parseInt(item.quantity) * item.price}
+                                  {item.totalPrice}
                                 </strong>
                               </h6>
                             </div>
@@ -301,15 +301,20 @@ const OrderDetail = () => {
                       </button>
                     </Link>
 
-                    <Link
-                      to="https://localhost:3003/login"
-                      target="_blank"
-                      className="text-white bg-primary w-full text-center p-3 rounded-sm mt-3"
-                    >
-                      <button type="submit" className="text-center">
-                        PAYMENT SERVER
-                      </button>
-                    </Link>
+
+                  <Link
+                    to="https://localhost:3003/login" target="_blank"
+                    className="text-white bg-primary w-full text-center p-3 rounded-sm mt-3"
+                   
+                  >
+                    <button type="submit" className="text-center">
+                      PAYMENT SERVER
+                    </button>
+                  </Link>
+                 
+                 
+
+
                   </>
                 ) : !order.StatusDelivered ? (
                   <Link

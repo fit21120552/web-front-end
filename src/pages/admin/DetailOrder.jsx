@@ -203,27 +203,27 @@ const DetailOrder = () => {
                                                 </tr>
                                                 {
                                                     
-                                                        order.products && order.products.length > 0 ? (
-                                                            order.products.map((item ) => (
+                                                        order.statsProductPrice && order.statsProductPrice.length > 0 ? (
+                                                            order.statsProductPrice.map((item ) => (
                                                                 <tr>
                                                                     <td className="flex flex-row justify-begin">
                                                                         {
                                                                             item ? (
-                                                                                !item.thumbnail || item.thumbnail.includes('http') ? (
-                                                                                    <img src={item.thumbnail} alt={item.title} className="max-h-[70px] max-w-[70px]"/>
+                                                                                !item.imageProduct || item.imageProduct.includes('http') ? (
+                                                                                    <img src={item.imageProduct} alt={item.nameProduct} className="max-h-[70px] max-w-[70px]"/>
                                                                                 ) : (
-                                                                                    <ImageView imagePath={item.thumbnail} imageName={item.title} model={'product'} id={item._id} classProp={"max-h-[70px] max-w-[70px]"}/>
+                                                                                    <ImageView imagePath={item.imageProduct} imageName={item.nameProduct} model={'product'} id={item._id} classProp={"max-h-[70px] max-w-[70px]"}/>
                                                                                 )
                                                                             ) : null
                                                                         
                                                                         }
                                                             
                                                                         
-                                                                        <div>{item.title}</div>
+                                                                        <div>{item.nameProduct}</div>
                                                                     </td>
-                                                                    <td className="">{item.price}</td>
-                                                                    <td className="">{item.quantity}</td>
-                                                                    <td className="">{item.price * item.quantity}</td>
+                                                                    <td className="">${(Number.parseFloat(item.totalPrice)/Number.parseFloat(item.quantityProduct)).toFixed(1)}</td>
+                                                                    <td className="">{item.quantityProduct}</td>
+                                                                    <td className="">${item.totalPrice}</td>
                                                                 </tr>
                                                             )
                                                             
@@ -246,7 +246,16 @@ const DetailOrder = () => {
                                                                         <td>
                                                                             <strong>Subtotal</strong>
                                                                         </td>
-                                                                        <td>${order.price ? order.price : 0}</td>
+                                                                        <td>${order.price && order.tax && order.ShipCost ? 
+                                                                                parseInt(order.price) - parseInt(order.tax) - parseInt(order.ShipCost) : 0}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <strong>Tax</strong>
+                                                                        </td>
+                                                                        <td>
+                                                                            ${order.tax ? order.tax :0}
+                                                                        </td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>
@@ -258,8 +267,7 @@ const DetailOrder = () => {
                                                                         <td>
                                                                             <strong>Grand total</strong>
                                                                         </td>
-                                                                        <td>${order.ShipCost && order.price && order.tax
-                                                                                ? order.ShipCost + order.price + order.tax : 0}</td>
+                                                                        <td>${order.price ? order.price : 0}</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>

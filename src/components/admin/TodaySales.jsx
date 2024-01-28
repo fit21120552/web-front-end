@@ -16,7 +16,7 @@ const TodaySales = () => {
     async function fetchData() {
       const rs = await axios.get(api.getStatsToday, api.config);
 
-      console.log("data: ",rs)
+      console.log("today sales: ",rs)
       if (rs.data.status === "success") {
         setData(rs.data.data.stats[0]);
       }

@@ -35,9 +35,17 @@ const PlaceOrder = () => {
 
   const PlaceOrderHandler = (e) => {
     e.preventDefault();
+    const products = []
+    cartItems.map((item) => {
+      let count = Number.parseInt(item.quantity)
+      for (let i=0;i <count;i++ ) {
+        products.push(item._id)
+      }
+    })
+    console.log("products: ",products)
     dispatch(
       createOrder({
-        products: cartItems,
+        products: products,
         user: userInfo._id,
         price: calculateTotalProductPrice(cartItems),
         tax: calculateTax(cartItems),
